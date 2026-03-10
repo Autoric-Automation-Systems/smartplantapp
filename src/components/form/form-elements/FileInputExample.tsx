@@ -25,9 +25,9 @@ export default function FileInputExample() {
     console.log("Selected file:", file.name);
     setUploading(true);
     try {
-      const newBlob = await upload(file.name, file, {
+      const newBlob = await upload('avatar/ ' + file.name, file, {
         access: 'public',
-        handleUploadUrl: '/api/upload',
+        handleUploadUrl: '/api/upload'
       });
       setAvatarUrl(newBlob.url);
     } finally {
@@ -36,9 +36,9 @@ export default function FileInputExample() {
   }
 
   return (
-    <ComponentCard title="File Input">
+    <ComponentCard title="Change Picture">
       <div>
-        <Label>Upload file</Label>
+        <Label>Upload picture</Label>
         <FileInput onChange={handleAvatarChange} className="custom-class" />
         <div>
           {uploading && <p className="text-xs text-blue-600 mt-1">Enviando avatar...</p>}

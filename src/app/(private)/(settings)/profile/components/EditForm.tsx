@@ -8,6 +8,7 @@ import { useActionState, useState, useTransition } from "react";
 import FileInputExample from "@/components/form/form-elements/FileInputExample";
 import { upload } from '@vercel/blob/client';
 import { deleteUnusedFiles } from "@/lib/deleteUnusedFiles";
+import Image from "next/image";
 
 
 export default function EditForm({ closeModal, user }: { closeModal: () => void, user: User }) {
@@ -88,6 +89,14 @@ export default function EditForm({ closeModal, user }: { closeModal: () => void,
                             </div>
                             <div className="col-span-2">
                                 <Label>Profile Picture</Label>
+                                <Image
+                                    width={500}
+                                    height={500}
+                                    src={user.avatarurl ? user.avatarurl : "/images/logo/logo-icon.png"}
+                                    alt="Preview"
+                                    className="w-20 h-20 object-cover rounded-full mb-4"
+                                />
+
                                 <FileInputExample />
                             </div>
                         </div>
