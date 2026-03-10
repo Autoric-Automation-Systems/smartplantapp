@@ -7,7 +7,7 @@ import { upload } from '@vercel/blob/client';
 import Image from "next/image";
 
 
-export default function FileInputExample() {
+export default function FileInputExample({ iduser } : {iduser : string }) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -22,6 +22,7 @@ export default function FileInputExample() {
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    console.log("Selected file:", file.name);
     setUploading(true);
     try {
       const newBlob = await upload(file.name, file, {
@@ -34,7 +35,6 @@ export default function FileInputExample() {
     }
   }
 
-
   return (
     <ComponentCard title="File Input">
       <div>
@@ -44,7 +44,13 @@ export default function FileInputExample() {
           {uploading && <p className="text-xs text-blue-600 mt-1">Enviando avatar...</p>}
           {avatarUrl && (
             <div className="mt-2">
-              <Image src={avatarUrl} alt="Preview" className="h-20 rounded-md" />
+              <Image
+                width={500}
+                height={500}
+                src={avatarUrl ? avatarUrl : "/images/logo/logo-icon.png"}
+                alt="Preview"
+                className="w-20 h-20 object-cover rounded-md"
+              />
               <input type="hidden" name="avatarurl" value={avatarUrl} />
             </div>
           )}

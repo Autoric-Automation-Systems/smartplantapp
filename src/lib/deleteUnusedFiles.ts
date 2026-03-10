@@ -16,15 +16,10 @@ export async function deleteUnusedFiles() {
     const logoResult = await sql`
         SELECT logourl FROM smartplantapp.companies
         `;
-    const fileResult = await sql`
-        SELECT url FROM smartplantapp.files
-        `;
     const usedAvatarUrls = avatarResult.rows.map(u => u.avatarurl).filter(Boolean);
     const usedLogoUrls = logoResult.rows.map(u => u.logourl).filter(Boolean);
-    const usedFileUrls = fileResult.rows.map(f => f.url).filter(Boolean);
     const usedUrls = usedAvatarUrls;
     usedUrls.push(...usedLogoUrls);
-    usedUrls.push(...usedFileUrls);
 
     // 2. Busca todos os arquivos do storage
     const allFiles = await listAllBlobFiles();

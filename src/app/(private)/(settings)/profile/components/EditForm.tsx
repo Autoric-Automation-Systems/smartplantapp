@@ -7,6 +7,7 @@ import { updateData, State } from "@/query/users/actions";
 import { useActionState, useState, useTransition } from "react";
 import FileInputExample from "@/components/form/form-elements/FileInputExample";
 import { upload } from '@vercel/blob/client';
+import { deleteUnusedFiles } from "@/lib/deleteUnusedFiles";
 
 
 export default function EditForm({ closeModal, user }: { closeModal: () => void, user: User }) {
@@ -87,7 +88,7 @@ export default function EditForm({ closeModal, user }: { closeModal: () => void,
                             </div>
                             <div className="col-span-2">
                                 <Label>Profile Picture</Label>
-                                <FileInputExample />
+                                <FileInputExample iduser={user.id} />
                             </div>
                         </div>
                     </div>

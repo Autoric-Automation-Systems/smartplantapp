@@ -77,6 +77,7 @@ export async function updateData(
     lastname: formData.get('lastname'),
     password: formData.get('password'),
     role: formData.get('role'),
+    avatarurl: formData.get('avatarurl'),
   });
 
 
@@ -115,7 +116,7 @@ export async function updateData(
   } catch (error) {
     return { message: 'Database Error: Failed to Update User.' };
   }
-  //deleteUnusedFiles();
+  deleteUnusedFiles();
   revalidatePath('/users');
   redirect(
     '/users?title=Sucesso&message=A atualização foi um sucesso!&type=success'

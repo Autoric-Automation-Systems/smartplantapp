@@ -26,10 +26,10 @@ export async function POST(request: Request): Promise<NextResponse> {
         if (!session || !session.user) {
           throw new Error('Not authenticated');
         } else {
-          console.log("Authenticated user:", session.user);
+          //console.log("Authenticated user:", session.user);
         }
         const currentUser = await CurrentUser();
-        console.log("Current user:", currentUser);
+        //console.log("Current user:", currentUser);
         return {
           allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif', 'document/pdf', 'application/pdf'],
           addRandomSuffix: true,
