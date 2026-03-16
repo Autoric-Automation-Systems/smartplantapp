@@ -33,12 +33,11 @@ const navItems: NavItem[] = [
     path: "/dashboard",
   },
   {
-    icon: <GridIcon />,
+    icon: <HorizontaLDots />,
     name: "Settings",
     subItems: [
       { name: "Company", path: "/company", pro: false },
       { name: "Plants", path: "/plants", pro: false },
-      { name: "Profile", path: "/profile", pro: false },
       { name: "Users", path: "/users", pro: false },
     ],
   },

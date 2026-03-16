@@ -1,8 +1,8 @@
 import { fetchDataPlants } from "@/query/plants/data";
 import PlantCard from "./PlantCard";
-import Areas from "./Areas";
+import Areas from "../area/Areas";
 import ComponentCard from "@/components/common/ComponentCard";
-import AreaAdd from "./AreaAdd";
+import AreaAdd from "../area/AreaAdd";
 import PlantDelete from "./PlantDelete";
 
 export default async function Plants() {

@@ -4,14 +4,15 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { Count } from "@/query/counts/definitions";
 import { formatDateToLocal } from "@/lib/formatTime";
+import { Event } from "@/query/events/definitions";
 
 // Dynamically import the ReactApexChart component
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function BarChartOne({ counts }: { counts: Count[] }) {
-  const title = counts[0]?.tag;
+export default function BarChartOne({ events }: { events: Event[] }) {
+  const title = events[0]?.event;
   const options: ApexOptions = {
     colors: ["#465fff"],
     chart: {
@@ -40,7 +41,7 @@ export default function BarChartOne({ counts }: { counts: Count[] }) {
     },
     xaxis: {
       categories: [
-        ...counts.map((count) => formatDateToLocal(count.recorded_at)),
+        ...events.map((event) => formatDateToLocal(event.recorded_at)),
       ],
       axisBorder: {
         show: false,
@@ -85,7 +86,7 @@ export default function BarChartOne({ counts }: { counts: Count[] }) {
   const series = [
     {
       name: title,
-      data: counts.map((count) => count.value),
+      data: events.map((event) => Number(event.value)),
     },
   ];
   return (

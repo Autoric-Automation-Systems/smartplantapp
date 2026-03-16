@@ -29,16 +29,15 @@ export const Navbar = () => {
           </span>
         </Link>
 
-        {/* get started  */}
         <div className="gap-3 nav__item mr-2 lg:flex ml-auto lg:ml-0 lg:order-2">
-            <ThemeChanger />
+            {/* <ThemeChanger /> */}
             <div className="hidden mr-3 lg:flex nav__item">
               <Link href="/signin" className="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5">
                 Signin
               </Link>
             </div>
         </div>
-                
+         {/*}       
         <Disclosure>
           {({ open }) => (
             <>
@@ -80,8 +79,9 @@ export const Navbar = () => {
             </>
           )}
         </Disclosure>
-        
-        {/* menu  */}
+        */}
+
+        {/* menu  
         <div className="hidden text-center lg:flex lg:items-center">
           <ul className="items-center justify-end flex-1 pt-6 list-none lg:pt-0 lg:flex">
             {navigation.map((menu, index) => (
@@ -93,6 +93,7 @@ export const Navbar = () => {
             ))}
           </ul>
         </div>
+        */}
 
       </nav>
     </div>

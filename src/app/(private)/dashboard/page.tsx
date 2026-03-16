@@ -9,8 +9,8 @@ import CardPlant from "./components/cardPlant";
 import Revalidate from "@/components/common/revalidate";
 import { Suspense } from 'react'
 import  DashboardSkeleton from "./components/skeleton";
+import { CurrentCompany } from "@/lib/utils";
  
-
 export const metadata: Metadata = {
   title:
     `Dashboard | ${infoAPP.name} ${infoAPP.version}`,
@@ -18,11 +18,13 @@ export const metadata: Metadata = {
 };
 
 export default async function Page({ props }: { props: propsPage }) {
+  const company = await CurrentCompany();
   const plants = fetchDataPlants();
+  const pageTitle = `Dashboard | ${company.name} `;
   return (
     <div>
       <Revalidate>
-        <PageBreadcrumb pageTitle="Dashboard" backUrl="/home" backUrlName="Home" />
+        <PageBreadcrumb pageTitle={pageTitle} backUrl="/home" backUrlName="Home" />
         <MsgPage />
         <Suspense fallback={<DashboardSkeleton />}>
           {(await plants).map((plant) => (
