@@ -1,5 +1,5 @@
 import { Device } from "@/query/devices/definitions";
-import { fetchEvents } from "@/query/events/data";
+import { fetchEvents, fetchEventsDevice } from "@/query/events/data";
 import ComponentCard from "@/components/common/ComponentCard";
 import CardEvents from "./cardEvents";
 
@@ -9,7 +9,7 @@ export default async function CardDevices({ device }: { device: Device }) {
     const lastHeartbeat = Number(device.lastheartbeat);
     const online = lastHeartbeat + timeRange > currentTime;
 
-    const events = await fetchEvents(device?.idmachine || '');
+    const events = await fetchEventsDevice(device?.id || '');
 
     const eventsTypes = events.reduce(
         (acc, event) => acc.includes(event.event) ? acc : [...acc, event.event],

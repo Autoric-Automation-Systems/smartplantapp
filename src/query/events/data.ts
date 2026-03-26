@@ -30,6 +30,24 @@ export async function fetchEvents(idmachine: string) {
     throw new Error("Failed to fetch events.");
   }
 }
+
+export async function fetchEventsDevice(id: string) {
+  try {
+    const data = await sql<Event>`
+    SELECT * 
+    FROM smartplantapp.events
+    WHERE device_id = ${id}
+    ORDER BY created_at DESC
+  `;
+
+    return data.rows;
+
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch events.");
+  }
+}
+
 export async function fetchFiltered(
   query: string,
   currentPage: number | undefined | null
