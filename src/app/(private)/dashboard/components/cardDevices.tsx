@@ -19,7 +19,7 @@ export default async function CardDevices({ device }: { device: Device }) {
     const eventsTypesOrderedAlphabetically = eventsTypes.sort();
 
     return (
-        <ComponentCard className="p-4 flex flex-col gap-4 shadow-md rounded-2xl" title={device.name}>
+        <ComponentCard className="p-4 flex flex-col gap-4 shadow-md rounded-2xl mb-4" title={device.name}>
 
             {/* HEADER */}
             <div className="flex justify-between items-center">

@@ -1,7 +1,6 @@
 import { fetchDataMachines } from "@/query/machines/data";
 import CardMachine from "./cardMachine";
 import ComponentCard from "@/components/common/ComponentCard";
-import Button from "@/components/ui/button/Button";
 import Link from "next/link";
 
 export default async function CardArea({ idarea }: { idarea: string }) {
