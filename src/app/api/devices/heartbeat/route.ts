@@ -36,7 +36,8 @@ export async function POST(request: Request) {
       await sql`
         UPDATE smartplantapp.devices
         SET lastheartbeat = NOW(),
-            version = ${version}
+            version = ${version},
+            type = ${type}
         WHERE mac = ${mac}
       `;
 
