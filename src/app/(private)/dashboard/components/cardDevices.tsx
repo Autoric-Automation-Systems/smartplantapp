@@ -1,7 +1,9 @@
 import { Device } from "@/query/devices/definitions";
-import { fetchEvents, fetchEventsDevice } from "@/query/events/data";
-import ComponentCard from "@/components/common/ComponentCard";
+import { fetchEventsDevice } from "@/query/events/data";
 import CardEvents from "./cardEvents";
+import { StatusBadge } from "./StatusBadge";
+import { BatteryIndicator } from "../components/BatteryIndicator";
+import { WifiIndicator } from "../components/WifiIndicator";
 
 export default async function CardDevices({ device }: { device: Device }) {
     const timeRange = 2 * 60 * 1000;
@@ -9,37 +11,78 @@ export default async function CardDevices({ device }: { device: Device }) {
     const lastHeartbeat = Number(device.lastheartbeat);
     const online = lastHeartbeat + timeRange > currentTime;
 
-    const events = await fetchEventsDevice(device?.id || '');
+    const events = await fetchEventsDevice(device?.id || "");
 
-    const eventsTypes = events.reduce(
-        (acc, event) => acc.includes(event.event) ? acc : [...acc, event.event],
-        [] as string[]
-    );
+    const batteryEvents: typeof events = [];
+    const eventsWithoutBattery: typeof events = [];
+    const wifiEvents: typeof events = [];
 
-    const eventsTypesOrderedAlphabetically = eventsTypes.sort();
+    for (const event of events) {
+        if (event.event === "battery") {
+            if (batteryEvents.length < 2) batteryEvents.push(event);
+        } else if (event.event === "wifi") {
+            if (wifiEvents.length < 1) wifiEvents.push(event);
+        } else {
+            eventsWithoutBattery.push(event);
+        }
+    }
+
+    const currentBattery = Number(batteryEvents[0]?.value ?? 0);
+    const previousBattery = Number(batteryEvents[1]?.value ?? currentBattery);
+    const charging = currentBattery > previousBattery;
+    const wifi = Number(wifiEvents[0]?.value ?? 0);
+
+    const eventsTypes = [...new Set(eventsWithoutBattery.map((e) => e.event))].sort();
 
     return (
-        <ComponentCard className="p-4 flex flex-col gap-4 shadow-md rounded-2xl mb-4" title={device.name}>
+        <div
+            title=" "
+            className="p-4 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
 
             {/* HEADER */}
-            <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-                    Events
-                </h2>
+            <div className="flex items-center justify-between gap-4 flex-wrap">
 
-                <span className={`px-3 py-1 text-sm rounded-full font-medium
-                    ${online
-                        ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                        : "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"}
-                `}>
-                    {online ? "ONLINE" : "OFFLINE"}
-                </span>
+                {/* ESQUERDA */}
+                <div className="flex flex-col leading-tight">
+                    <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+                        {device.name}
+                    </h2>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {device.type}
+                    </span>
+                </div>
+
+                {/* DIREITA */}
+                <div className="flex items-center gap-4 flex-wrap">
+
+                    {/* Last update */}
+                    <span className="text-xs text-gray-400 whitespace-nowrap">
+                        {Intl.DateTimeFormat("pt-BR", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        }).format(lastHeartbeat)}
+                    </span>
+
+                    {/* Status */}
+                    <StatusBadge online={online} />
+
+                    {/* Wifi */}
+                    <WifiIndicator rssi={wifi} />
+
+                    {/* Bateria */}
+                    <BatteryIndicator value={currentBattery} charging={charging} />
+
+                </div>
             </div>
+
+            {/* DIVIDER */}
+            <div className="h-px bg-gray-200 dark:bg-gray-800 my-4" />
 
             {/* EVENTS */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {eventsTypesOrderedAlphabetically.map((type) => {
+                {eventsTypes.map((type) => {
                     const eventsOfType = events.filter((event) => event.event === type);
+
                     return (
                         <CardEvents
                             key={type}
@@ -49,7 +92,6 @@ export default async function CardDevices({ device }: { device: Device }) {
                     );
                 })}
             </div>
-
-        </ComponentCard>
+        </div>
     );
 }

@@ -1,35 +1,31 @@
 import { Event } from "@/query/events/definitions";
+import TemperatureCard from "./events/TemperatureCard";
+import HumidityCard from "./events/HumidityCard";
+import StatusCard from "./events/StatusCard";
+import CounterCard from "./events/CounterCard";
 
-export default function CardEvents({ events, type }: { events: Event[], type: string }) {
-    const value = events[0].value.toString();
+export default function CardEvents({
+  events,
+  type,
+}: {
+  events: Event[];
+  type: string;
+}) {
+  const value = Number(events[0]?.value ?? 0);
 
-    let bg = "";
-    let text = "";
-    let label = "";
+  switch (type) {
+    case "temperature":
+      const max = 30;
+      const min = 18;
+      return <TemperatureCard value={value} min={min} max={max} />;
 
-    if (value === "1") {
-        bg = "bg-green-100 dark:bg-green-900";
-        text = "text-green-700 dark:text-green-300";
-        label = "ON";
-    } else if (value === "0") {
-        bg = "bg-red-100 dark:bg-red-900";
-        text = "text-red-700 dark:text-red-300";
-        label = "OFF";
-    } else {
-        bg = "bg-gray-100 dark:bg-gray-800";
-        text = "text-gray-700 dark:text-gray-300";
-        label = value;
-    }
+    case "humidity":
+      return <HumidityCard value={value} />;
 
-    return (
-        <div className={`flex flex-col items-center justify-center p-3 rounded-xl ${bg}`}>
-            <span className="text-xs text-gray-500 uppercase tracking-wide">
-                {type}
-            </span>
+    case "counter":
+      return <CounterCard value={value} />;
 
-            <span className={`text-lg font-bold ${text}`}>
-                {label}
-            </span>
-        </div>
-    );
+    default:
+      return <StatusCard value={value} type={type} />;
+  }
 }

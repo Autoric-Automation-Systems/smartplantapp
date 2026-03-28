@@ -13,7 +13,9 @@ export default async function CardArea({ idarea }: { idarea: string }) {
                     key={machine.id}
                     href={`/machines/${machine.id}`}
                 >
-                    <ComponentCard title={machine.name} className="mb-2">
+                    <ComponentCard
+                        title={machine.name}
+                        className="p-5 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
                         <CardMachine idmachine={machine.id} />
                     </ComponentCard>
                 </Link>
