@@ -11,7 +11,7 @@ export default async function CardPlant({ plant }: { plant: Plant }) {
         <>
             {areas.map((area) => (
                 <ComponentCard key={area.id} title={area.name}
-                    className="p-5 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
+                    className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
                     <CardArea key={area.id} idarea={area.id} />
                 </ComponentCard>
             ))}

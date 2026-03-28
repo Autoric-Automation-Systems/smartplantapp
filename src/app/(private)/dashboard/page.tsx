@@ -30,7 +30,7 @@ export default async function Page({ props }: { props: propsPage }) {
         <Suspense fallback={<DashboardSkeleton />}>
           {(await plants).map((plant) => (
             <ComponentCard key={plant.id} title={plant.name} 
-            className="p-5 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
+            className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
               <CardPlant plant={plant} />
             </ComponentCard>
           ))}

@@ -15,7 +15,7 @@ export default async function CardArea({ idarea }: { idarea: string }) {
                 >
                     <ComponentCard
                         title={machine.name}
-                        className="p-5 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
+                        className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
                         <CardMachine idmachine={machine.id} />
                     </ComponentCard>
                 </Link>

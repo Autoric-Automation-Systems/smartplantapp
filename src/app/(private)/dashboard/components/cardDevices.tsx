@@ -37,7 +37,7 @@ export default async function CardDevices({ device }: { device: Device }) {
     return (
         <div
             title=" "
-            className="p-4 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
+            className="p-3 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
 
             {/* HEADER */}
             <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -66,20 +66,20 @@ export default async function CardDevices({ device }: { device: Device }) {
                     {/* Status */}
                     <StatusBadge online={online} />
 
-                    {/* Wifi */}
-                    <WifiIndicator rssi={wifi} />
+                    {online && (
+                        <>
+                            <WifiIndicator rssi={wifi} />
+                            <BatteryIndicator value={currentBattery} charging={charging} />
+                        </>
+                    )
+                    }
 
-                    {/* Bateria */}
-                    <BatteryIndicator value={currentBattery} charging={charging} />
 
                 </div>
             </div>
 
-            {/* DIVIDER */}
-            <div className="h-px bg-gray-200 dark:bg-gray-800 my-4" />
-
             {/* EVENTS */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
                 {eventsTypes.map((type) => {
                     const eventsOfType = events.filter((event) => event.event === type);
 
