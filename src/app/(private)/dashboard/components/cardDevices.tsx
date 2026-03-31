@@ -6,7 +6,7 @@ import { BatteryIndicator } from "../components/BatteryIndicator";
 import { WifiIndicator } from "../components/WifiIndicator";
 
 export default async function CardDevices({ device }: { device: Device }) {
-    const timeRange = 2 * 60 * 1000;
+    const timeRange = Number(device.heartbeatInterval) + 60000;
     const currentTime = Number(new Date());
     const lastHeartbeat = Number(device.lastheartbeat);
     const online = lastHeartbeat + timeRange > currentTime;
