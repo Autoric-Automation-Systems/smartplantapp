@@ -41,7 +41,7 @@ export default function BarChartOne({ events }: { events: Event[] }) {
     },
     xaxis: {
       categories: [
-        ...events.map((event) => formatDateToLocal(event.recorded_at)),
+        ...events.map((event) => formatDateToLocal(event.created_at)),
       ],
       axisBorder: {
         show: false,

@@ -73,7 +73,7 @@ export default function LineChartOne({events}: {events: Event[]}) {
     xaxis: {
       type: "category", // Category-based x-axis
       categories: [
-        ...events.map((event) => formatDateToLocal(event.recorded_at)),
+        ...events.map((event) => formatDateToLocal(event.created_at)),
       ],
       axisBorder: {
         show: false, // Hide x-axis border

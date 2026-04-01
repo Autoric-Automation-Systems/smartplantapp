@@ -2,10 +2,10 @@ import { Device } from "@/query/devices/definitions";
 import { fetchEventsDevice } from "@/query/events/data";
 import CardEvents from "./cardEvents";
 import { StatusBadge } from "./StatusBadge";
-import { BatteryIndicator } from "../components/BatteryIndicator";
-import { WifiIndicator } from "../components/WifiIndicator";
+import { BatteryIndicator } from "./BatteryIndicator";
+import { WifiIndicator } from "./WifiIndicator";
 
-export default async function CardDevices({ device }: { device: Device }) {
+export default async function CardDevice({ device }: { device: Device }) {
     const timeRange = Number(device.heartbeatInterval) + 60000;
     const currentTime = Number(new Date());
     const lastHeartbeat = Number(device.lastheartbeat);

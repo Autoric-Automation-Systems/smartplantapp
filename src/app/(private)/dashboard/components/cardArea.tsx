@@ -9,16 +9,12 @@ export default async function CardArea({ idarea }: { idarea: string }) {
     return (
         <>
             {machines.map((machine) => (
-                <Link
+                <ComponentCard
                     key={machine.id}
-                    href={`/machines/${machine.id}`}
-                >
-                    <ComponentCard
-                        title={machine.name}
-                        className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
-                        <CardMachine idmachine={machine.id} />
-                    </ComponentCard>
-                </Link>
+                    title={machine.name}
+                    className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
+                    <CardMachine idmachine={machine.id} />
+                </ComponentCard>
             ))}
         </>
     )

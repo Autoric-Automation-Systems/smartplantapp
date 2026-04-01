@@ -1,8 +1,14 @@
+"use client"
+
+import { useState } from "react"
+
 type WifiIndicatorProps = {
   rssi: number // ex: -65
 }
 
 export function WifiIndicator({ rssi }: WifiIndicatorProps) {
+  const [show, setShow] = useState(false)
+
   // Converte RSSI para nível (0–4)
   const getLevel = () => {
     if (rssi >= -50) return 4
@@ -21,15 +27,16 @@ export function WifiIndicator({ rssi }: WifiIndicatorProps) {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      onClick={() => setShow((prev) => !prev)}
+      className="relative group flex items-center gap-2">
       {/* Barras */}
       <div className="flex items-end gap-[2px] h-4">
         {[1, 2, 3, 4].map((bar) => (
           <div
             key={bar}
-            className={`w-[3px] rounded-sm ${
-              bar <= level ? getColor() : "bg-gray-300 dark:bg-gray-700"
-            }`}
+            className={`w-[3px] rounded-sm ${bar <= level ? getColor() : "bg-gray-300 dark:bg-gray-700"
+              }`}
             style={{
               height: `${bar * 4}px`,
             }}
@@ -37,12 +44,24 @@ export function WifiIndicator({ rssi }: WifiIndicatorProps) {
         ))}
       </div>
 
-      {/* dBm */}
-      {/*
-      <span className="text-xs text-gray-500 dark:text-gray-400">
+      {/* hover (desktop) */}
+      <div className="absolute -top-7 left-1/2 -translate-x-1/2 
+        px-2 py-1 text-xs rounded-md 
+        bg-gray-800 text-white whitespace-nowrap
+        opacity-0 group-hover:opacity-100 transition
+      ">
         {rssi} dBm
-      </span>
-      */}
+      </div>
+
+      {/* click (mobile) */}
+      {show && (
+        <div className="absolute -top-7 left-1/2 -translate-x-1/2 
+          px-2 py-1 text-xs rounded-md 
+          bg-gray-800 text-white whitespace-nowrap">
+          {rssi} dBm
+        </div>
+      )}
+
     </div>
   )
 }
