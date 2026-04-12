@@ -15,14 +15,14 @@ export default function TemperatureCard({
   const textColor = isHot
     ? "text-red-500"
     : isCold
-    ? "text-blue-500"
-    : "text-green-500"
+      ? "text-blue-500"
+      : "text-green-500"
 
   const bgColor = isHot
     ? "from-red-100 to-orange-200 dark:from-red-900 dark:to-orange-900"
     : isCold
-    ? "from-blue-100 to-cyan-200 dark:from-blue-900 dark:to-cyan-900"
-    : "from-green-100 to-emerald-200 dark:from-green-900 dark:to-emerald-900"
+      ? "from-blue-100 to-cyan-200 dark:from-blue-900 dark:to-cyan-900"
+      : "from-green-100 to-emerald-200 dark:from-green-900 dark:to-emerald-900"
 
   const percent = Math.min(
     100,
@@ -31,7 +31,7 @@ export default function TemperatureCard({
 
   return (
     <div className={`p-4 rounded-xl bg-gradient-to-br ${bgColor}`}>
-      
+
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <span className="text-xs text-gray-600 dark:text-gray-300 uppercase">

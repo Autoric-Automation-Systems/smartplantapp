@@ -32,7 +32,7 @@ export default function FlowCard({
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <span className="text-xs text-gray-600 dark:text-gray-300 uppercase">
-          Flow Today
+          Month Flow
         </span>
         <FaWater className={`text-xl ${textColor}`} />
       </div>

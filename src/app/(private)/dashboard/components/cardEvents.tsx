@@ -6,6 +6,7 @@ import HumidityCard from "./events/HumidityCard";
 import StatusCard from "./events/StatusCard";
 import CounterCard from "./events/CounterCard";
 import TemperatureTrend from "./trends/temperatueTrend";
+import HumidityTrend from "./trends/humidityTrend";
 import { useState } from "react";
 import { Modal } from "../Modal";
 import FlowCard from "./events/FlowCard";
@@ -50,20 +51,45 @@ export default function CardEvents({
       )
 
     case "humidity":
-      return <HumidityCard value={value} />;
+
+      return (
+        <>
+          <div onClick={() => setOpenHumidity(true)} className="cursor-pointer">
+            <HumidityCard value={value} />
+          </div>
+
+          {/* MODAL */}
+          <Modal open={openHumidity} onClose={() => setOpenHumidity(false)}>
+            <h2
+              className="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
+              Humidity Trend
+            </h2>
+
+            <HumidityTrend events={events} />
+          </Modal>
+        </>
+      )
 
     case "counter":
       return <CounterCard value={value} />;
 
     case "flow":
-      const flowToday = events.reduce((acc, event) => acc + Number(event.value), 0);
+      const flowMonth = events.reduce((acc, event) => {
+        const date = new Date(event.created_at);
+        const now = new Date();
+        if (date.getMonth() === now.getMonth()) {
+          return acc + Number(event.value);
+        }
+        return acc;
+      }, 0);
+
       return (
         <>
-          <div onClick={() => setOpenTemperature(true)} className="cursor-pointer">
-            <FlowCard value={flowToday} />
+          <div onClick={() => setOpenFlow(true)} className="cursor-pointer">
+            <FlowCard value={flowMonth} />
           </div>
-                    {/* MODAL */}
-          <Modal open={openTemperature} onClose={() => setOpenTemperature(false)}>
+          {/* MODAL */}
+          <Modal open={openFlow} onClose={() => setOpenFlow(false)}>
             <h2
               className="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
               Flow Trend
