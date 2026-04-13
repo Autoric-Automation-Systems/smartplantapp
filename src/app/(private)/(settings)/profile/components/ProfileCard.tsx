@@ -25,13 +25,14 @@ export default function ProfileCard({ user }: { user: User }) {
           </h4>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
-            <div className="w-50 h-50 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
+            <div className="w-50 h-50 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800 relative">
               <Image
-                width={500}
-                height={500}
-                src={user.avatarurl ? user.avatarurl : "/images/logo/logo-icon.png"}
-                alt="user"
-                className="w-full h-full object-cover"
+                src={user?.avatarurl || "/images/logo/logo-icon.png"}
+                alt={`${user.name} ${user.lastname} - Smart Plant Profile`}
+                fill
+                className="object-cover"
+                sizes="200px"
+                unoptimized
               />
             </div>
             <div>

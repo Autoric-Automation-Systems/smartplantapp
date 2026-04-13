@@ -54,6 +54,7 @@ export default function UserDropdown() {
             height={44}
             src={user?.avatarurl || "/images/logo/logo-icon.png"}
             alt="User"
+            unoptimized
           />
         </span>
 
