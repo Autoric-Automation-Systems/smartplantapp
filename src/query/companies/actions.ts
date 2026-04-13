@@ -36,7 +36,7 @@ export async function createCompany(prevState: State, formData: FormData) {
 
   try {
     await sql<Company>`
-        INSERT INTO smartplantapp.companies ( name )
+        INSERT INTO public.companies ( name )
         VALUES (${name})
         `;
   } catch (error) {
@@ -72,7 +72,7 @@ export async function updateCompany(
   const { name } = validatedFields.data;
   try {
     await sql`
-    UPDATE smartplantapp.companies
+    UPDATE public.companies
     SET name = ${name} 
     WHERE id = ${id}
   `;
@@ -90,7 +90,7 @@ export async function updateCompany(
 export async function deleteCompany(id: string) {
   //throw new Error('Failed to Delete Invoice');
 
-  await sql`DELETE FROM smartplantapp.companies WHERE id = ${id}`;
+  await sql`DELETE FROM public.companies WHERE id = ${id}`;
   revalidatePath('/company');
   redirect(
     '/company?title=Sucesso&message=A exclusão foi um sucesso!&type=success'

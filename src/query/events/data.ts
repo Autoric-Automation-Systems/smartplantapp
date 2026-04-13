@@ -14,8 +14,8 @@ export async function fetchEvents(idmachine: string) {
             PARTITION BY e.event 
             ORDER BY e.created_at DESC
           ) as rn
-        FROM smartplantapp.events e
-        JOIN smartplantapp.devices d 
+        FROM public.events e
+        JOIN public.devices d 
           ON d.id = e.device_id
         WHERE d.idmachine = ${idmachine}
       ) t
@@ -35,7 +35,7 @@ export async function fetchEventsDevice(id: string) {
   try {
     const data = await sql<Event>`
     SELECT * 
-    FROM smartplantapp.events
+    FROM public.events
     WHERE device_id = ${id}
     ORDER BY created_at DESC
   `;
@@ -58,7 +58,7 @@ export async function fetchFiltered(
   try {
     const data = await sql<Event>`
       SELECT *
-      FROM smartplantapp.events
+      FROM public.events
       WHERE
         events.idmachine = ${idmachine} AND (
         events.id::TEXT ILIKE ${`%${query}%`})
@@ -78,7 +78,7 @@ export async function fetchPages(query: string) {
   const idmachine = await CurrentCompanyId();
   try {
     const count = await sql`
-      SELECT COUNT(*) FROM smartplantapp.events
+      SELECT COUNT(*) FROM public.events
       WHERE events.idmachine = ${idmachine}
     `;
 
@@ -94,7 +94,7 @@ export async function fetchById(id: string) {
   try {
     const data = await sql<Event>`
       SELECT *
-        FROM smartplantapp.events
+        FROM public.events
         WHERE events.id = ${id} `;
 
     const count = data.rows;

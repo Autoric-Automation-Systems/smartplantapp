@@ -2,11 +2,11 @@ import { sql } from '@vercel/postgres';
 import { Machine } from '@/query/machines/definitions';
 import { CurrentCompanyId } from '@/lib/utils';
 
-export async function fetchDataMachines(idarea : string) {
+export async function fetchDataMachines(idarea: string) {
   try {
     const data = await sql<Machine>`
       SELECT * 
-      FROM smartplantapp.machines
+      FROM public.machines
       WHERE machines.idarea = ${idarea}
       ORDER BY name ASC
     `;
@@ -28,7 +28,7 @@ export async function fetchFiltered(
   try {
     const data = await sql<Machine>`
       SELECT *
-      FROM smartplantapp.machines
+      FROM public.machines
       WHERE
         machines.idarea = ${idarea} AND (
         machines.name ILIKE ${`%${query}%`} OR
@@ -48,7 +48,7 @@ export async function fetchPages(query: string) {
   const idarea = await CurrentCompanyId();
   try {
     const count = await sql`
-      SELECT COUNT(*) FROM smartplantapp.machines
+      SELECT COUNT(*) FROM public.machines
       WHERE machines.idarea = ${idarea}
     `;
 
@@ -64,7 +64,7 @@ export async function fetchById(id: string) {
   try {
     const data = await sql<Machine>`
       SELECT *
-        FROM smartplantapp.machines
+        FROM public.machines
         WHERE machines.id = ${id} `;
 
     const machine = data.rows;

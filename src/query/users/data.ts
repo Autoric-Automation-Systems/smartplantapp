@@ -7,7 +7,7 @@ export async function fetchData() {
   try {
     const data = await sql<User>`
       SELECT * 
-      FROM smartplantapp.users
+      FROM public.users
       WHERE users.idcompany = ${idcompany}
       ORDER BY name ASC
     `;
@@ -29,7 +29,7 @@ export async function fetchFiltered(
   try {
     const data = await sql<User>`
       SELECT *
-      FROM smartplantapp.users
+      FROM public.users
       WHERE
         users.idcompany = ${idcompany} AND (
         users.name ILIKE ${`%${query}%`} OR
@@ -51,7 +51,7 @@ export async function fetchPages(query: string) {
   const idcompany = await CurrentCompanyId();
   try {
     const count = await sql`
-      SELECT COUNT(*) FROM smartplantapp.users
+      SELECT COUNT(*) FROM public.users
       WHERE users.idcompany = ${idcompany}
     `;
 
@@ -67,7 +67,7 @@ export async function fetchById(id: string) {
   try {
     const data = await sql<User>`
       SELECT *
-        FROM smartplantapp.users
+        FROM public.users
         WHERE users.id = ${id} `;
 
     const user = data.rows;
@@ -84,7 +84,7 @@ export async function fetchById(id: string) {
 export async function fetchByEmail(email: string): Promise<User> {
   try {
     const data = await sql<User>`
-      SELECT * FROM smartplantapp.users WHERE users.email = ${email} LIMIT 1
+      SELECT * FROM public.users WHERE users.email = ${email} LIMIT 1
     `;
     const user = data.rows[0];
 

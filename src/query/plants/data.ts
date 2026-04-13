@@ -7,7 +7,7 @@ export async function fetchDataPlants() {
   try {
     const data = await sql<Plant>`
       SELECT * 
-      FROM smartplantapp.plants
+      FROM public.plants
       WHERE plants.idcompany = ${idcompany}
       ORDER BY name ASC
     `;
@@ -29,7 +29,7 @@ export async function fetchFiltered(
   try {
     const data = await sql<Plant>`
       SELECT *
-      FROM smartplantapp.plants
+      FROM public.plants
       WHERE
         plants.idcompany = ${idcompany} AND (
         plants.name ILIKE ${`%${query}%`} OR
@@ -49,7 +49,7 @@ export async function fetchPages(query: string) {
   const idcompany = await CurrentCompanyId();
   try {
     const count = await sql`
-      SELECT COUNT(*) FROM smartplantapp.plants
+      SELECT COUNT(*) FROM public.plants
       WHERE plants.idcompany = ${idcompany}
     `;
 
@@ -65,7 +65,7 @@ export async function fetchById(id: string) {
   try {
     const data = await sql<Plant>`
       SELECT *
-        FROM smartplantapp.plants
+        FROM public.plants
         WHERE plants.id = ${id} `;
 
     const plant = data.rows.map((plant) => ({

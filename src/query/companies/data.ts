@@ -6,7 +6,7 @@ export async function fetchCompany() {
   try {
     const data = await sql<Company>`
       SELECT *
-      FROM smartplantapp.companies
+      FROM public.companies
       ORDER BY name ASC
     `;
     const companies = data.rows;
@@ -19,13 +19,13 @@ export async function fetchCompany() {
 
 export async function fetchFilteredCompany(
   query: string,
-  currentPage: number) {  
+  currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
     const data = await sql<Company>`
       SELECT *
-      FROM smartplantapp.companies
+      FROM public.companies
       WHERE
         clients.name ILIKE ${`%${query}%`} OR
         clients.cnpj ILIKE ${`%${query}%`} 
@@ -42,7 +42,7 @@ const ITEMS_PER_PAGE = 6;
 
 export async function fetchCompanyPages(query: string) {
   try {
-    const count = await sql`SELECT COUNT(*) FROM smartplantapp.companies`;
+    const count = await sql`SELECT COUNT(*) FROM public.companies`;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
@@ -56,7 +56,7 @@ export async function fetchCompanyById(id: string) {
   try {
     const data = await sql<Company>`
       SELECT *
-        FROM smartplantapp.companies
+        FROM public.companies
         WHERE companies.id = ${id} `;
 
     const companies = data.rows.map((company) => ({

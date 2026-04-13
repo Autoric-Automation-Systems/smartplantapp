@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     const device = await sql`
-      SELECT * FROM smartplantapp.devices
+      SELECT * FROM public.devices
       WHERE mac = ${mac}
       LIMIT 1
     `;
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     if (device.rowCount === 0) {
 
       await sql`
-        INSERT INTO smartplantapp.devices
+        INSERT INTO public.devices
         (mac, type, version, lastheartbeat, created_at)
         VALUES
         (${mac}, ${type}, ${version}, NOW(), NOW())
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     } else {
 
       await sql`
-        UPDATE smartplantapp.devices
+        UPDATE public.devices
         SET lastheartbeat = NOW(),
             version = ${version},
             type = ${type}

@@ -53,7 +53,7 @@ export async function createData(prevState: State, formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO smartplantapp.users ( name, lastname, email, password, role, idcompany, avatarurl )
+        INSERT INTO public.users ( name, lastname, email, password, role, idcompany, avatarurl )
         VALUES (${name}, ${lastname}, ${email}, ${hashedPassword}, ${role}, ${idcompany}, ${avatarurl})
         `;
   } catch (error) {
@@ -101,7 +101,7 @@ export async function updateData(
       //console.log('Senha Criptografada' + hashedPassword);
 
       await sql`
-        UPDATE smartplantapp.users
+        UPDATE public.users
         SET name = ${name}, lastname = ${validatedFields.data.lastname}, password = ${hashedPassword}, role = ${role}, avatarurl = ${avatarurl}
         WHERE id = ${id}
       `;
@@ -109,7 +109,7 @@ export async function updateData(
       //console.log(password);
 
       await sql`
-        UPDATE smartplantapp.users
+        UPDATE public.users
         SET name = ${name}, lastname = ${validatedFields.data.lastname}, role = ${role}, avatarurl = ${avatarurl}
         WHERE id = ${id}
       `;
@@ -129,7 +129,7 @@ export async function updateUserPassword(id: string, password: string) {
 
   try {
     await sql`
-    UPDATE smartplantapp.users 
+    UPDATE public.users 
     SET password = ${hashedPassword} 
     WHERE id = ${id}
   `;
@@ -141,7 +141,7 @@ export async function updateUserPassword(id: string, password: string) {
 export async function deleteData(id: string) {
   //throw new Error('Failed to Delete Invoice');
 
-  await sql`DELETE FROM smartplantapp.users WHERE id = ${id}`;
+  await sql`DELETE FROM public.users WHERE id = ${id}`;
   revalidatePath('/settings/users');
   redirect(
     '/users?title=Sucesso&message=A exclusão foi um sucesso!&type=success'

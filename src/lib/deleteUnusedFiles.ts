@@ -11,10 +11,10 @@ async function listAllBlobFiles() {
 export async function deleteUnusedFiles() {
     // 1. Busca todos os avatarurl usados
     const avatarResult = await sql`
-        SELECT avatarurl FROM smartplantapp.users
+        SELECT avatarurl FROM public.users
         `;
     const logoResult = await sql`
-        SELECT logourl FROM smartplantapp.companies
+        SELECT logourl FROM public.companies
         `;
     const usedAvatarUrls = avatarResult.rows.map(u => u.avatarurl).filter(Boolean);
     const usedLogoUrls = logoResult.rows.map(u => u.logourl).filter(Boolean);
@@ -42,7 +42,7 @@ export async function deleteUnusedFiles() {
 
     // 4. Exclui do storage
     for (const file of unusedFiles) {
-        await del(file.url );
+        await del(file.url);
     }
     console.log("Deleted unused files:", unusedFiles.length);
 

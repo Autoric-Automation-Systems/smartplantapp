@@ -121,7 +121,7 @@ export const authOptions: NextAuthConfig = {
         if (!existingUser) {
           const nameCompany = "New Company"
           const result = await sql<Company>`
-            INSERT INTO smartplantapp.companies (name)
+            INSERT INTO public.companies (name)
             VALUES (${nameCompany})
             RETURNING id
           `;
@@ -129,7 +129,7 @@ export const authOptions: NextAuthConfig = {
           const idcompany = result.rows[0].id;
 
           await sql`
-            INSERT INTO smartplantapp.users ( name, email, role, idcompany, avatarurl )
+            INSERT INTO public.users ( name, email, role, idcompany, avatarurl )
             VALUES (${user.name}, ${user.email}, 'admin', ${idcompany}, ${user.image})
           `;
 

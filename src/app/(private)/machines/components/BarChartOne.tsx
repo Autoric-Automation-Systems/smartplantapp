@@ -2,7 +2,6 @@
 import React from "react";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { Count } from "@/query/counts/definitions";
 import { formatDateToLocal } from "@/lib/formatTime";
 import { Event } from "@/query/events/definitions";
 

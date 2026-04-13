@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { sql } from '@vercel/postgres';
-import { fetchCounts } from '../counts/data';
 import { fetchEvents } from '../events/data';
 
 const FormSchema = z.object({
@@ -48,7 +47,7 @@ export async function updateData(
   try {
 
     await sql`
-        UPDATE smartplantapp.devices
+        UPDATE public.devices
         SET idmachine = ${idmachine}, name = ${name}
         WHERE id = ${id}  
       `;
@@ -63,19 +62,14 @@ export async function updateData(
 }
 
 export async function deleteDevice(id: string) {
-  let counts = await fetchCounts(id);
   let events = await fetchEvents(id);
-  for (const count of counts) {
-    await sql`DELETE FROM smartplantapp.counts WHERE id = ${count.id}`;
-  }
   for (const event of events) {
-    await sql`DELETE FROM smartplantapp.events WHERE id = ${event.id}`;
+    await sql`DELETE FROM public.events WHERE id = ${event.id}`;
   }
 
-  counts = await fetchCounts(id);
   events = await fetchEvents(id);
-  if (counts.length === 0 && events.length === 0) {
-    await sql`DELETE FROM smartplantapp.devices WHERE id = ${id}`;
+  if (events.length === 0) {
+    await sql`DELETE FROM public.devices WHERE id = ${id}`;
   }
 
   revalidatePath('/plants');

@@ -4,11 +4,6 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { sql } from '@vercel/postgres';
 import { fetchDataAreas } from '../areas/data';
-import { deleteArea } from '../areas/actions';
-import { fetchDataMachines } from '../machines/data';
-import { deleteMachine } from '../machines/actions';
-import { fetchCounts } from '../counts/data';
-import { fetchEvents } from '../events/data';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -42,7 +37,7 @@ export async function createData(prevState: State, formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO smartplantapp.plants ( name, idcompany )
+        INSERT INTO public.plants ( name, idcompany )
         VALUES (${name}, ${idcompany})
         `;
   } catch (error) {
@@ -81,7 +76,7 @@ export async function updateData(
   try {
 
     await sql`
-        UPDATE smartplantapp.plants
+        UPDATE public.plants
         SET name = ${name}
         WHERE id = ${id}
       `;
@@ -97,11 +92,11 @@ export async function updateData(
 export async function deleteData(id: string) {
   const areasNumber = (await fetchDataAreas(id)).length;
   if (areasNumber === 0) {
-    await sql`DELETE FROM smartplantapp.plants WHERE id = ${id}`;
-  revalidatePath('/plants');
-  redirect(
-    '/plants?title=Sucesso&message=A exclusão foi um sucesso!&type=success'
-  );
+    await sql`DELETE FROM public.plants WHERE id = ${id}`;
+    revalidatePath('/plants');
+    redirect(
+      '/plants?title=Sucesso&message=A exclusão foi um sucesso!&type=success'
+    );
   } else {
     revalidatePath('/plants');
     redirect(

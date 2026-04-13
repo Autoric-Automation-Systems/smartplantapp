@@ -38,7 +38,7 @@ export async function createData(prevState: State, formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO smartplantapp.areas ( name, idplant )
+        INSERT INTO public.areas ( name, idplant )
         VALUES (${name}, ${idplant})
         `;
   } catch (error) {
@@ -77,7 +77,7 @@ export async function updateData(
   try {
 
     await sql`
-        UPDATE smartplantapp.areas
+        UPDATE public.areas
         SET name = ${name}
         WHERE id = ${id}
       `;
@@ -94,7 +94,7 @@ export async function deleteArea(id: string) {
   const machinesNumber = (await fetchDataMachines(id)).length;
 
   if (machinesNumber === 0) {
-    await sql`DELETE FROM smartplantapp.areas WHERE id = ${id}`;
+    await sql`DELETE FROM public.areas WHERE id = ${id}`;
     revalidatePath('/plants');
     redirect(
       '/plants?title=Sucesso&message=A exclusão foi um sucesso!&type=success'

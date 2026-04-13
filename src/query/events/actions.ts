@@ -39,7 +39,7 @@ export async function createData(prevState: State, formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO smartplantapp.events ( content, comments, idmachine )
+        INSERT INTO public.events ( content, comments, idmachine )
         VALUES (${content}, ${comments} , ${idmachine})
         `;
   } catch (error) {
@@ -56,7 +56,7 @@ export async function createData(prevState: State, formData: FormData) {
 export async function deleteEvent(id: string) {
   //throw new Error('Failed to Delete Invoice');
 
-  await sql`DELETE FROM smartplantapp.events WHERE id = ${id}`;
+  await sql`DELETE FROM public.events WHERE id = ${id}`;
   revalidatePath('/events');
   redirect('/events?success=A exclusão foi realizada!');
 

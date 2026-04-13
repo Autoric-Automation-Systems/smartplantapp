@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     const device = await sql`
       SELECT id, idmachine
-      FROM smartplantapp.devices
+      FROM public.devices
       WHERE mac = ${mac}
       LIMIT 1
     `;
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       const eventDate = new Date(ev.ts * 1000); // epoch → date UTC
 
       await sql`
-        INSERT INTO smartplantapp.events
+        INSERT INTO public.events
         (device_id, machine_id, event, value, created_at)
         VALUES
         (${deviceId}, ${machineId}, ${ev.name}, ${Number(ev.value)}, ${eventDate.toISOString()})

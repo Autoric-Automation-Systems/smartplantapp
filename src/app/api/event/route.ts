@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     }
 
     await sql`
-      INSERT INTO smartplantapp.events (content, comments, idmachine)
+      INSERT INTO public.events (content, comments, idmachine)
       VALUES (${content}, ${comments}, ${idmachine})
     `;
 

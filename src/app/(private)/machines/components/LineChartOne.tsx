@@ -2,7 +2,6 @@
 import React from "react";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { Count } from "@/query/counts/definitions";
 import { formatDateToLocal } from "@/lib/formatTime";
 import { Event } from "@/query/events/definitions";
 // Dynamically import the ReactApexChart component
@@ -10,7 +9,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function LineChartOne({events}: {events: Event[]}) {
+export default function LineChartOne({ events }: { events: Event[] }) {
   const title = events[0]?.event;
 
   const options: ApexOptions = {

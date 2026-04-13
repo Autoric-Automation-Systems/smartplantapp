@@ -2,11 +2,11 @@ import { sql } from '@vercel/postgres';
 import { Device } from '@/query/devices/definitions';
 import { CurrentCompanyId } from '@/lib/utils';
 
-export async function fetchDataDevices(idmachine : string) {
+export async function fetchDataDevices(idmachine: string) {
   try {
     const data = await sql<Device>`
       SELECT * 
-      FROM smartplantapp.devices
+      FROM public.devices
       WHERE devices.idmachine = ${idmachine}
       ORDER BY created_at ASC
     `;
@@ -21,7 +21,7 @@ export async function fetchDataDevicesNoMachine() {
   try {
     const data = await sql<Device>`
       SELECT * 
-      FROM smartplantapp.devices
+      FROM public.devices
       WHERE devices.idmachine IS NULL
       ORDER BY created_at ASC
     `;
@@ -37,7 +37,7 @@ export async function fetchById(id: string) {
   try {
     const data = await sql<Device>`
       SELECT *
-        FROM smartplantapp.devices
+        FROM public.devices
         WHERE devices.id = ${id} `;
 
     const device = data.rows;
