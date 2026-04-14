@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
     LineChart,
     Line,
@@ -14,8 +15,26 @@ import { Event } from "@/query/events/definitions"
 import { formatDateTimeDb, formatDateToLocal, formatDateToTimeDb, formatTime, timeToDecimal } from "@/lib/formatTime"
 
 export default function TemperatureTrend({ events }: { events: Event[] }) {
+
+    const [selectedDate, setSelectedDate] = useState(new Date())
+    function changeDay(offset: number) {
+        const newDate = new Date(selectedDate)
+        newDate.setDate(selectedDate.getDate() + offset)
+        setSelectedDate(newDate)
+    }
+
+    function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+        const newDate = new Date(e.target.value)
+        setSelectedDate(newDate)
+    }
+    // 🔥 filtra por dia
+    const filtered = events.filter((e) => {
+        const d = new Date(e.created_at)
+        return d.toDateString() === selectedDate.toDateString()
+    })
+
     // ordena do mais antigo → mais recente
-    const data = [...events]
+    const data = [...filtered]
         .slice(0, 100)
         .reverse()
         .map((e) => {
@@ -44,6 +63,29 @@ export default function TemperatureTrend({ events }: { events: Event[] }) {
 
     return (
         <div className="flex flex-col gap-4">
+            {/* 🔥 DATE CONTROL */}
+            <div className="flex items-center justify-between gap-2">
+                <button
+                    onClick={() => changeDay(-1)}
+                    className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700"
+                >
+                    ←
+                </button>
+
+                <input
+                    type="date"
+                    value={selectedDate.toISOString().split("T")[0]}
+                    onChange={handleInput}
+                    className="px-2 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm"
+                />
+
+                <button
+                    onClick={() => changeDay(1)}
+                    className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700"
+                >
+                    →
+                </button>
+            </div>
 
             {/* 📊 STATS */}
             <div className="grid grid-cols-4 gap-2 text-center">

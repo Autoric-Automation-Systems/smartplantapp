@@ -125,7 +125,6 @@ export const Hero = () => {
                       alt={`Logo ${module.name}`}
                       fill
                       className="object-contain p-1"
-                      sizes="96px"
                     />
                   </div>
                 </div>
