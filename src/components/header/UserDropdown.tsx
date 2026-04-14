@@ -32,8 +32,6 @@ export default function UserDropdown() {
 
   if (status === "loading") return null;
 
-  //console.log("Current User in Dropdown:", user);
-
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
     setIsOpen((prev) => !prev);
@@ -52,7 +50,7 @@ export default function UserDropdown() {
           <Image
             width={44}
             height={44}
-            src={user?.avatarurl || "/images/logo/logo-icon.png"}
+            src={user?.avatarurl || "/images/logo/logoicon.png"}
             alt="User"
             unoptimized
           />
@@ -90,6 +88,9 @@ export default function UserDropdown() {
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
             {user?.email}
+          </span>
+          <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+            {user?.role === "admin" ? "Administrator" : user?.role === "dev" ? "Developer" : "User"}
           </span>
         </div>
 

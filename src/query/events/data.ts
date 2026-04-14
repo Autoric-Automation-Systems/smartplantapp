@@ -38,8 +38,9 @@ export async function fetchEventsDevice(id: string) {
     FROM public.events
     WHERE device_id = ${id}
     ORDER BY created_at DESC
+    LIMIT 10000
   `;
-
+    //console.log(data.rows.length);
     return data.rows;
 
   } catch (err) {

@@ -25,6 +25,9 @@ export default function CardEvents({
   const [openFlow, setOpenFlow] = useState(false);
 
   const value = Number(events[0]?.value ?? 0);
+  //console.log('Events for type:  ', events.length);
+  //console.log('Type: ', type);
+
 
   switch (type) {
     case "temperature":
@@ -45,7 +48,7 @@ export default function CardEvents({
               Temperature Trend
             </h2>
 
-            <TemperatureTrend events={events.slice(0, 100)} />
+            <TemperatureTrend events={events} />
           </Modal>
         </>
       )

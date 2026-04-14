@@ -87,7 +87,7 @@ export async function fetchByEmail(email: string): Promise<User> {
       SELECT * FROM public.users WHERE users.email = ${email} LIMIT 1
     `;
     const user = data.rows[0];
-
+    //console.log('User by email: ' + user.lastname);
     return user;
   } catch (error) {
     console.log(error);

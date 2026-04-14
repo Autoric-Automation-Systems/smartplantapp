@@ -24,7 +24,7 @@ export default function UserInfoCard({ user }: { user: User }) {
             <Image
               width={48}
               height={48}
-              src={user.avatarurl ? user.avatarurl : "/images/logo/logo-icon.png"}
+              src={user.avatarurl ? user.avatarurl : "/images/logo/logoicon.png"}
               alt="user"
             />
           </div>

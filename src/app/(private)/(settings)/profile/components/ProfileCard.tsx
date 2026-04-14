@@ -24,60 +24,79 @@ export default function ProfileCard({ user }: { user: User }) {
             Personal Information
           </h4>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
-            <div className="w-50 h-50 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800 relative">
-              <Image
-                src={user?.avatarurl || "/images/logo/logo-icon.png"}
-                alt={`${user.name} ${user.lastname} - Smart Plant Profile`}
-                fill
-                className="object-cover"
-                sizes="200px"
-                unoptimized
-              />
-            </div>
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                First Name
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user.name}
-              </p>
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Last Name
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user.lastname}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            {/* Avatar Section - Centralizado e maior */}
+            <div className="lg:col-span-1 flex flex-col items-center">
+              <div className="relative w-40 h-40 overflow-hidden border-2 border-gray-300 dark:border-gray-700 rounded-full mb-4">
+                <Image
+                  src={user?.avatarurl || "/images/logo/logoicon.png"}
+                  alt={`${user.name} ${user.lastname} - Smart Plant Profile`}
+                  fill
+                  className="object-cover"
+                  sizes="160px"
+                  unoptimized
+                  priority
+                />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white text-center">
+                {user.name} {user.lastname}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {user.role === "admin" ? "Administrator" : user.role === "dev" ? "Developer" : "User"}
               </p>
             </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Email address
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user.email}
-              </p>
-            </div>
+            {/* Contact Information */}
+            <div className="lg:col-span-2 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                    First Name
+                  </p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                    {user.name}
+                  </p>
+                </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Phone
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user.phone}
-              </p>
-            </div>
+                <div>
+                  <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                    Last Name
+                  </p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                    {user.lastname}
+                  </p>
+                </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Bio
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user.bio}
-              </p>
+                <div>
+                  <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                    Email Address
+                  </p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-white/90 break-all">
+                    {user.email}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                    Phone
+                  </p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                    {user.phone || "Not provided"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Bio Section */}
+              <div>
+                <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                  Bio
+                </p>
+                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    {user.bio || "No bio provided yet. Tell us a bit about yourself!"}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

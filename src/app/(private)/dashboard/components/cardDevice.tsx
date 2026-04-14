@@ -12,6 +12,7 @@ export default async function CardDevice({ device }: { device: Device }) {
     const online = lastHeartbeat + timeRange > currentTime;
 
     const events = await fetchEventsDevice(device?.id || "");
+    //console.log('Events for device ', events.length);
 
     const batteryEvents: typeof events = [];
     const eventsWithoutBattery: typeof events = [];
@@ -33,6 +34,7 @@ export default async function CardDevice({ device }: { device: Device }) {
     const wifi = Number(wifiEvents[0]?.value ?? 0);
 
     const eventsTypes = [...new Set(eventsWithoutBattery.map((e) => e.event))].sort();
+    //console.log('Unique event types: ', eventsTypes);
 
     return (
         <div

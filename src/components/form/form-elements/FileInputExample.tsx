@@ -63,7 +63,7 @@ export default function FileInputExample() {
               <Image
                 width={500}
                 height={500}
-                src={avatarUrl ? avatarUrl : "/images/logo/logo-icon.png"}
+                src={avatarUrl ? avatarUrl : "/images/logo/logoicon.png"}
                 alt="Preview"
                 className="w-20 h-20 object-cover rounded-md"
               />

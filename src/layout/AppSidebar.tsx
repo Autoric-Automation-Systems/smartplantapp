@@ -18,6 +18,7 @@ import {
   UserCircleIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
+import { useSession } from "next-auth/react";
 
 type NavItem = {
   name: string;
@@ -108,6 +109,9 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { data: session, status } = useSession();
+  const [user, setUser] = useState<any>(null);
+
   const pathname = usePathname();
 
   const renderMenuItems = (
@@ -231,6 +235,7 @@ const AppSidebar: React.FC = () => {
     type: "main" | "others";
     index: number;
   } | null>(null);
+
   const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
     {}
   );
@@ -293,6 +298,26 @@ const AppSidebar: React.FC = () => {
     });
   };
 
+  // Load current user data when session is authenticated
+  useEffect(() => {
+    console.log("Session status: " + status);
+    if (status !== "authenticated") return;
+
+    async function loadUser() {
+      const res = await fetch("/api/user");
+      console.log("response status: " + res.status);
+      if (!res.ok) return;
+
+      const data = await res.json();
+
+      if (data) {
+        setUser(data);
+      }
+    }
+
+    loadUser();
+  }, [status]);
+
   return (
     <aside
       className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
@@ -335,8 +360,8 @@ const AppSidebar: React.FC = () => {
             <Image
               src='/images/logo/logoicon.png'
               alt="Logo"
-              width={32}
-              height={32}
+              width={62}
+              height={62}
               unoptimized
             />
           )}
@@ -361,21 +386,23 @@ const AppSidebar: React.FC = () => {
               {renderMenuItems(navItems, "main")}
             </div>
 
-            <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                  ? "lg:justify-center"
-                  : "justify-start"
-                  }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div>
+            {user && user.role === "dev" &&
+              <div className="">
+                <h2
+                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
+                    ? "lg:justify-center"
+                    : "justify-start"
+                    }`}
+                >
+                  {isExpanded || isHovered || isMobileOpen ? (
+                    "Others"
+                  ) : (
+                    <HorizontaLDots />
+                  )}
+                </h2>
+                {renderMenuItems(othersItems, "others")}
+              </div>
+            }
           </div>
         </nav>
         {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}

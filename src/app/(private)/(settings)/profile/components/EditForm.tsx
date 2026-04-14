@@ -92,7 +92,7 @@ export default function EditForm({ closeModal, user }: { closeModal: () => void,
                                 <Image
                                     width={500}
                                     height={500}
-                                    src={user?.avatarurl ? user?.avatarurl : "/images/logo/logo-icon.png"}
+                                    src={user?.avatarurl ? user?.avatarurl : "/images/logo/logoicon.png"}
                                     alt="Preview"
                                     className="w-20 h-20 object-cover rounded-full mb-4"
                                 />

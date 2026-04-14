@@ -4,7 +4,6 @@ import React from "react";
 import { Container } from "./Container";
 import logo from "../../../../public/images/logo/logo.png";
 import logodev from "../../../../public/images/logo/logo-dev.png";
-import logoicondev from "../../../../public/images/logo/logo-icon-dev.png";
 import infoAPP from "@/lib/infoapp";
 
 export function Footer() {
