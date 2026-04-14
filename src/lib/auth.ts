@@ -133,6 +133,12 @@ export const authOptions: NextAuthConfig = {
             VALUES (${user.name}, ${user.email}, 'admin', ${idcompany}, ${user.image})
           `;
 
+        } else {
+          await sql`
+            UPDATE public.users
+            SET avatarurl = ${user.image}
+            WHERE email = ${user.email}
+          `
         }
 
       }

@@ -4,7 +4,7 @@
 
 ![Smart Plant Logo](public/images/logo/logo.png)
 
-**Sistema Integrado de Telemetria Industrial**  
+**Sistema Integrado de Telemetria Industrial**(https://smartplant.app.br)  
 *Monitoramento inteligente para plantas residenciais, comerciais e industriais*
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.0.10-black)](https://nextjs.org/)
@@ -229,6 +229,6 @@ Para suporte, entre em contato:
   
 **Desenvolvido com ❤️ pela equipe Autoric Automação e Sistemas**
 
-*© 2024 Smart Plant App. Todos os direitos reservados.*
+*© 2026 Autoric Automação e Sistemas - Smart Plant App. Todos os direitos reservados.*
 
 </div>
