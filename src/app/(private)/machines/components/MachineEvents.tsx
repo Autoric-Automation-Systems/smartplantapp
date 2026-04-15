@@ -49,7 +49,7 @@ export default function MachineEvents({ idmachine }: { idmachine: string }) {
 
     const eventsTypes: string[] = events.reduce(
         (acc: string[], event) =>
-            acc.includes(event.event) ? acc : [...acc, event.event],
+            acc.includes(event.name) ? acc : [...acc, event.name],
         []
     );
     return (
@@ -57,7 +57,7 @@ export default function MachineEvents({ idmachine }: { idmachine: string }) {
 
             {eventsTypes.map((type) => {
 
-                const eventsOfType = events.filter((event) => event.event === type);
+                const eventsOfType = events.filter((event) => event.name === type);
 
                 if (!eventsOfType.length) return null;
 

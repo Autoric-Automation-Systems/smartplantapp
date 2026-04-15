@@ -17,6 +17,27 @@ export async function fetchDataDevices(idmachine: string) {
     throw new Error('Failed to fetch all devices.');
   }
 }
+
+export async function fetchDataAllDevices() {
+  try {
+    const data = await sql<Device>`
+      SELECT d.* 
+      FROM public.devices d
+      JOIN public.machines m ON d.idmachine = m.id
+      JOIN public.areas a ON m.idarea = a.id
+      JOIN public.plants p ON a.idplant = p.id
+      WHERE p.idcompany = ${await CurrentCompanyId()}
+      ORDER BY created_at ASC 
+    `;
+    const devices = data.rows;
+    //console.log(devices);
+    return devices;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all devices.');
+  }
+}
+
 export async function fetchDataDevicesNoMachine() {
   try {
     const data = await sql<Device>`
@@ -40,9 +61,9 @@ export async function fetchById(id: string) {
         FROM public.devices
         WHERE devices.id = ${id} `;
 
-    const device = data.rows;
-
-    return device[0];
+    const device = data.rows[0];
+    //console.log('Fetched Device:', device);
+    return device;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch plant.');

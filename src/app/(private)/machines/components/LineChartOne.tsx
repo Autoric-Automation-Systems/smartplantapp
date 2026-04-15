@@ -10,7 +10,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function LineChartOne({ events }: { events: Event[] }) {
-  const title = events[0]?.event;
+  const title = events[0]?.name;
 
   const options: ApexOptions = {
     legend: {

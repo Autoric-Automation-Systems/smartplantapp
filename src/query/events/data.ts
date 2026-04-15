@@ -11,7 +11,7 @@ export async function fetchEvents(idmachine: string) {
         SELECT 
           e.*,
           ROW_NUMBER() OVER (
-            PARTITION BY e.event 
+            PARTITION BY e.name 
             ORDER BY e.created_at DESC
           ) as rn
         FROM public.events e

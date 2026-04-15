@@ -63,7 +63,7 @@ export default function EditForm({ closeModal, user }: { closeModal: () => void,
                             </div>
                             <div className="col-span-2 lg:col-span-1">
                                 <Label>Password</Label>
-                                <Input id="password" name="password" type="password" defaultValue={user.password} />
+                                <Input id="password" name="password" type="password" />
                             </div>
 
                             <div className="col-span-2 lg:col-span-1">

@@ -11,7 +11,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function BarChartOne({ events }: { events: Event[] }) {
-  const title = events[0]?.event;
+  const title = events[0]?.name;
   const options: ApexOptions = {
     colors: ["#465fff"],
     chart: {

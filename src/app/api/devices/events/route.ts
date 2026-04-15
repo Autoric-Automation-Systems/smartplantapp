@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
       await sql`
         INSERT INTO public.events
-        (device_id, machine_id, event, value, created_at)
+        (device_id, machine_id, name, value, created_at)
         VALUES
         (${deviceId}, ${machineId}, ${ev.name}, ${Number(ev.value)}, ${eventDate.toISOString()})
       `;

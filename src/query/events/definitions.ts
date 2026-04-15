@@ -3,6 +3,6 @@ export type Event = {
   created_at: string;
   machine_id: string;
   device_id: string;
-  event: string;
+  name: string;
   value: string | number;
 }

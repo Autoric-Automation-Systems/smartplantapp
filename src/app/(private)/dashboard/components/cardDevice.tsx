@@ -19,9 +19,9 @@ export default async function CardDevice({ device }: { device: Device }) {
     const wifiEvents: typeof events = [];
 
     for (const event of events) {
-        if (event.event === "battery") {
+        if (event.name === "battery") {
             if (batteryEvents.length < 2) batteryEvents.push(event);
-        } else if (event.event === "wifi") {
+        } else if (event.name === "wifi") {
             if (wifiEvents.length < 1) wifiEvents.push(event);
         } else {
             eventsWithoutBattery.push(event);
@@ -33,7 +33,7 @@ export default async function CardDevice({ device }: { device: Device }) {
     const charging = currentBattery > previousBattery;
     const wifi = Number(wifiEvents[0]?.value ?? 0);
 
-    const eventsTypes = [...new Set(eventsWithoutBattery.map((e) => e.event))].sort();
+    const eventsTypes = [...new Set(eventsWithoutBattery.map((e) => e.name))].sort();
     //console.log('Unique event types: ', eventsTypes);
 
     return (
@@ -83,7 +83,7 @@ export default async function CardDevice({ device }: { device: Device }) {
             {/* EVENTS */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
                 {eventsTypes.map((type) => {
-                    const eventsOfType = events.filter((event) => event.event === type);
+                    const eventsOfType = events.filter((event) => event.name === type);
 
                     return (
                         <CardEvents
