@@ -5,14 +5,16 @@ import { useState } from "react"
 type BatteryIndicatorProps = {
   value: number
   charging?: boolean
+  min?: number
+  max?: number
 }
 
-export function BatteryIndicator({ value, charging }: BatteryIndicatorProps) {
+export function BatteryIndicator({ value, charging, min = 20, max = 80 }: BatteryIndicatorProps) {
   const [show, setShow] = useState(false)
 
   const getColor = () => {
-    if (value > 50) return "bg-green-500"
-    if (value > 20) return "bg-yellow-500"
+    if (value > max) return "bg-green-500"
+    if (value > min) return "bg-yellow-500"
     return "bg-red-500"
   }
 

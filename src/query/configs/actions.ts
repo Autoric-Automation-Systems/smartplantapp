@@ -121,7 +121,7 @@ export async function createConfig(
       break;
     case 'wifi':
       min = -80;
-      max = 0;
+      max = -50;
       break;
     case 'battery':
       min = 20;

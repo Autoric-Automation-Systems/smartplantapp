@@ -4,17 +4,19 @@ import { useState } from "react"
 
 type WifiIndicatorProps = {
   rssi: number // ex: -65
+  min?: number // ex: -80
+  max?: number // ex: -50
 }
 
-export function WifiIndicator({ rssi }: WifiIndicatorProps) {
+export function WifiIndicator({ rssi, min = -80, max = -50 }: WifiIndicatorProps) {
   const [show, setShow] = useState(false)
 
   // Converte RSSI para nível (0–4)
   const getLevel = () => {
-    if (rssi >= -50) return 4
+    if (rssi >= max) return 4
     if (rssi >= -60) return 3
     if (rssi >= -70) return 2
-    if (rssi >= -80) return 1
+    if (rssi >= min) return 1
     return 0
   }
 

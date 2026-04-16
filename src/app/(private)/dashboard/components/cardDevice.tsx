@@ -14,7 +14,8 @@ export default async function CardDevice({ device }: { device: Device; }) {
 
     const events = await fetchEventsDevice(device?.id || "");
     const configs = await fetchDataConfigs(device?.id);
-
+    const configBattery = configs.find((config) => config.event_name === "battery");
+    const configWifi = configs.find((config) => config.event_name === "wifi");
     //console.log('Events for device ', events.length);
 
     const batteryEvents: typeof events = [];
@@ -73,8 +74,8 @@ export default async function CardDevice({ device }: { device: Device; }) {
 
                     {online && (
                         <>
-                            <WifiIndicator rssi={wifi} />
-                            <BatteryIndicator value={currentBattery} charging={charging} />
+                            <WifiIndicator rssi={wifi} min={configWifi?.min} max={configWifi?.max} />
+                            <BatteryIndicator value={currentBattery} charging={charging} min={configBattery?.min} max={configBattery?.max} />
                         </>
                     )
                     }
