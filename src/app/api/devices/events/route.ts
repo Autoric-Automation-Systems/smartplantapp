@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       `;
 
       // Check if a config exists for this device and event name, if not create one
-      const configs = (await fetchDataConfigs(ev.device_id)).filter(
+      const configs = (await fetchDataConfigs(deviceId)).filter(
         (config) => config.event_name === ev.name
       );
 

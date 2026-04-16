@@ -2,29 +2,33 @@ import { WiHumidity } from "react-icons/wi"
 
 export default function HumidityCard({
   value,
+  min = 50,
+  max = 90,
 }: {
-  value: number
+  value: number,
+  min?: number,
+  max?: number,
 }) {
-  const isHigh = value > 70
-  const isLow = value < 30
+  const isHigh = value > max
+  const isLow = value < min
 
   const textColor = isHigh
     ? "text-blue-600"
     : isLow
-    ? "text-yellow-500"
-    : "text-cyan-500"
+      ? "text-yellow-500"
+      : "text-cyan-500"
 
   const bgColor = isHigh
     ? "from-blue-100 to-indigo-200 dark:from-blue-900 dark:to-indigo-900"
     : isLow
-    ? "from-yellow-100 to-orange-200 dark:from-yellow-900 dark:to-orange-900"
-    : "from-cyan-100 to-blue-200 dark:from-cyan-900 dark:to-blue-900"
+      ? "from-yellow-100 to-orange-200 dark:from-yellow-900 dark:to-orange-900"
+      : "from-cyan-100 to-blue-200 dark:from-cyan-900 dark:to-blue-900"
 
   const percent = Math.min(100, Math.max(0, value))
 
   return (
     <div className={`p-4 rounded-xl bg-gradient-to-br ${bgColor}`}>
-      
+
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <span className="text-xs text-gray-600 dark:text-gray-300 uppercase">

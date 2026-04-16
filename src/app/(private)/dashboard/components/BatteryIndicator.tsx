@@ -11,8 +11,8 @@ export function BatteryIndicator({ value, charging }: BatteryIndicatorProps) {
   const [show, setShow] = useState(false)
 
   const getColor = () => {
-    if (value > 60) return "bg-green-500"
-    if (value > 30) return "bg-yellow-500"
+    if (value > 50) return "bg-green-500"
+    if (value > 20) return "bg-yellow-500"
     return "bg-red-500"
   }
 
@@ -24,9 +24,8 @@ export function BatteryIndicator({ value, charging }: BatteryIndicatorProps) {
       {/* bateria */}
       <div className="relative w-14 h-6 border-2 rounded-md flex items-center px-[2px] border-gray-400 dark:border-gray-600">
         <div
-          className={`h-4 rounded-sm transition-all duration-500 ${getColor()} ${
-            charging ? "animate-pulse" : ""
-          }`}
+          className={`h-4 rounded-sm transition-all duration-500 ${getColor()} ${charging ? "animate-pulse" : ""
+            }`}
           style={{ width: `${value}%` }}
         />
 

@@ -4,14 +4,17 @@ import CardEvents from "./cardEvents";
 import { StatusBadge } from "./StatusBadge";
 import { BatteryIndicator } from "./BatteryIndicator";
 import { WifiIndicator } from "./WifiIndicator";
+import { fetchDataConfigs } from "@/query/configs/data";
 
-export default async function CardDevice({ device }: { device: Device }) {
+export default async function CardDevice({ device }: { device: Device; }) {
     const timeRange = Number(device.heartbeatInterval) + 60000;
     const currentTime = Number(new Date());
     const lastHeartbeat = Number(device.lastheartbeat);
     const online = lastHeartbeat + timeRange > currentTime;
 
     const events = await fetchEventsDevice(device?.id || "");
+    const configs = await fetchDataConfigs(device?.id);
+
     //console.log('Events for device ', events.length);
 
     const batteryEvents: typeof events = [];
@@ -84,12 +87,13 @@ export default async function CardDevice({ device }: { device: Device }) {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
                 {eventsTypes.map((type) => {
                     const eventsOfType = events.filter((event) => event.name === type);
-
+                    const config = configs.find((config) => config.event_name === type);
                     return (
                         <CardEvents
                             key={type}
                             events={eventsOfType}
                             type={type}
+                            config={config}
                         />
                     );
                 })}

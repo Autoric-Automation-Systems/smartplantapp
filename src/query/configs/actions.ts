@@ -119,6 +119,14 @@ export async function createConfig(
       min = defautCount.min;
       max = defautCount.max;
       break;
+    case 'wifi':
+      min = -80;
+      max = 0;
+      break;
+    case 'battery':
+      min = 20;
+      max = 80;
+      break;
     default:
       min = 0;
       max = 100

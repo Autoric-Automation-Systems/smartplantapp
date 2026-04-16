@@ -11,13 +11,16 @@ import { useState } from "react";
 import { Modal } from "../Modal";
 import FlowCard from "./events/FlowCard";
 import FlowTrend from "./trends/flowTrend";
+import { Config } from "@/query/configs/definitions";
 
 export default function CardEvents({
   events,
   type,
+  config,
 }: {
   events: Event[];
   type: string;
+  config: Config | undefined;
 }) {
   const [openTemperature, setOpenTemperature] = useState(false);
   const [openHumidity, setOpenHumidity] = useState(false);
@@ -27,13 +30,11 @@ export default function CardEvents({
   const value = Number(events[0]?.value ?? 0);
   //console.log('Events for type:  ', events.length);
   //console.log('Type: ', type);
-
+  const max = config?.max ? Number(config.max) : 100;
+  const min = config?.min ? Number(config.min) : 0;
 
   switch (type) {
     case "temperature":
-      const max = 30;
-      const min = 18;
-
       return (
         <>
           {/* CARD */}
@@ -54,7 +55,6 @@ export default function CardEvents({
       )
 
     case "humidity":
-
       return (
         <>
           <div onClick={() => setOpenHumidity(true)} className="cursor-pointer">
@@ -89,7 +89,7 @@ export default function CardEvents({
       return (
         <>
           <div onClick={() => setOpenFlow(true)} className="cursor-pointer">
-            <FlowCard value={flowMonth} />
+            <FlowCard value={flowMonth} max={max} />
           </div>
           {/* MODAL */}
           <Modal open={openFlow} onClose={() => setOpenFlow(false)}>
