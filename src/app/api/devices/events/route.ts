@@ -50,8 +50,9 @@ export async function POST(request: Request) {
       const configs = (await fetchDataConfigs(ev.device_id)).filter(
         (config) => config.event_name === ev.name
       );
+
       if (configs.length === 0) {
-        await createConfig(ev.device_id, ev.name);
+        await createConfig(deviceId, ev.name);
       }
 
     }
