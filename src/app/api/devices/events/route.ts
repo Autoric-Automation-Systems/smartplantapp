@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
+import { fetchDataConfigs } from "@/query/configs/data";
+import { createConfig } from "@/query/configs/actions";
 
 export async function POST(request: Request) {
   console.log("Chegou Eventos");
@@ -43,6 +45,15 @@ export async function POST(request: Request) {
         VALUES
         (${deviceId}, ${machineId}, ${ev.name}, ${Number(ev.value)}, ${eventDate.toISOString()})
       `;
+
+      // Check if a config exists for this device and event name, if not create one
+      const configs = (await fetchDataConfigs(ev.device_id)).filter(
+        (config) => config.event_name === ev.name
+      );
+      if (configs.length === 0) {
+        await createConfig(ev.device_id, ev.name);
+      }
+
     }
 
     return NextResponse.json({ status: "ok" });

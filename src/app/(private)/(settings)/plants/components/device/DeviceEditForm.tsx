@@ -29,14 +29,11 @@ export default function DeviceEditForm({
         <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
             <div className="px-2 pr-14">
                 <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-                    Edit Information
+                    Edit Device: {device.name}
                 </h4>
-                <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-                    Update details...
-                </p>
             </div>
             <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
+                <div className="custom-scrollbar h-auto overflow-y-auto px-2 pb-1">
                     <input type="hidden" name="idmachine" value={device.idmachine ?? ""} />
                     <input type="hidden" name="id" value={device.id} />
                     <div className="mt-7">
@@ -65,7 +62,7 @@ export default function DeviceEditForm({
                         type={"submit"}
                         disabled={isPending}
                     >
-                        Save New
+                        Save
                     </Button>
                 </div>
             </form>

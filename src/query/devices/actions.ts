@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { sql } from '@vercel/postgres';
 import { fetchEvents } from '../events/data';
+import { createConfig } from '../configs/actions';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -55,6 +56,8 @@ export async function updateData(
     console.error('Database error:', error);
     return { message: 'Database Error: Failed to Update Device.' };
   }
+
+
   revalidatePath('/plants');
   redirect(
     '/plants?title=Sucesso&message=A atualização foi um sucesso!&type=success'

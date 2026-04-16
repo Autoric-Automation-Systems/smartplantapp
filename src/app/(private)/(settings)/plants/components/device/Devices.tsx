@@ -5,15 +5,20 @@ import ComponentCard from "@/components/common/ComponentCard";
 import Machines from "../machine/Machines";
 import MachineAdd from "../machine/MachineAdd";
 import { Machine } from "@/query/machines/definitions";
+import { fetchDataConfigs } from "@/query/configs/data";
 
 export default async function Devices({ machine }: { machine: Machine }) {
   const devices = await fetchDataDevices(machine.id);
   return (
-    devices.map((device) => (
-      <div key={device.id}>
-        <div className="mb-4 flex flex-row items-center gap-4">
-          <DeviceCard key={device.id} device={device} />
+    devices.map(async (device) => {
+      const configs = await fetchDataConfigs(device.id);
+      return (
+        <div key={device.id}>
+          <div className="mb-4 flex flex-row items-center gap-4">
+            <DeviceCard key={device.id} device={device} configs={configs} />
+          </div>
         </div>
-      </div>
-    )));
+      );
+    })
+  );
 }        

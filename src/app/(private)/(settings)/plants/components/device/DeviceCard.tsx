@@ -8,9 +8,13 @@ import { PencilIcon } from "@/icons";
 import DeviceDelete from "./DeviceDelete";
 import { formatDateTimeDb, formatDateToLocal, formatDateToTimeDb, formatTime, FullDateToDateTime } from "@/lib/formatTime";
 import { format } from "path";
+import { Config } from "@/query/configs/definitions";
+import ConfigEditForm from "./ConfigEditForm";
+import { config } from "next/dist/build/templates/pages";
 
-export default function DeviceCard({ device }: { device: Device }) {
+export default function DeviceCard({ device, configs }: { device: Device; configs: Config[] }) {
   const { isOpen, openModal, closeModal } = useModal();
+
   return (
     <div className="p-4 border border-gray-200 rounded-2xl dark:border-gray-800 mb-4">
       <div className="flex items-center gap-6 justify-between">
@@ -37,6 +41,12 @@ export default function DeviceCard({ device }: { device: Device }) {
       </div>
       <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
         <EditForm closeModal={closeModal} device={device} />
+        <h4 className="m-8 mt-4 text-center text-2xl font-semibold text-gray-800 dark:text-white/90">
+          Configurations
+        </h4>
+        {configs.map((config) => (
+          <ConfigEditForm key={config.id} closeModal={closeModal} config={config} />
+        ))}
       </Modal>
     </div>
   );

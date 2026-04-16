@@ -11,6 +11,7 @@ export async function fetchDataConfigs(device_id: string) {
       ORDER BY created_at ASC
     `;
     const configs = data.rows;
+    //console.log('Fetched configs:', configs);
     return configs;
   } catch (err) {
     console.error('Database Error:', err);
