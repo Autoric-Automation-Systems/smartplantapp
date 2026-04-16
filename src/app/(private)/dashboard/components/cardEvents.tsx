@@ -58,7 +58,7 @@ export default function CardEvents({
       return (
         <>
           <div onClick={() => setOpenHumidity(true)} className="cursor-pointer">
-            <HumidityCard value={value} />
+            <HumidityCard value={value} min={min} max={max} />
           </div>
 
           {/* MODAL */}
