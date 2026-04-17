@@ -1,18 +1,18 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { Area } from '@/query/areas/definitions';
 import { CurrentCompanyId } from '@/lib/utils';
 
 export async function fetchDataAreas(idplant: string) {
   try {
-    const data = await sql<Area>`
+    const data = await sql`
       SELECT * 
       FROM public.areas
       WHERE areas.idplant = ${idplant}
       ORDER BY name ASC
     `;
-    const areas = data.rows;
+    const areas = data;
     //console.log("Areas: ", areas)
-    return areas;
+    return areas as Area[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all areas.');
@@ -27,7 +27,7 @@ export async function fetchFiltered(
   const idplant = await CurrentCompanyId();
 
   try {
-    const data = await sql<Area>`
+    const data = await sql`
       SELECT *
       FROM public.areas
       WHERE
@@ -36,8 +36,8 @@ export async function fetchFiltered(
         areas.id::TEXT ILIKE ${`%${query}%`})
       ORDER BY name ASC
     `;
-    const areas = data.rows;
-    return areas;
+    const areas = data;
+    return areas as Area[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to search areas.');
@@ -53,7 +53,7 @@ export async function fetchPages(query: string) {
       WHERE areas.idplant = ${idplant}
     `;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -63,14 +63,14 @@ export async function fetchPages(query: string) {
 
 export async function fetchById(id: string) {
   try {
-    const data = await sql<Area>`
+    const data = await sql`
       SELECT *
         FROM public.areas
         WHERE areas.id = ${id} `;
 
-    const area = data.rows;
+    const area = data[0];
 
-    return area[0];
+    return area as Area;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch area.');

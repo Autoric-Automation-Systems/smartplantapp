@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/db";
 
 export async function POST(request: Request) {
   console.log("Chegou Heartbeat");
@@ -17,12 +17,13 @@ export async function POST(request: Request) {
     }
 
     const device = await sql`
-      SELECT * FROM public.devices
+      SELECT id, heartbeatInterval 
+      FROM public.devices
       WHERE mac = ${mac}
       LIMIT 1
     `;
 
-    if (device.rowCount === 0) {
+    if (!device) {
 
       await sql`
         INSERT INTO public.devices
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       status: "ok",
-      heartbeatInterval: device.rows[0].heartbeatInterval || "60000" // Default to 60 seconds if not set
+      heartbeatInterval: device[0].heartbeatInterval || "60000" // Default to 60 seconds if not set
     });
 
   } catch (error) {

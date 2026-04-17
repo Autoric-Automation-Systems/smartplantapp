@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { deleteUnusedFiles } from '@/lib/deleteUnusedFiles';
 import { Company } from './definitions';
 
@@ -35,7 +35,7 @@ export async function createCompany(prevState: State, formData: FormData) {
   const { name } = validatedFields.data;
 
   try {
-    await sql<Company>`
+    await sql`
         INSERT INTO public.companies ( name )
         VALUES (${name})
         `;

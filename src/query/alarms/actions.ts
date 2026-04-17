@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { fetchEvents } from '../events/data';
 
 const FormSchema = z.object({

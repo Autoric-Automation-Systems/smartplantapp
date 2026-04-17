@@ -1,18 +1,18 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { User } from '@/query/users/definitions';
 import { CurrentCompanyId } from '@/lib/optimized-utils';
 
 export async function fetchData() {
   const idcompany = await CurrentCompanyId();
   try {
-    const data = await sql<User>`
-      SELECT id, name, lastname, email, role, idcompany, avatarurl
+    const data = await sql`
+      SELECT *
       FROM public.users
       WHERE users.idcompany = ${idcompany}
       ORDER BY name ASC
     `;
-    const users = data.rows;
-    return users;
+    const users = data;
+    return users as User[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all users.');
@@ -27,8 +27,8 @@ export async function fetchFiltered(
   const idcompany = await CurrentCompanyId();
 
   try {
-    const data = await sql<User>`
-      SELECT id, name, lastname, email, role, idcompany, avatarurl
+    const data = await sql`
+      SELECT *
       FROM public.users
       WHERE
         users.idcompany = ${idcompany} AND (
@@ -38,7 +38,7 @@ export async function fetchFiltered(
         users.id::TEXT ILIKE ${`%${query}%`})
       ORDER BY name ASC
     `;
-    const users = data.rows;
+    const users: User[] = data as User[];
     return users;
   } catch (err) {
     console.error('Database Error:', err);
@@ -55,7 +55,7 @@ export async function fetchPages(query: string) {
       WHERE users.idcompany = ${idcompany}
     `;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -65,12 +65,12 @@ export async function fetchPages(query: string) {
 
 export async function fetchById(id: string) {
   try {
-    const data = await sql<User>`
-      SELECT id, name, lastname, email, role, idcompany, avatarurl
+    const data = await sql`
+      SELECT *
         FROM public.users
         WHERE users.id = ${id} `;
 
-    const user = data.rows[0];
+    const user = data[0];
     return user;
   } catch (error) {
     console.error('Database Error:', error);
@@ -78,14 +78,14 @@ export async function fetchById(id: string) {
   }
 }
 
-export async function fetchByEmail(email: string): Promise<User> {
+export async function fetchByEmail(email: string) {
   try {
-    const data = await sql<User>`
-      SELECT id, name, lastname, email, role, idcompany, avatarurl
+    const data = await sql`
+      SELECT *
       FROM public.users WHERE users.email = ${email} LIMIT 1
     `;
-    const user = data.rows[0];
-    return user;
+    const user = data[0];
+    return user as User;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to check user by email.');

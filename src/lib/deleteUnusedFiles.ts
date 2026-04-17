@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/db";
 import { list, del } from '@vercel/blob';
 
 // Função para buscar todos os arquivos do storage (Vercel Blob API)
@@ -16,8 +16,8 @@ export async function deleteUnusedFiles() {
     const logoResult = await sql`
         SELECT logourl FROM public.companies
         `;
-    const usedAvatarUrls = avatarResult.rows.map(u => u.avatarurl).filter(Boolean);
-    const usedLogoUrls = logoResult.rows.map(u => u.logourl).filter(Boolean);
+    const usedAvatarUrls = avatarResult.map(u => u.avatarurl).filter(Boolean);
+    const usedLogoUrls = logoResult.map(u => u.logourl).filter(Boolean);
     const usedUrls = usedAvatarUrls;
     usedUrls.push(...usedLogoUrls);
 

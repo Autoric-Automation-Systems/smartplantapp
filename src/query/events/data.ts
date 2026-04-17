@@ -1,11 +1,11 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { Event } from '@/query/events/definitions';
 import { CurrentCompanyId } from '@/lib/utils';
 import { fetchDataDevices } from '../devices/data';
 
 export async function fetchEvents(idmachine: string) {
   try {
-    const data = await sql<Event>`
+    const data = await sql`
       SELECT *
       FROM (
         SELECT 
@@ -22,9 +22,8 @@ export async function fetchEvents(idmachine: string) {
       WHERE rn <= 100
       ORDER BY created_at DESC
     `;
-
-    return data.rows;
-
+    const events = data;
+    return events as Event[];
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to fetch events.");
@@ -33,7 +32,7 @@ export async function fetchEvents(idmachine: string) {
 
 export async function fetchEventsDevice(id: string) {
   try {
-    const data = await sql<Event>`
+    const data = await sql`
     SELECT * 
     FROM public.events
     WHERE device_id = ${id}
@@ -41,7 +40,8 @@ export async function fetchEventsDevice(id: string) {
     LIMIT 10000
   `;
     //console.log(data.rows.length);
-    return data.rows;
+    const events = data;
+    return events as Event[];
 
   } catch (err) {
     console.error("Database Error:", err);
@@ -57,7 +57,7 @@ export async function fetchFiltered(
   const idmachine = await CurrentCompanyId();
 
   try {
-    const data = await sql<Event>`
+    const data = await sql`
       SELECT *
       FROM public.events
       WHERE
@@ -66,8 +66,8 @@ export async function fetchFiltered(
       ORDER BY name ASC
 
     `;
-    const events = data.rows;
-    return events;
+    const events = data;
+    return events as Event[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to search events.');
@@ -83,7 +83,7 @@ export async function fetchPages(query: string) {
       WHERE events.idmachine = ${idmachine}
     `;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -93,16 +93,16 @@ export async function fetchPages(query: string) {
 
 export async function fetchById(id: string) {
   try {
-    const data = await sql<Event>`
+    const data = await sql`
       SELECT *
         FROM public.events
         WHERE events.id = ${id} `;
 
-    const count = data.rows;
+    const event = data[0];
 
-    return count[0];
+    return event as Event;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch plant.');
+    throw new Error('Failed to fetch event.');
   }
 }

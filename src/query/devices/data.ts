@@ -1,17 +1,17 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { Device } from '@/query/devices/definitions';
 import { CurrentCompanyId } from '@/lib/optimized-utils';
 
 export async function fetchDataDevices(idmachine: string) {
   try {
-    const data = await sql<Device>`
-      SELECT id, name, idmachine, created_at, lastheartbeat, type
+    const data = await sql`
+      SELECT *
       FROM public.devices
       WHERE devices.idmachine = ${idmachine}
       ORDER BY created_at ASC
     `;
-    const devices = data.rows;
-    return devices;
+    const devices = data;
+    return devices as Device[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all devices.');
@@ -25,7 +25,7 @@ export async function fetchDataAllDevices(page = 1, limit = 100) {
     // Obter o companyId ANTES de usar na query
     const companyId = await CurrentCompanyId();
 
-    const data = await sql<Device>`
+    const data = await sql`
       SELECT d.id, d.name, d.idmachine, d.created_at
       FROM public.devices d
       JOIN public.machines m ON d.idmachine = m.id
@@ -35,8 +35,8 @@ export async function fetchDataAllDevices(page = 1, limit = 100) {
       ORDER BY created_at ASC 
       LIMIT ${limit} OFFSET ${offset}
     `;
-    const devices = data.rows;
-    return devices;
+    const devices = data;
+    return devices as Device[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all devices.');
@@ -56,7 +56,7 @@ export async function fetchDevicesCount() {
       JOIN public.plants p ON a.idplant = p.id
       WHERE p.idcompany = ${companyId}
     `;
-    return parseInt(count.rows[0]?.total || '0');
+    return parseInt(count[0]?.total || '0');
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch devices count.');
@@ -65,14 +65,14 @@ export async function fetchDevicesCount() {
 
 export async function fetchDataDevicesNoMachine() {
   try {
-    const data = await sql<Device>`
-      SELECT id, name, idmachine, created_at, type
+    const data = await sql`
+      SELECT id, mac, type
         FROM public.devices
       WHERE devices.idmachine IS NULL
       ORDER BY created_at ASC
     `;
-    const devices = data.rows;
-    return devices;
+    const devices = data;
+    return devices as Device[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all devices.');
@@ -81,16 +81,16 @@ export async function fetchDataDevicesNoMachine() {
 
 export async function fetchById(id: string) {
   try {
-    const data = await sql<Device>`
+    const data = await sql`
       SELECT id, name, idmachine, created_at
         FROM public.devices
         WHERE devices.id = ${id} `;
 
-    const device = data.rows[0];
+    const device = data[0];
     //console.log('Fetched Device:', device);
-    return device;
+    return device as Device;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch plant.');
+    throw new Error('Failed to fetch device.');
   }
 }

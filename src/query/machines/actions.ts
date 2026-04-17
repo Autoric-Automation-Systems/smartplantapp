@@ -2,8 +2,9 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { fetchEvents } from '../events/data';
+import { fetchDataDevices } from '../devices/data';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -88,19 +89,19 @@ export async function updateData(
 }
 
 export async function deleteMachine(id: string) {
-  let events = await fetchEvents(id);
-  for (const event of events) {
-    await sql`DELETE FROM public.events WHERE id = ${event.id}`;
-  }
+  const devicesNumber = (await fetchDataDevices(id)).length;
 
-  events = await fetchEvents(id);
-  if (events.length === 0) {
+  if (devicesNumber === 0) {
     await sql`DELETE FROM public.machines WHERE id = ${id}`;
+    revalidatePath('/plants');
+    redirect(
+      '/plants?title=Sucesso&message=A exclusão foi um sucesso!&type=success'
+    );
+
+  } else {
+    revalidatePath('/plants');
+    redirect(
+      '/plants?title=Erro&message=A exclusão falhou. A Maquina tem dispositivos associados.&type=error'
+    );
   }
-
-  revalidatePath('/plants');
-  redirect(
-    '/plants?title=Sucesso&message=A exclusão foi um sucesso!&type=success'
-  );
-
 }

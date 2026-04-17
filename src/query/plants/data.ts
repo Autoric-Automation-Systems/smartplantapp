@@ -1,16 +1,16 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { Plant } from '@/query/plants/definitions';
 import { CurrentCompanyId } from '@/lib/optimized-utils';
 export async function fetchDataPlants() {
   const idcompany = await CurrentCompanyId();
   try {
-    const data = await sql<Plant>`
+    const data = await sql`
       SELECT id, name, idcompany
       FROM public.plants
       ORDER BY name ASC
     `;
-    const plants = data.rows;
-    return plants;
+    const plants = data;
+    return plants as Plant[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all plants.');
@@ -25,7 +25,7 @@ export async function fetchFiltered(
   const idcompany = await CurrentCompanyId();
 
   try {
-    const data = await sql<Plant>`
+    const data = await sql`
       SELECT id, name, idcompany
       FROM public.plants
       WHERE
@@ -33,8 +33,8 @@ export async function fetchFiltered(
         plants.id::TEXT ILIKE ${`%${query}%`})
       ORDER BY name ASC
     `;
-    const plants = data.rows;
-    return plants;
+    const plants = data;
+    return plants as Plant[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to search plants.');
@@ -50,7 +50,7 @@ export async function fetchPages(query: string) {
       WHERE plants.idcompany = ${idcompany}
     `;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -60,12 +60,12 @@ export async function fetchPages(query: string) {
 
 export async function fetchById(id: string) {
   try {
-    const data = await sql<Plant>`
+    const data = await sql`
       SELECT id, name, idcompany
         FROM public.plants
         WHERE plants.id = ${id} `;
-    const plant = data.rows[0];
-    return plant;
+    const plant = data[0];
+    return plant as Plant;
   }
   catch (err) {
     console.error('Database Error:', err);

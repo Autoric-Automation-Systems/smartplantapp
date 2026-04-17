@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/db";
 import { fetchDataConfigs } from "@/query/configs/data";
 import { createConfig } from "@/query/configs/actions";
 import { fetchDataLabel } from "@/query/labels/data";
@@ -26,15 +26,15 @@ export async function POST(request: Request) {
       LIMIT 1
     `;
 
-    if (device.rowCount === 0) {
+    if (!device) {
       return NextResponse.json(
         { error: "device not found" },
         { status: 404 }
       );
     }
 
-    const deviceId = device.rows[0].id;
-    const machineId = device.rows[0].idmachine;
+    const deviceId = device[0].id;
+    const machineId = device[0].idmachine;
 
     for (const ev of events) {
       if (!ev.name || ev.value === undefined || !ev.ts) continue;

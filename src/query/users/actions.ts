@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { deleteUnusedFiles } from '@/lib/deleteUnusedFiles';
 
@@ -14,7 +14,9 @@ const FormSchema = z.object({
   password: z.string(),
   avatarurl: z.string().optional(),
   role: z.string(),
-  idcompany: z.string()
+  idcompany: z.string(),
+  bio: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 const CreateData = FormSchema.omit({ id: true });
@@ -73,12 +75,15 @@ export async function updateData(
   prevState: State,
   formData: FormData
 ) {
+  //console.log('FormData:', Object.fromEntries(formData.entries()));
   const validatedFields = UpdateData.safeParse({
     name: formData.get('name'),
     lastname: formData.get('lastname'),
     password: formData.get('password'),
     role: formData.get('role'),
     avatarurl: formData.get('avatarurl'),
+    bio: formData.get('bio'),
+    phone: formData.get('phone'),
   });
 
 
@@ -91,7 +96,7 @@ export async function updateData(
   }
 
 
-  const { name, password, role, avatarurl } = validatedFields.data;
+  const { name, password, role, avatarurl, bio, phone } = validatedFields.data;
   //const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
@@ -102,7 +107,7 @@ export async function updateData(
 
       await sql`
         UPDATE public.users
-        SET name = ${name}, lastname = ${validatedFields.data.lastname}, password = ${hashedPassword}, role = ${role}, avatarurl = ${avatarurl}
+        SET name = ${name}, lastname = ${validatedFields.data.lastname}, password = ${hashedPassword}, role = ${role}, avatarurl = ${avatarurl}, bio = ${bio}, phone = ${phone}
         WHERE id = ${id}
       `;
     } else {
@@ -110,7 +115,7 @@ export async function updateData(
 
       await sql`
         UPDATE public.users
-        SET name = ${name}, lastname = ${validatedFields.data.lastname}, role = ${role}, avatarurl = ${avatarurl}
+        SET name = ${name}, lastname = ${validatedFields.data.lastname}, role = ${role}, avatarurl = ${avatarurl}, bio = ${bio}, phone = ${phone}
         WHERE id = ${id}
       `;
     }

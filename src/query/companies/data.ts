@@ -1,16 +1,16 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { CurrentCompanyId } from '@/lib/utils';
 import { Company } from './definitions';
 
 export async function fetchCompany() {
   try {
-    const data = await sql<Company>`
+    const data = await sql`
       SELECT *
       FROM public.companies
       ORDER BY name ASC
     `;
-    const companies = data.rows;
-    return companies;
+    const companies = data;
+    return companies as Company[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all companies.');
@@ -23,7 +23,7 @@ export async function fetchFilteredCompany(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const data = await sql<Company>`
+    const data = await sql`
       SELECT *
       FROM public.companies
       WHERE
@@ -31,8 +31,8 @@ export async function fetchFilteredCompany(
         clients.cnpj ILIKE ${`%${query}%`} 
       ORDER BY name ASC
     `;
-    const companies = data.rows;
-    return companies;
+    const companies = data;
+    return companies as Company[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to search.');
@@ -44,7 +44,7 @@ export async function fetchCompanyPages(query: string) {
   try {
     const count = await sql`SELECT COUNT(*) FROM public.companies`;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -54,16 +54,16 @@ export async function fetchCompanyPages(query: string) {
 
 export async function fetchCompanyById(id: string) {
   try {
-    const data = await sql<Company>`
+    const data = await sql`
       SELECT *
         FROM public.companies
         WHERE companies.id = ${id} `;
 
-    const companies = data.rows.map((company) => ({
+    const companies = data.map((company) => ({
       ...company,
     }));
 
-    return companies[0];
+    return companies[0] as Company;
     //console.log( 'Company: ' + companies[0]);
   } catch (error) {
     console.error('Database Error:', error);

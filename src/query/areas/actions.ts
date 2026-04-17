@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { fetchDataMachines } from '../machines/data';
 import { deleteMachine } from '../machines/actions';
 
@@ -106,9 +106,4 @@ export async function deleteArea(id: string) {
     );
   }
 
-}
-
-export async function deleteMachines(idarea: string) {
-  const machines = await fetchDataMachines(idarea);
-  await Promise.all(machines.map(machine => deleteMachine(machine.id)));
 }

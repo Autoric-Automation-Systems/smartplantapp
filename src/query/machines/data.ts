@@ -1,17 +1,17 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 import { Machine } from '@/query/machines/definitions';
 import { CurrentCompanyId } from '@/lib/utils';
 
 export async function fetchDataMachines(idarea: string) {
   try {
-    const data = await sql<Machine>`
+    const data = await sql`
       SELECT * 
       FROM public.machines
       WHERE machines.idarea = ${idarea}
       ORDER BY name ASC
     `;
-    const machines = data.rows;
-    return machines;
+    const machines = data;
+    return machines as Machine[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all machines.');
@@ -26,7 +26,7 @@ export async function fetchFiltered(
   const idarea = await CurrentCompanyId();
 
   try {
-    const data = await sql<Machine>`
+    const data = await sql`
       SELECT *
       FROM public.machines
       WHERE
@@ -35,8 +35,8 @@ export async function fetchFiltered(
         machines.id::TEXT ILIKE ${`%${query}%`})
       ORDER BY name ASC
     `;
-    const machines = data.rows;
-    return machines;
+    const machines = data;
+    return machines as Machine[];
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to search machines.');
@@ -52,7 +52,7 @@ export async function fetchPages(query: string) {
       WHERE machines.idarea = ${idarea}
     `;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -62,16 +62,16 @@ export async function fetchPages(query: string) {
 
 export async function fetchById(id: string) {
   try {
-    const data = await sql<Machine>`
+    const data = await sql`
       SELECT *
         FROM public.machines
         WHERE machines.id = ${id} `;
 
-    const machine = data.rows;
+    const machine = data[0];
 
-    return machine[0];
+    return machine as Machine;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch plant.');
+    throw new Error('Failed to fetch machine.');
   }
 }

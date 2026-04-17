@@ -8,7 +8,7 @@ import { z } from "zod";
 import { fetchByEmail } from "@/query/users/data";
 import Google from "next-auth/providers/google"
 import { Company } from "@/query/companies/definitions";
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db';
 
 
 declare module "next-auth" {
@@ -120,13 +120,13 @@ export const authOptions: NextAuthConfig = {
 
         if (!existingUser) {
           const nameCompany = "New Company"
-          const result = await sql<Company>`
+          const result = await sql`
             INSERT INTO public.companies (name)
             VALUES (${nameCompany})
             RETURNING id
           `;
 
-          const idcompany = result.rows[0].id;
+          const idcompany = result[0].id;
 
           await sql`
             INSERT INTO public.users ( name, email, role, idcompany, avatarurl )
