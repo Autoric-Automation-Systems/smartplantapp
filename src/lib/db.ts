@@ -4,6 +4,11 @@ import { unstable_cache } from 'next/cache';
 // Configuração otimizada para Neon serverless
 const sql = neon(process.env.DATABASE_URL!);
 
+// Tipo para resultados de contagem
+interface CountResult {
+  count: string;
+}
+
 // Função helper para queries com cache
 export async function cachedQuery<T>(
   queryFn: () => Promise<T[]>,
@@ -18,7 +23,7 @@ export async function cachedQuery<T>(
     { revalidate }
   )();
 }
-
+/*
 // Função para queries com paginação
 export async function paginatedQuery<T>(
   query: string,
@@ -43,11 +48,11 @@ export async function paginatedQuery<T>(
   try {
     const [dataResult, countResult] = await Promise.all([
       sql(dataQuery, dataParams) as Promise<T[]>,
-      sql(countQueryFinal, params)
+      sql(countQueryFinal, params) as Promise<CountResult[]>
     ]);
 
     // Extrair o count do resultado
-    const total = parseInt((countResult as any)[0]?.count || '0');
+    const total = parseInt(countResult[0]?.count || '0');
 
     return {
       data: dataResult,
@@ -57,6 +62,19 @@ export async function paginatedQuery<T>(
     console.error('Database Error:', error);
     throw new Error('Failed to execute paginated query.');
   }
+}
+
+*/
+
+// Função helper para queries simples
+export async function query<T = any>(strings: TemplateStringsArray, ...values: any[]): Promise<T[]> {
+  return sql(strings, ...values) as Promise<T[]>;
+}
+
+// Função helper para query única (primeiro resultado)
+export async function queryOne<T = any>(strings: TemplateStringsArray, ...values: any[]): Promise<T | null> {
+  const result = await sql(strings, ...values) as T[];
+  return result[0] || null;
 }
 
 // Exportar o cliente SQL para uso direto quando necessário
