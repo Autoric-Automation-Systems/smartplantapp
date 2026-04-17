@@ -11,11 +11,11 @@ export default async function Machines({ area }: { area: Area }) {
     <div>
       {machines.map((machine) => (
         <div key={area.id}>
-          <div className="mb-4 flex flex-row items-center gap-4">
+          <div className="mb-4 flex flex-col items-center gap-4">
             <MachineCard key={machine.id} machine={machine} />
             <DeviceAdd idmachine={machine.id} />
           </div>
-          <ComponentCard title={"Devices"} className="w-full mt-4">
+          <ComponentCard title={"Devices"} className="w-full mt-2">
             <Devices machine={machine} />
           </ComponentCard>
         </div>

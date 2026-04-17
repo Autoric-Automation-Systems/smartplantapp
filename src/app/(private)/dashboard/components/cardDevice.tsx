@@ -5,6 +5,7 @@ import { StatusBadge } from "./StatusBadge";
 import { BatteryIndicator } from "./BatteryIndicator";
 import { WifiIndicator } from "./WifiIndicator";
 import { fetchDataConfigs } from "@/query/configs/data";
+import { fetchDataLabel } from "@/query/labels/data";
 
 export default async function CardDevice({ device }: { device: Device; }) {
     const timeRange = Number(device.heartbeatInterval) + 60000;
@@ -12,6 +13,7 @@ export default async function CardDevice({ device }: { device: Device; }) {
     const lastHeartbeat = Number(device.lastheartbeat);
     const online = lastHeartbeat + timeRange > currentTime;
 
+    const label = await fetchDataLabel(device.id);
     const events = await fetchEventsDevice(device?.id || "");
     const configs = await fetchDataConfigs(device?.id);
     const configBattery = configs.find((config) => config.event_name === "battery");
@@ -95,6 +97,7 @@ export default async function CardDevice({ device }: { device: Device; }) {
                             events={eventsOfType}
                             type={type}
                             config={config}
+                            label={label}
                         />
                     );
                 })}

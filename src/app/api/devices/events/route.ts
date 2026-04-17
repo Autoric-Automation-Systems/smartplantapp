@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 import { fetchDataConfigs } from "@/query/configs/data";
 import { createConfig } from "@/query/configs/actions";
+import { fetchDataLabel } from "@/query/labels/data";
+import { createLabel } from "@/query/labels/actions";
 
 export async function POST(request: Request) {
   console.log("Chegou Eventos");
@@ -55,6 +57,12 @@ export async function POST(request: Request) {
         await createConfig(deviceId, ev.name);
       }
 
+      if (ev.name === "count" || ev.name === "event1" || ev.name === "event2" || ev.name === "event3") {
+        const label = await fetchDataLabel(deviceId);
+        if (!label) {
+          await createLabel(deviceId);
+        }
+      }
     }
 
     return NextResponse.json({ status: "ok" });

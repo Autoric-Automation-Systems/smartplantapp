@@ -14,7 +14,7 @@ export default async function Plants() {
           title={"Plant"}
           className="w-full mt-4"
         >
-          <div className="mb-4 flex flex-row items-center gap-4">
+          <div className="mb-4 flex flex-col items-center gap-4">
             <PlantCard plant={plant} />
             <AreaAdd idplant={plant.id} />
           </div>

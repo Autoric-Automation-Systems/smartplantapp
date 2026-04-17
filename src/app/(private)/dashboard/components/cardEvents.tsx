@@ -7,25 +7,31 @@ import StatusCard from "./events/StatusCard";
 import CounterCard from "./events/CounterCard";
 import TemperatureTrend from "./trends/temperatueTrend";
 import HumidityTrend from "./trends/humidityTrend";
+import LevelCard from "./events/LevelCard";
 import { useState } from "react";
 import { Modal } from "../Modal";
 import FlowCard from "./events/FlowCard";
 import FlowTrend from "./trends/flowTrend";
 import { Config } from "@/query/configs/definitions";
+import LevelTrend from "./trends/levelTrend";
+import { Label as LabelDefinition } from "@/query/labels/definitions";
 
 export default function CardEvents({
   events,
   type,
   config,
+  label
 }: {
   events: Event[];
   type: string;
   config: Config | undefined;
+  label: LabelDefinition | undefined;
 }) {
   const [openTemperature, setOpenTemperature] = useState(false);
   const [openHumidity, setOpenHumidity] = useState(false);
   const [openCounter, setOpenCounter] = useState(false);
   const [openFlow, setOpenFlow] = useState(false);
+  const [openLevel, setOpenLevel] = useState(false);
 
   const value = Number(events[0]?.value ?? 0);
   //console.log('Events for type:  ', events.length);
@@ -71,10 +77,10 @@ export default function CardEvents({
             <HumidityTrend events={events} />
           </Modal>
         </>
-      )
+      );
 
-    case "counter":
-      return <CounterCard value={value} />;
+    case "count":
+      return <CounterCard value={value} label={label?.count} />;
 
     case "flow":
       const flowMonth = events.reduce((acc, event) => {
@@ -103,7 +109,27 @@ export default function CardEvents({
 
         </>
       );
+
+    case "level":
+      return (
+        <>
+          <div onClick={() => setOpenLevel(true)} className="cursor-pointer">
+            <LevelCard value={value} min={min} max={max} />
+          </div>
+
+          {/* MODAL */}
+          <Modal open={openLevel} onClose={() => setOpenLevel(false)}>
+            <h2
+              className="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
+              Level Trend
+            </h2>
+
+            <LevelTrend events={events} />
+          </Modal>
+        </>
+      );
+
     default:
-      return <StatusCard value={value} type={type} />;
+      return <StatusCard value={value} type={type} label={label} />;
   }
 }

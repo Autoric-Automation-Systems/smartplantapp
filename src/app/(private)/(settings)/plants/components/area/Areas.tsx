@@ -10,7 +10,7 @@ export default async function Areas({ plant }: { plant: Plant }) {
   return (
     areas.map((area) => (
       <div key={area.id}>
-        <div className="mb-4 flex flex-row items-center gap-4">
+        <div className="mb-4 flex flex-col items-center gap-4">
           <AreaCard key={area.id} area={area} />
           <MachineAdd idarea={area.id} />
         </div>

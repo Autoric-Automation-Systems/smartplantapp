@@ -6,17 +6,18 @@ import Machines from "../machine/Machines";
 import MachineAdd from "../machine/MachineAdd";
 import { Machine } from "@/query/machines/definitions";
 import { fetchDataConfigs } from "@/query/configs/data";
+import { fetchDataLabel } from "@/query/labels/data";
 
 export default async function Devices({ machine }: { machine: Machine }) {
   const devices = await fetchDataDevices(machine.id);
   return (
     devices.map(async (device) => {
       const configs = await fetchDataConfigs(device.id);
+      const label = await fetchDataLabel(device.id);
+
       return (
-        <div key={device.id}>
-          <div className="mb-4 flex flex-row items-center gap-4">
-            <DeviceCard key={device.id} device={device} configs={configs} />
-          </div>
+        <div key={device.id} className="mb-4 flex flex-col items-center gap-4 ">
+          <DeviceCard key={device.id} device={device} configs={configs} label={label} />
         </div>
       );
     })

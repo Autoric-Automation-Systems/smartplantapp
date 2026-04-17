@@ -14,7 +14,7 @@ import {
 import { Event } from "@/query/events/definitions"
 import { formatDateTimeDb, formatDateToLocal, formatDateToTimeDb, formatTime, timeToDecimal } from "@/lib/formatTime"
 
-export default function HumidityTrend({ events }: { events: Event[] }) {
+export default function LevelTrend({ events }: { events: Event[] }) {
     const [selectedDate, setSelectedDate] = useState(new Date())
     function changeDay(offset: number) {
         const newDate = new Date(selectedDate)

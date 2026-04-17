@@ -32,38 +32,43 @@ export default function DeviceEditForm({
                     Edit Device: {device.name}
                 </h4>
             </div>
-            <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar h-auto overflow-y-auto px-2 pb-1">
-                    <input type="hidden" name="idmachine" value={device.idmachine ?? ""} />
-                    <input type="hidden" name="id" value={device.id} />
-                    <div className="mt-7">
-                        <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
+            <form action={formAction} onSubmit={handleSubmit} className="flex flex-col border-t border-gray-200 dark:border-gray-700 mt-4 pt-4">
+                <input type="hidden" name="idmachine" value={device.idmachine ?? ""} />
+                <input type="hidden" name="id" value={device.id} />
+
+                <div className="w-full max-w-2xl rounded-3xl border border-gray-200 dark:border-gray-700 p-1 justify-center">
+                    <div className="flex items-center gap-3 px-2 mt-2 lg:justify-end">
+                        <h5 className="mb-1 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                             Device Information
                         </h5>
-                        <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div className="col-span-2">
-                                <Label>Name</Label>
-                                <Input name="name" defaultValue={device.name} />
+
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={closeModal}
+                        >
+                            Close
+                        </Button>
+
+                        <Button
+                            type={"submit"}
+                            disabled={isPending}
+                        >
+                            Save
+                        </Button>
+                    </div>
+
+                    <div className="custom-scrollbar h-auto overflow-y-auto px-2 pb-1">
+                        <div className="mt-2">
+                            <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                                <div className="col-span-2">
+                                    <Label>Name</Label>
+                                    <Input name="name" defaultValue={device.name} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-                    <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={closeModal}
-                    >
-                        Close
-                    </Button>
-
-                    <Button
-                        type={"submit"}
-                        disabled={isPending}
-                    >
-                        Save
-                    </Button>
                 </div>
             </form>
         </div>
