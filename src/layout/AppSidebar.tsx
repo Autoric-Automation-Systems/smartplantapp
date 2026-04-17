@@ -300,12 +300,12 @@ const AppSidebar: React.FC = () => {
 
   // Load current user data when session is authenticated
   useEffect(() => {
-    console.log("Session status: " + status);
+    //console.log("Session status: " + status);
     if (status !== "authenticated") return;
 
     async function loadUser() {
       const res = await fetch("/api/user");
-      console.log("response status: " + res.status);
+      //console.log("response status: " + res.status);
       if (!res.ok) return;
 
       const data = await res.json();

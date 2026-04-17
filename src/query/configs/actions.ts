@@ -30,7 +30,7 @@ export async function updateData(
   prevState: State,
   formData: FormData
 ) {
-  console.log('Received form data:', Object.fromEntries(formData.entries()));
+  //console.log('Received form data:', Object.fromEntries(formData.entries()));
   const validatedFields = UpdateData.safeParse({
     id: formData.get('id'),
     event_name: formData.get('event_name'),

@@ -1,14 +1,12 @@
 import { sql } from '@vercel/postgres';
 import { Plant } from '@/query/plants/definitions';
-import { CurrentCompanyId } from '@/lib/utils';
-
+import { CurrentCompanyId } from '@/lib/optimized-utils';
 export async function fetchDataPlants() {
   const idcompany = await CurrentCompanyId();
   try {
     const data = await sql<Plant>`
-      SELECT * 
+      SELECT id, name, idcompany
       FROM public.plants
-      WHERE plants.idcompany = ${idcompany}
       ORDER BY name ASC
     `;
     const plants = data.rows;
@@ -28,10 +26,9 @@ export async function fetchFiltered(
 
   try {
     const data = await sql<Plant>`
-      SELECT *
+      SELECT id, name, idcompany
       FROM public.plants
       WHERE
-        plants.idcompany = ${idcompany} AND (
         plants.name ILIKE ${`%${query}%`} OR
         plants.id::TEXT ILIKE ${`%${query}%`})
       ORDER BY name ASC
@@ -64,18 +61,14 @@ export async function fetchPages(query: string) {
 export async function fetchById(id: string) {
   try {
     const data = await sql<Plant>`
-      SELECT *
+      SELECT id, name, idcompany
         FROM public.plants
         WHERE plants.id = ${id} `;
-
-    const plant = data.rows.map((plant) => ({
-      ...plant,
-    }));
-
-    return plant[0];
-    //console.log('Plant: ' + plant[0]);
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch plant.');
+    const plant = data.rows[0];
+    return plant;
+  }
+  catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch plant by ID.');
   }
 }

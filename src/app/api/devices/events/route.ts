@@ -6,7 +6,7 @@ import { fetchDataLabel } from "@/query/labels/data";
 import { createLabel } from "@/query/labels/actions";
 
 export async function POST(request: Request) {
-  console.log("Chegou Eventos");
+  //console.log("Chegou Eventos");
 
   try {
     const body = await request.json();

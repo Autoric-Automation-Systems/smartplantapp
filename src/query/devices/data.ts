@@ -1,11 +1,11 @@
 import { sql } from '@vercel/postgres';
 import { Device } from '@/query/devices/definitions';
-import { CurrentCompanyId } from '@/lib/utils';
+import { CurrentCompanyId } from '@/lib/optimized-utils';
 
 export async function fetchDataDevices(idmachine: string) {
   try {
     const data = await sql<Device>`
-      SELECT * 
+      SELECT id, name, idmachine, created_at, lastheartbeat, type
       FROM public.devices
       WHERE devices.idmachine = ${idmachine}
       ORDER BY created_at ASC
@@ -18,19 +18,24 @@ export async function fetchDataDevices(idmachine: string) {
   }
 }
 
-export async function fetchDataAllDevices() {
+export async function fetchDataAllDevices(page = 1, limit = 100) {
+  const offset = (page - 1) * limit;
+
   try {
+    // Obter o companyId ANTES de usar na query
+    const companyId = await CurrentCompanyId();
+
     const data = await sql<Device>`
-      SELECT d.* 
+      SELECT d.id, d.name, d.idmachine, d.created_at
       FROM public.devices d
       JOIN public.machines m ON d.idmachine = m.id
       JOIN public.areas a ON m.idarea = a.id
       JOIN public.plants p ON a.idplant = p.id
-      WHERE p.idcompany = ${await CurrentCompanyId()}
+      WHERE p.idcompany = ${companyId}
       ORDER BY created_at ASC 
+      LIMIT ${limit} OFFSET ${offset}
     `;
     const devices = data.rows;
-    //console.log(devices);
     return devices;
   } catch (err) {
     console.error('Database Error:', err);
@@ -38,11 +43,31 @@ export async function fetchDataAllDevices() {
   }
 }
 
+export async function fetchDevicesCount() {
+  try {
+    // Obter o companyId ANTES de usar na query
+    const companyId = await CurrentCompanyId();
+
+    const count = await sql`
+      SELECT COUNT(*) as total
+      FROM public.devices d
+      JOIN public.machines m ON d.idmachine = m.id
+      JOIN public.areas a ON m.idarea = a.id
+      JOIN public.plants p ON a.idplant = p.id
+      WHERE p.idcompany = ${companyId}
+    `;
+    return parseInt(count.rows[0]?.total || '0');
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch devices count.');
+  }
+}
+
 export async function fetchDataDevicesNoMachine() {
   try {
     const data = await sql<Device>`
-      SELECT * 
-      FROM public.devices
+      SELECT id, name, idmachine, created_at, type
+        FROM public.devices
       WHERE devices.idmachine IS NULL
       ORDER BY created_at ASC
     `;
@@ -57,7 +82,7 @@ export async function fetchDataDevicesNoMachine() {
 export async function fetchById(id: string) {
   try {
     const data = await sql<Device>`
-      SELECT *
+      SELECT id, name, idmachine, created_at
         FROM public.devices
         WHERE devices.id = ${id} `;
 

@@ -5,18 +5,23 @@ import { useRouter } from "next/navigation";
 
 export default function Revalidate({
   children,
+  interval = 60000, // Aumentado para 60 segundos (1 minuto)
+  enabled = false, // Desabilitado por padrão - habilitar apenas onde necessário
 }: {
   children: React.ReactNode;
+  interval?: number;
+  enabled?: boolean;
 }) {
   const router = useRouter();
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    if (!enabled) return;
+    const intervalId = setInterval(() => {
       router.refresh(); // revalida silenciosamente
-    }, 10000);
+    }, interval);
 
-    return () => clearInterval(interval);
-  }, [router]);
-
+    return () => clearInterval(intervalId);
+  }, [router, interval, enabled]);
   return <>{children}</>;
 }
+

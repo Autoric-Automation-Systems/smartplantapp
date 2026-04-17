@@ -1,12 +1,12 @@
 import { sql } from '@vercel/postgres';
 import { User } from '@/query/users/definitions';
-import { CurrentCompanyId } from '@/lib/utils';
+import { CurrentCompanyId } from '@/lib/optimized-utils';
 
 export async function fetchData() {
   const idcompany = await CurrentCompanyId();
   try {
     const data = await sql<User>`
-      SELECT * 
+      SELECT id, name, lastname, email, role, idcompany, avatarurl
       FROM public.users
       WHERE users.idcompany = ${idcompany}
       ORDER BY name ASC
@@ -28,7 +28,7 @@ export async function fetchFiltered(
 
   try {
     const data = await sql<User>`
-      SELECT *
+      SELECT id, name, lastname, email, role, idcompany, avatarurl
       FROM public.users
       WHERE
         users.idcompany = ${idcompany} AND (
@@ -66,16 +66,13 @@ export async function fetchPages(query: string) {
 export async function fetchById(id: string) {
   try {
     const data = await sql<User>`
-      SELECT *
+      SELECT id, name, lastname, email, role, idcompany, avatarurl
         FROM public.users
         WHERE users.id = ${id} `;
 
-    const user = data.rows;
-    //console.log('User: ' + user[0]);
-
-    return user[0];
+    const user = data.rows[0];
+    return user;
   } catch (error) {
-    console.log(error);
     console.error('Database Error:', error);
     throw new Error('Failed to fetch user.');
   }
@@ -84,13 +81,12 @@ export async function fetchById(id: string) {
 export async function fetchByEmail(email: string): Promise<User> {
   try {
     const data = await sql<User>`
-      SELECT * FROM public.users WHERE users.email = ${email} LIMIT 1
+      SELECT id, name, lastname, email, role, idcompany, avatarurl
+      FROM public.users WHERE users.email = ${email} LIMIT 1
     `;
     const user = data.rows[0];
-    //console.log('User by email: ' + user.lastname);
     return user;
   } catch (error) {
-    console.log(error);
     console.error('Database Error:', error);
     throw new Error('Failed to check user by email.');
   }
