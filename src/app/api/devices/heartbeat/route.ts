@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       status: "ok",
-      heartbeatInterval: device[0].heartbeatInterval || "60000" // Default to 60 seconds if not set
+      heartbeatInterval: device[0].heartbeatinterval || "60000" // Default to 60 seconds if not set
     });
 
   } catch (error) {
