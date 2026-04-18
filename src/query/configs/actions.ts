@@ -10,6 +10,7 @@ const FormSchema = z.object({
   device_id: z.string(),
   min: z.number().optional(),
   max: z.number().optional(),
+  alarm: z.boolean().optional(),
 });
 
 const UpdateData = FormSchema;
@@ -30,12 +31,21 @@ export async function updateData(
   formData: FormData
 ) {
   //console.log('Received form data:', Object.fromEntries(formData.entries()));
+
+  // Helper function to parse number from form data
+  const parseNumber = (value: FormDataEntryValue | null) => {
+    if (!value || value === '') return undefined;
+    const num = Number(value);
+    return isNaN(num) ? undefined : num;
+  };
+
   const validatedFields = UpdateData.safeParse({
     id: formData.get('id'),
     event_name: formData.get('event_name'),
     device_id: formData.get('device_id'),
-    min: formData.get('min') ? Number(formData.get('min')) : undefined,
-    max: formData.get('max') ? Number(formData.get('max')) : undefined,
+    min: parseNumber(formData.get('min')),
+    max: parseNumber(formData.get('max')),
+    alarm: formData.get('alarm') === 'on' ? true : false,
   });
 
   if (!validatedFields.success) {
@@ -46,15 +56,14 @@ export async function updateData(
     };
   }
 
-  const { id, event_name, device_id, min, max } = validatedFields.data;
+  const { id, event_name, device_id, min, max, alarm } = validatedFields.data;
   //console.log('Validated fields:', { id, device_id, event_name });
-
   try {
 
     await sql`
         UPDATE public.configs
-        SET device_id = ${device_id}, event_name = ${event_name}, min = ${min}, max = ${max}
-        WHERE id = ${id}  
+        SET device_id = ${device_id}, event_name = ${event_name}, min = ${min}, max = ${max}, alarm = ${alarm}
+        WHERE id = ${id}
       `;
   } catch (error) {
     console.error('Database error:', error);

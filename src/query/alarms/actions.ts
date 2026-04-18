@@ -8,7 +8,8 @@ import { fetchEvents } from '../events/data';
 const FormSchema = z.object({
   id: z.string(),
   name: z.string(),
-  idmachine: z.string()
+  idmachine: z.string(),
+  event_name: z.string()
 });
 
 const UpdateData = FormSchema;
@@ -16,7 +17,7 @@ const UpdateData = FormSchema;
 export type State = {
   errors?: {
     id?: string[];
-    name?: string[];
+    event_name?: string[];
     idmachine?: string[];
   };
   message?: string | null;
@@ -29,7 +30,7 @@ export async function updateData(
   //console.log('Received form data:', Object.fromEntries(formData.entries()));
   const validatedFields = UpdateData.safeParse({
     id: formData.get('id'),
-    name: formData.get('name'),
+    event_name: formData.get('event_name'),
     idmachine: formData.get('idmachine'),
   });
 
@@ -41,14 +42,14 @@ export async function updateData(
     };
   }
 
-  const { id, name, idmachine } = validatedFields.data;
+  const { id, event_name, idmachine } = validatedFields.data;
   //console.log('Validated fields:', { id, idmachine, name });
 
   try {
 
     await sql`
         UPDATE public.alarmss
-        SET idmachine = ${idmachine}, name = ${name}
+        SET idmachine = ${idmachine}, event_name = ${event_name}
         WHERE id = ${id}  
       `;
   } catch (error) {
@@ -62,15 +63,8 @@ export async function updateData(
 }
 
 export async function deletealarms(id: string) {
-  let events = await fetchEvents(id);
-  for (const event of events) {
-    await sql`DELETE FROM public.events WHERE id = ${event.id}`;
-  }
 
-  events = await fetchEvents(id);
-  if (events.length === 0) {
-    await sql`DELETE FROM public.alarmss WHERE id = ${id}`;
-  }
+  await sql`DELETE FROM public.alarmss WHERE id = ${id}`;
 
   revalidatePath('/plants');
   redirect(

@@ -5,7 +5,7 @@ import { Alarm } from './definitions';
 export async function fetchDataDeviceAlarms(device_id: string) {
   try {
     const data = await sql`
-      SELECT id, device_id, message, created_at, readed
+      SELECT *
       FROM public.alarms
       WHERE alarms.device_id = ${device_id}
       ORDER BY created_at ASC
@@ -25,7 +25,7 @@ export async function fetchDataAllAlarms(page = 1, limit = 50) {
 
   try {
     const data = await sql`
-      SELECT a.id, a.device_id, a.message, a.created_at, a.readed
+      SELECT a.id, a.device_id, a.message, a.created_at, a.readed, a.event_name
       FROM public.alarms a
       JOIN public.devices d ON a.device_id = d.id
       JOIN public.machines m ON d.idmachine = m.id
@@ -68,7 +68,7 @@ export async function fetchAlarmsCount() {
 export async function fetchById(id: string) {
   try {
     const data = await sql`
-      SELECT id, device_id, message, created_at, readed
+      SELECT id, device_id, message, created_at, readed, event_name
         FROM public.alarms
         WHERE alarms.id = ${id}
         LIMIT 1`;
@@ -87,7 +87,7 @@ export async function fetchRecentAlarms() {
   const currentCompanyId = await CurrentCompanyId();
   try {
     const data = await sql`
-            SELECT a.id, a.device_id, a.message, a.created_at, a.readed
+            SELECT a.id, a.device_id, a.message, a.created_at, a.readed, a.event_name
             FROM public.alarms a
             JOIN public.devices d ON a.device_id = d.id
             JOIN public.machines m ON d.idmachine = m.id

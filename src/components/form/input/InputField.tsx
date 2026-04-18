@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 interface InputProps {
-  type?: "text" | "number" | "email" | "password" | "date" | "time" | string;
+  type?: "text" | "number" | "email" | "password" | "date" | "time" | "checkbox" | string;
   id?: string;
   name?: string;
   placeholder?: string;
@@ -66,13 +66,12 @@ const Input: FC<InputProps> = ({
       {/* Optional Hint Text */}
       {hint && (
         <p
-          className={`mt-1.5 text-xs ${
-            error
+          className={`mt-1.5 text-xs ${error
               ? "text-error-500"
               : success
-              ? "text-success-500"
-              : "text-gray-500"
-          }`}
+                ? "text-success-500"
+                : "text-gray-500"
+            }`}
         >
           {hint}
         </p>

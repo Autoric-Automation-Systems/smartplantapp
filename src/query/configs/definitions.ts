@@ -6,4 +6,5 @@ export type Config = {
   max?: number;
   created_at: string;
   updated_at: string;
+  alarm: boolean;
 }
