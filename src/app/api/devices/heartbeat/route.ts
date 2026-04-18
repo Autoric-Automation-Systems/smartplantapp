@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     const device = await sql`
-      SELECT id, heartbeatInterval 
+      SELECT *
       FROM public.devices
       WHERE mac = ${mac}
       LIMIT 1
