@@ -24,29 +24,46 @@ export async function POST(request: Request) {
     `;
 
     if (!device) {
-
-      await sql`
+      try {
+        await sql`
         INSERT INTO public.devices
         (mac, type, version, lastheartbeat, created_at)
         VALUES
         (${mac}, ${type}, ${version}, NOW(), NOW())
       `;
 
-    } else {
+      } catch (error) {
+        console.error(error);
+        console.log("Error inserting device:", error);
+        return NextResponse.json(
+          { error: "server error" },
+          { status: 500 }
+        );
+      }
 
-      await sql`
+
+    } else {
+      try {
+        await sql`
         UPDATE public.devices
         SET lastheartbeat = NOW(),
             version = ${version},
             type = ${type}
         WHERE mac = ${mac}
       `;
-
+      } catch (error) {
+        console.error(error);
+        console.log("Error updating device:", error);
+        return NextResponse.json(
+          { error: "server error" },
+          { status: 500 }
+        );
+      }
     }
 
     return NextResponse.json({
       status: "ok",
-      heartbeatInterval: device[0].heartbeatInterval || "60000" // Default to 60 seconds if not set
+      heartbeatInterval: device[0]?.heartbeatInterval || "60000" // Default to 60 seconds if not set
     });
 
   } catch (error) {
