@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     `;
 
     if (!device) {
+      console.log("Device not found, creating new device");
       try {
         await sql`
         INSERT INTO public.devices
@@ -43,6 +44,7 @@ export async function POST(request: Request) {
 
 
     } else {
+      console.log("Device found, updating heartbeat");
       try {
         await sql`
         UPDATE public.devices
