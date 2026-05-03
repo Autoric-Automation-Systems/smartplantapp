@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       LIMIT 1
     `;
 
-    if (!device) {
+    if (device.length === 0) {
       return NextResponse.json(
         { error: "device not found" },
         { status: 404 }
