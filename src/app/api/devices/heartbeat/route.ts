@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       LIMIT 1
     `;
 
-    if (!device) {
+    if (device.length === 0) {
       console.log("Device not found, creating new device");
       try {
         await sql`
