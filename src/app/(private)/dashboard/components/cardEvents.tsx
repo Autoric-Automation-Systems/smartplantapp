@@ -82,11 +82,20 @@ export default function CardEvents({
         </>
       );
 
-    case "counter":
+    case "counter": {
+      const counterDay = events.reduce((acc, event) => {
+        const date = new Date(event.created_at);
+        const now = new Date();
+        if (date.getDate() === now.getDate()) {
+          return acc + Number(event.value);
+        }
+        return acc;
+      }, 0);
+
       return (
         <>
           <div onClick={() => setOpenCounter(true)} className="cursor-pointer">
-            <CounterCard value={value} label={label?.count} />
+            <CounterCard value={counterDay} label={label?.count} />
           </div>
 
           {/* MODAL */}
@@ -100,6 +109,7 @@ export default function CardEvents({
           </Modal>
         </>
       );
+    }
 
     case "flow": {
       const flowMonth = events.reduce((acc, event) => {
