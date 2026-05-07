@@ -4,7 +4,9 @@ import { Event } from "@/query/events/definitions";
 import TemperatureCard from "./events/TemperatureCard";
 import HumidityCard from "./events/HumidityCard";
 import StatusCard from "./events/StatusCard";
+import StatusTrend from "./trends/statusTrend";
 import CounterCard from "./events/CounterCard";
+import CounterTrend from "./trends/counterTrend";
 import TemperatureTrend from "./trends/temperatueTrend";
 import HumidityTrend from "./trends/humidityTrend";
 import LevelCard from "./events/LevelCard";
@@ -32,6 +34,7 @@ export default function CardEvents({
   const [openCounter, setOpenCounter] = useState(false);
   const [openFlow, setOpenFlow] = useState(false);
   const [openLevel, setOpenLevel] = useState(false);
+  const [openStatus, setOpenStatus] = useState(false);
 
   const value = Number(events[0]?.value ?? 0);
   //console.log('Events for type:  ', events.length);
@@ -79,10 +82,26 @@ export default function CardEvents({
         </>
       );
 
-    case "count":
-      return <CounterCard value={value} label={label?.count} />;
+    case "counter":
+      return (
+        <>
+          <div onClick={() => setOpenCounter(true)} className="cursor-pointer">
+            <CounterCard value={value} label={label?.count} />
+          </div>
 
-    case "flow":
+          {/* MODAL */}
+          <Modal open={openCounter} onClose={() => setOpenCounter(false)}>
+            <h2
+              className="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
+              Counter Trend
+            </h2>
+
+            <CounterTrend events={events} />
+          </Modal>
+        </>
+      );
+
+    case "flow": {
       const flowMonth = events.reduce((acc, event) => {
         const date = new Date(event.created_at);
         const now = new Date();
@@ -109,6 +128,7 @@ export default function CardEvents({
 
         </>
       );
+    }
 
     case "level":
       return (
@@ -128,6 +148,28 @@ export default function CardEvents({
           </Modal>
         </>
       );
+
+    case "event1":
+    case "event2":
+    case "event3":
+      return (
+        <>
+          <div onClick={() => setOpenStatus(true)} className="cursor-pointer">
+            <StatusCard value={value} type={type} label={label} />
+          </div>
+
+          {/* MODAL */}
+          <Modal open={openStatus} onClose={() => setOpenStatus(false)}>
+            <h2
+              className="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
+              Status Trend
+            </h2>
+
+            <StatusTrend events={events} />
+          </Modal>
+        </>
+
+      )
 
     default:
       return <StatusCard value={value} type={type} label={label} />;
