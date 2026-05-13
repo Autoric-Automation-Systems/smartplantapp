@@ -178,7 +178,6 @@ export default function CardEvents({
             <StatusTrend events={events} />
           </Modal>
         </>
-
       )
 
     default:

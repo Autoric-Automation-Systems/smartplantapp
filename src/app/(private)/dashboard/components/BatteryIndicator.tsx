@@ -1,16 +1,22 @@
 "use client"
-
+import { Event } from "@/query/events/definitions"
+import BatteryTrend from "./trends/batteryTrend"
 import { useState } from "react"
+import { Modal } from "../Modal"
+import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline"
 
 type BatteryIndicatorProps = {
-  value: number
+  batteryEvents: Event[]
   charging?: boolean
   min?: number
   max?: number
 }
 
-export function BatteryIndicator({ value, charging, min = 20, max = 80 }: BatteryIndicatorProps) {
+export function BatteryIndicator({ batteryEvents, charging, min = 20, max = 80 }: BatteryIndicatorProps) {
   const [show, setShow] = useState(false)
+  const [open, setOpen] = useState(false)
+  if (batteryEvents?.length === 0) return null
+  const value = Number(batteryEvents?.[0]?.value ?? 0)
 
   const getColor = () => {
     if (value > max) return "bg-green-500"
@@ -41,22 +47,39 @@ export function BatteryIndicator({ value, charging, min = 20, max = 80 }: Batter
       </div>
 
       {/* hover (desktop) */}
-      <div className="absolute -top-7 left-1/2 -translate-x-1/2 
-        px-2 py-1 text-xs rounded-md 
+      <div className="absolute -top-7 left-1/2 -translate-x-1/2
+        px-2 py-1 text-xs rounded-md
         bg-gray-800 text-white whitespace-nowrap
         opacity-0 group-hover:opacity-100 transition
-      ">
+        flex items-center gap-1
+      "
+        onClick={(e) => { e.stopPropagation(); setOpen(true) }}>
         {value}%
+        <ArrowTrendingUpIcon className="w-3.5 h-3.5 text-green-400" />
       </div>
 
       {/* click (mobile) */}
       {show && (
-        <div className="absolute -top-7 left-1/2 -translate-x-1/2 
-          px-2 py-1 text-xs rounded-md 
-          bg-gray-800 text-white whitespace-nowrap">
-          {value}%
-        </div>
+        <>
+          <div className="absolute -top-7 left-1/2 -translate-x-1/2
+          px-2 py-1 text-xs rounded-md
+          bg-gray-800 text-white whitespace-nowrap
+          flex items-center gap-1"
+            onClick={(e) => { e.stopPropagation(); setOpen(true) }}>
+            {value}%
+            <ArrowTrendingUpIcon className="w-3.5 h-3.5 text-green-400" />
+          </div>
+        </>
       )}
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <h2
+          className="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
+          Battery Trend
+        </h2>
+
+        <BatteryTrend events={batteryEvents} />
+      </Modal>
+
     </div>
   )
 }

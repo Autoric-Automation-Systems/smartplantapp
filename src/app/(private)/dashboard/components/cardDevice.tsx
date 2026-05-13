@@ -18,7 +18,6 @@ export default async function CardDevice({ device }: { device: Device; }) {
     const configs = await fetchDataConfigs(device?.id);
     const configBattery = configs.find((config) => config.event_name === "battery");
     const configWifi = configs.find((config) => config.event_name === "wifi");
-    //console.log('Events for device ', events.length);
 
     const batteryEvents: typeof events = [];
     const eventsWithoutBattery: typeof events = [];
@@ -26,7 +25,7 @@ export default async function CardDevice({ device }: { device: Device; }) {
 
     for (const event of events) {
         if (event.name === "battery") {
-            if (batteryEvents.length < 2) batteryEvents.push(event);
+            batteryEvents.push(event);
         } else if (event.name === "wifi") {
             if (wifiEvents.length < 1) wifiEvents.push(event);
         } else {
@@ -48,7 +47,7 @@ export default async function CardDevice({ device }: { device: Device; }) {
             className="p-3 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
 
             {/* HEADER */}
-            <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className={`flex items-center justify-between gap-4 flex-wrap`}>
 
                 {/* ESQUERDA */}
                 <div className="flex flex-col leading-tight">
@@ -74,20 +73,13 @@ export default async function CardDevice({ device }: { device: Device; }) {
                     {/* Status */}
                     <StatusBadge online={online} />
 
-                    {online && (
-                        <>
-                            <WifiIndicator rssi={wifi} min={configWifi?.min} max={configWifi?.max} />
-                            <BatteryIndicator value={currentBattery} charging={charging} min={configBattery?.min} max={configBattery?.max} />
-                        </>
-                    )
-                    }
-
-
+                    {online && <WifiIndicator rssi={wifi} min={configWifi?.min} max={configWifi?.max} />}
+                    <BatteryIndicator batteryEvents={batteryEvents} charging={charging} min={configBattery?.min} max={configBattery?.max} />
                 </div>
             </div>
 
             {/* EVENTS */}
-            <div className={`grid grid-cols-2 md:grid-cols-3 gap-3 mt-4 transition-opacity ${online ? "opacity-100" : "opacity-50"}`}>
+            <div className={"grid grid-cols-2 md:grid-cols-3 gap-3 mt-4 transition-opacity"}>
                 {eventsTypes.map((type) => {
                     const eventsOfType = events.filter((event) => event.name === type);
                     const config = configs.find((config) => config.event_name === type);
