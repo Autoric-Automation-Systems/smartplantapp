@@ -1,5 +1,6 @@
 import Image from "next/image";
-import heroImg from "../../../../public/images/hero/hero.png";
+import heroMobile from "../../../../public/images/hero/hero_mobile.png";
+import heroDesktop from "../../../../public/images/hero/hero_desktop.png";
 import logoSPPS from "../../../../public/images/logo/logo_SP-PS.png";
 import logoSPTH from "../../../../public/images/logo/logo_SP-TH.png";
 import logoSPTL from "../../../../public/images/logo/logo_SP-TL.png";
@@ -43,10 +44,20 @@ export const Hero = () => {
   return (
     <>
       {/* Seção Hero com imagem industrial */}
-      <section className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden bg-gradient-to-br from-gray-900 to-black">
-        <div className="absolute inset-0 opacity-40">
+      <section className="relative w-full h-screen md:h-[85vh] overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+        <div className="absolute inset-0 opacity-40 md:hidden">
           <Image
-            src={heroImg}
+            src={heroMobile}
+            alt="Smart Plant App - Telemetria Industrial"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <div className="absolute inset-0 opacity-40 hidden md:block">
+          <Image
+            src={heroDesktop}
             alt="Smart Plant App - Telemetria Industrial"
             fill
             priority
