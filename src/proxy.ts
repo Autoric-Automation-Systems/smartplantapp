@@ -9,14 +9,16 @@ export async function proxy(request: Request) {
   const isPublicRoute =
     pathname === "/" ||
     pathname.startsWith("/signin") ||
-    pathname === "/signup";
+    pathname === "/signup" ||
+    pathname.startsWith("/terms")
+    ;
 
   if (!isPublicRoute && !session?.user) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   return NextResponse.next();
 }
-  
+
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

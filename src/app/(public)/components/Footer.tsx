@@ -8,7 +8,12 @@ import infoAPP from "@/lib/infoapp";
 
 export function Footer() {
   const navigation = ["Home"];
-  const legal = ["Terms", "Privacy", "Legal"];
+  const legal = [
+    { label: "Privacidade", href: "/terms/privacy" },
+    { label: "Termos", href: "/terms/service" },
+    { label: "Cookies", href: "/terms/cookies" },
+    { label: "Segurança", href: "/terms/security" },
+  ];
   return (
     <div className="relative">
       <Container>
@@ -70,19 +75,17 @@ export function Footer() {
             */}
           </div>
           <div>
-            {/*
             <div className="flex flex-wrap w-full -mt-2 -ml-3 lg:ml-0">
               {legal.map((item, index) => (
                 <Link
                   key={index}
-                  href="/"
+                  href={item.href}
                   className="w-full px-4 py-2 text-gray-500 rounded-md dark:text-gray-300 hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700"
                 >
-                  {item}
+                  {item.label}
                 </Link>
               ))}
             </div>
-            */}
           </div>
           {/*
           <div className="">
