@@ -1,16 +1,10 @@
-import { Container } from "./components/Container";
-import { Hero } from "./components/Hero";
-import { SectionTitle } from "./components/SectionTitle";
-import { Benefits } from "./components/Benefits";
-import { Video } from "./components/Video";
-import { Testimonials } from "./components/Testimonials";
-import { Faq } from "./components/Faq";
-import { Cta } from "./components/Cta";
+import { Hero } from "./sections/Hero";
 import { Metadata } from "next";
-
-
-import { benefitOne, benefitTwo } from "./components/data";
 import infoAPP from "@/lib/infoapp";
+import { Modules } from "./sections/Modules";
+import { Integrations } from "./sections/Integrations";
+import { Trends } from "./sections/Trends";
+import { Mobile } from "./sections/Mobile";
 
 export const metadata: Metadata = {
   title:
@@ -20,6 +14,12 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
+    <>
       <Hero />
-    )
+      <Mobile />
+      <Trends />
+      <Modules />
+      <Integrations />
+    </>
+  )
 }
