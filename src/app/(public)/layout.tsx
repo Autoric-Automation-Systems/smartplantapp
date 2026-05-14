@@ -7,6 +7,20 @@ import infoAPP from "@/lib/infoapp";
 export const metadata: Metadata = {
   title: `${infoAPP.name}`,
   description: infoAPP.description,
+  metadataBase: new URL('https://smartplant.app.br'),
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+  },
+  robots: {
+    follow: true,
+    index: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 };
 
 export default function PublicLayout({
