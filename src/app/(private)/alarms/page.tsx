@@ -9,7 +9,7 @@ import { fetchDataAllDevices } from "@/query/devices/data";
 
 export const metadata: Metadata = {
   title:
-    `Blank Page | ${infoAPP.name} ${infoAPP.version}`,
+    `Blank Page | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 

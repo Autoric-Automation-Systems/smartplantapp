@@ -9,7 +9,7 @@ import UserInfoCard from "../../components/UserCard";
 
 export const metadata: Metadata = {
   title:
-    `Users | ${infoAPP.name} ${infoAPP.version}`,
+    `Users | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 

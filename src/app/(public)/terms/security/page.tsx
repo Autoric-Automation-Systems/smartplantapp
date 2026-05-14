@@ -1,8 +1,11 @@
-'use client';
-
 import { Container } from '../../components/Container';
-import { SectionTitle } from '../../components/SectionTitle';
+import { Metadata } from "next";
+import infoAPP from "@/lib/infoapp";
 
+export const metadata: Metadata = {
+    title: `Security Policy | ${infoAPP.name}`,
+    description: infoAPP.description,
+};
 export default function SecurityPage() {
     return (
         <Container className="py-12">

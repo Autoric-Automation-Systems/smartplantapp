@@ -1,8 +1,11 @@
-'use client';
-
 import { Container } from '../../components/Container';
-import { Footer } from '../../components/Footer';
+import { Metadata } from "next";
+import infoAPP from "@/lib/infoapp";
 
+export const metadata: Metadata = {
+    title: `Terms of Service | ${infoAPP.name}`,
+    description: infoAPP.description,
+};
 export default function TermsOfServicePage() {
     return (
         <Container className="py-12">

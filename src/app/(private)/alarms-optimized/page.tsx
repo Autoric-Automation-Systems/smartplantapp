@@ -10,7 +10,7 @@ import { createParamCache } from "@/lib/cache-utils";
 import PaginationOptimized from "@/components/common/PaginationOptimized";
 
 export const metadata: Metadata = {
-  title: `Alarms Optimized | ${infoAPP.name} ${infoAPP.version}`,
+  title: `Alarms Optimized | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 

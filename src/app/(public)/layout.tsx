@@ -5,7 +5,7 @@ import { PopupWidget } from "./components/PopupWidget";
 import infoAPP from "@/lib/infoapp";
 
 export const metadata: Metadata = {
-  title: `Home | ${infoAPP.name} ${infoAPP.version}`,
+  title: `${infoAPP.name}`,
   description: infoAPP.description,
 };
 

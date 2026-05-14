@@ -11,7 +11,7 @@ import Skeleton from "@/components/common/skeleton";
 
 export const metadata: Metadata = {
   title:
-    `Company | ${infoAPP.name} ${infoAPP.version}`,
+    `Company | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 

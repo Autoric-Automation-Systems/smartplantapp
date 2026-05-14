@@ -1,7 +1,11 @@
-'use client';
-
+import { Metadata } from "next";
+import infoAPP from "@/lib/infoapp";
 import { Container } from '../../components/Container';
-import { Footer } from '../../components/Footer';
+
+export const metadata: Metadata = {
+    title: `Cookie Policy | ${infoAPP.name}`,
+    description: infoAPP.description,
+};
 
 export default function CookiePolicyPage() {
     return (

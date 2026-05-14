@@ -11,7 +11,7 @@ import PlantAdd from "./components/plant/PlantAdd";
 import { CurrentCompanyId } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: `Plants | ${infoAPP.name} ${infoAPP.version}`,
+  title: `Plants | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 
@@ -24,7 +24,7 @@ export default async function Page({
   const plants = await fetchDataPlants();
   const idcompany = await CurrentCompanyId();
   if (idcompany === null) {
-    return 
+    return
   }
   return (
     <div>

@@ -8,7 +8,7 @@ import MachineSkeleton from "../components/skeleton";
 import DashboardSkeleton from "../../dashboard/components/skeleton";
 
 export const metadata: Metadata = {
-  title: `Machine View | ${infoAPP.name} ${infoAPP.version}`,
+  title: `Machine View | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 

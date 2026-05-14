@@ -9,7 +9,7 @@ const infoAPP: InfoAppInterface = {
     name: "Smart Plant",
     site: "smartplant.app.br",
     version: "1.0",
-    description: "App for view devices values"
+    description: "Sistema integrado de telemetria para plantas residenciais, comerciais e industriais"
 }
 
 export default infoAPP;

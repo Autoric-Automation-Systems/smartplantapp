@@ -8,7 +8,7 @@ import ComponentCard from "@/components/common/ComponentCard";
 
 export const metadata: Metadata = {
   title:
-    `Profile | ${infoAPP.name} ${infoAPP.version}`,
+    `Profile | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 

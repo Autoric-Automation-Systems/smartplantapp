@@ -1,7 +1,11 @@
-'use client';
-
 import { Container } from '../../components/Container';
-import { SectionTitle } from '../../components/SectionTitle';
+import { Metadata } from "next";
+import infoAPP from "@/lib/infoapp";
+
+export const metadata: Metadata = {
+    title: `Privacy Policy | ${infoAPP.name}`,
+    description: infoAPP.description,
+};
 
 export default function PrivacyPage() {
     return (

@@ -8,13 +8,13 @@ import { fetchDataPlants } from "@/query/plants/data";
 import CardPlant from "./components/cardPlant";
 import Revalidate from "@/components/common/revalidate";
 import { Suspense } from 'react'
-import  DashboardSkeleton from "./components/skeleton";
+import DashboardSkeleton from "./components/skeleton";
 import { CurrentCompany } from "@/lib/utils";
 import { formatDateTimeDb } from "@/lib/formatTime";
- 
+
 export const metadata: Metadata = {
   title:
-    `Dashboard | ${infoAPP.name} ${infoAPP.version}`,
+    `Dashboard | ${infoAPP.name}`,
   description: infoAPP.description,
 };
 
@@ -29,8 +29,8 @@ export default async function Page({ props }: { props: propsPage }) {
         <MsgPage />
         <Suspense fallback={<DashboardSkeleton />}>
           {(await plants).map((plant) => (
-            <ComponentCard key={plant.id} title={plant.name} 
-            className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
+            <ComponentCard key={plant.id} title={plant.name}
+              className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
               <CardPlant plant={plant} />
             </ComponentCard>
           ))}
