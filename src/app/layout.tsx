@@ -7,7 +7,10 @@ import { Metadata } from "next";
 const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: `${infoAPP.name}`,
+  title: {
+    template: `%s | ${infoAPP.name}`,
+    default: infoAPP.name,
+  },
   description: infoAPP.description,
   metadataBase: new URL('https://smartplant.app.br'),
   openGraph: {
@@ -15,23 +18,15 @@ export const metadata: Metadata = {
     description: infoAPP.description,
     url: infoAPP.url,
     siteName: infoAPP.name,
-    images: [
-      {
-        url: `${infoAPP.url}/images/Opengraph.png`,
-        width: 1200,
-        height: 630,
-        alt: infoAPP.name,
-      },
-    ],
-    locale: "pt_BR",
-    type: "website",
+    images: [{ url: `${infoAPP.url}/images/Opengraph.png` }],
   },
 
   twitter: {
     card: "summary_large_image",
+    site: `@${infoAPP.name}`,
     title: infoAPP.name,
     description: infoAPP.description,
-    images: [`${infoAPP.url}/images/Opengraph.png`],
+    images: `${infoAPP.url}/images/Opengraph.png`,
   },
   robots: {
     follow: true,

@@ -5,9 +5,8 @@ import { propsPage } from "@/lib/types";
 import MsgPage from "@/components/common/msgPage";
 
 export const metadata: Metadata = {
-  title:
-    `Home | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: "Home",
+  description: "Welcome to the Home page of Smart Plant - Your intelligent gardening companion.",
 };
 
 export default async function Page({ props }: { props: propsPage }) {

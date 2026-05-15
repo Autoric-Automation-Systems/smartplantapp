@@ -11,8 +11,8 @@ import PlantAdd from "./components/plant/PlantAdd";
 import { CurrentCompanyId } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: `Plants | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: "Plants Settings",
+  description: "Manage your plants and their settings.",
 };
 
 export default async function Page({

@@ -9,9 +9,8 @@ import Skeleton from "@/components/common/skeleton";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title:
-    `Users | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: "Users",
+  description: "View and manage user information.",
 };
 
 export default async function Page({

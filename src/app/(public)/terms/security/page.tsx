@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
 
 export const metadata: Metadata = {
-    title: `Security Policy | ${infoAPP.name}`,
-    description: infoAPP.description,
+    title: `Security Policy`,
+    description: "Security Policy for Smart Plant - Learn how we implement security measures to protect your data and ensure a safe experience when using our app. Understand our commitment to maintaining the highest standards of security.",
 };
 export default function SecurityPage() {
     return (

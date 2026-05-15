@@ -7,8 +7,7 @@ import { Trends } from "./sections/Trends";
 import { Mobile } from "./sections/Mobile";
 
 export const metadata: Metadata = {
-  title:
-    `Home | ${infoAPP.name} ${infoAPP.version}`,
+  title: "Home",
   description: infoAPP.description,
 };
 

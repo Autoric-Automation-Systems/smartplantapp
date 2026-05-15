@@ -7,9 +7,8 @@ import Skeleton from "@/components/common/skeleton";
 import ComponentCard from "@/components/common/ComponentCard";
 
 export const metadata: Metadata = {
-  title:
-    `Profile | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: "Profile",
+  description: "View and manage your profile information.",
 };
 
 export default async function Profile() {

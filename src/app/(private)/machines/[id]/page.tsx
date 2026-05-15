@@ -8,8 +8,8 @@ import MachineSkeleton from "../components/skeleton";
 import DashboardSkeleton from "../../dashboard/components/skeleton";
 
 export const metadata: Metadata = {
-  title: `Machine View | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: "Machine View",
+  description: "View details and events for the selected machine.",
 };
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {

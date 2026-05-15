@@ -10,8 +10,8 @@ import { createParamCache } from "@/lib/cache-utils";
 import PaginationOptimized from "@/components/common/PaginationOptimized";
 
 export const metadata: Metadata = {
-  title: `Alarms Optimized | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: "Alarms Optimized",
+  description: "View all active alarms and their details.",
 };
 
 // Cache para alarms com parâmetros (5 minutos)

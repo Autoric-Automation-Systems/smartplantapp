@@ -13,9 +13,8 @@ import { CurrentCompany } from "@/lib/utils";
 import { formatDateTimeDb } from "@/lib/formatTime";
 
 export const metadata: Metadata = {
-  title:
-    `Dashboard | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: `Dashboard`,
+  description: "Dashboard do Smart Plant - Acompanhe o desempenho das suas plantas, visualize dados em tempo real e tome decisões informadas para otimizar o crescimento e a saúde das suas plantas. Acesse insights valiosos e monitore o progresso do seu jardim inteligente com facilidade.",
 };
 
 export default async function Page({ props }: { props: propsPage }) {

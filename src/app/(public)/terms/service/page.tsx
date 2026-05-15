@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
 
 export const metadata: Metadata = {
-    title: `Terms of Service | ${infoAPP.name}`,
-    description: infoAPP.description,
+    title: `Terms of Service`,
+    description: "Terms of Service for Smart Plant - Understand the rules and guidelines for using our app. Learn about your rights and responsibilities when accessing and using the Smart Plant Service.",
 };
 export default function TermsOfServicePage() {
     return (

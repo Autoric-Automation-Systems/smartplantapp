@@ -8,9 +8,8 @@ import { fetchDataAllAlarms } from "@/query/alarms/data";
 import { fetchDataAllDevices } from "@/query/devices/data";
 
 export const metadata: Metadata = {
-  title:
-    `Blank Page | ${infoAPP.name}`,
-  description: infoAPP.description,
+  title: "Alarms",
+  description: "View all active alarms and their details.",
 };
 
 export default async function Page({ props }: { props: propsPage }) {

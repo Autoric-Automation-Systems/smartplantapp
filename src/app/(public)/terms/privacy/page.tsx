@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
 
 export const metadata: Metadata = {
-    title: `Privacy Policy | ${infoAPP.name}`,
-    description: infoAPP.description,
+    title: `Privacy Policy`,
+    description: "Privacy Policy for Smart Plant - Learn how we collect, use, disclose, and protect your personal information when you use our app. Understand your rights and how to manage your privacy preferences.",
 };
 
 export default function PrivacyPage() {

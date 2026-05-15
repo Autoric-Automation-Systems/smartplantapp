@@ -3,8 +3,8 @@ import infoAPP from "@/lib/infoapp";
 import { Container } from '../../components/Container';
 
 export const metadata: Metadata = {
-    title: `Cookie Policy | ${infoAPP.name}`,
-    description: infoAPP.description,
+    title: "Cookie Policy",
+    description: "Cookies Policy for Smart Plant - Learn how we use cookies to enhance your experience, ensure security, and provide personalized features. Understand your choices and manage your cookie preferences effectively.",
 };
 
 export default function CookiePolicyPage() {
