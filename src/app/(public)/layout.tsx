@@ -30,6 +30,16 @@ export const metadata: Metadata = {
     description: infoAPP.description,
     images: [`${infoAPP.url}/images/Opengraph.png`],
   },
+  robots: {
+    follow: true,
+    index: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+
 };
 
 export default function PublicLayout({
