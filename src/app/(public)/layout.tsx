@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
-import { PopupWidget } from "./components/PopupWidget";
 import infoAPP from "@/lib/infoapp";
 
 export const metadata: Metadata = {
@@ -9,17 +8,27 @@ export const metadata: Metadata = {
   description: infoAPP.description,
   metadataBase: new URL('https://smartplant.app.br'),
   openGraph: {
-    type: 'website',
-    locale: 'pt_BR',
+    title: infoAPP.name,
+    description: infoAPP.description,
+    url: infoAPP.url,
+    siteName: infoAPP.name,
+    images: [
+      {
+        url: `${infoAPP.url}/images/Opengraph.png`,
+        width: 1200,
+        height: 630,
+        alt: infoAPP.name,
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
   },
-  robots: {
-    follow: true,
-    index: true,
-    nocache: true,
-    googleBot: {
-      index: true,
-      follow: true,
-    },
+
+  twitter: {
+    card: "summary_large_image",
+    title: infoAPP.name,
+    description: infoAPP.description,
+    images: [`${infoAPP.url}/images/Opengraph.png`],
   },
 };
 
@@ -33,7 +42,6 @@ export default function PublicLayout({
       <Navbar />
       <div>{children}</div>
       <Footer />
-      {/*<PopupWidget /> */}
     </>
   );
 }
