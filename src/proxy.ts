@@ -11,6 +11,8 @@ export async function proxy(request: Request) {
     pathname === "/" ||
     pathname.startsWith("/signin") ||
     pathname === "/signup" ||
+    pathname === "/reset-password" ||
+    pathname === "/confirm" ||
     pathname.startsWith("/terms")
     ;
 
