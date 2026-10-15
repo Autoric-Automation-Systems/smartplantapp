@@ -5,7 +5,6 @@ export async function proxy(request: Request) {
   const session = await auth();
   const { pathname } = new URL(request.url);
   const isLoggedIn = !!session?.user;
-  //console.log("PROXY EXECUTOU", pathname);
 
   const isPublicRoute =
     pathname === "/" ||
@@ -17,7 +16,6 @@ export async function proxy(request: Request) {
     ;
 
   if (!isPublicRoute && !isLoggedIn) {
-    console.log("PROXY REDIRECIONOU PARA HOME", pathname);
     return NextResponse.redirect(new URL("/", request.url));
   }
   return NextResponse.next();

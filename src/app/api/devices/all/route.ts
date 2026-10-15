@@ -1,8 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
 import { fetchDataAllDevices } from '@/query/devices/data';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
+        const session = await auth();
+        if (!session?.user?.email) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const allDevices = await fetchDataAllDevices();
 
         return NextResponse.json(allDevices);

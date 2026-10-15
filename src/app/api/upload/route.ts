@@ -1,9 +1,8 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-//import { getServerSession } from "next-auth";
+//
 
-import { deleteUnusedFiles } from '@/lib/deleteUnusedFiles';
 import { CurrentUser } from '@/lib/utils';
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -22,14 +21,11 @@ export async function POST(request: Request): Promise<NextResponse> {
         // Otherwise, you're allowing anonymous uploads.
         //const session = await auth();
         const session = await auth();
-        //console.log("Session:", session);
         if (!session || !session.user) {
           throw new Error('Not authenticated');
         } else {
-          //console.log("Authenticated user:", session.user);
         }
         const currentUser = await CurrentUser();
-        //console.log("Current user:", currentUser);
         return {
           allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif', 'document/pdf', 'application/pdf'],
           addRandomSuffix: true,
@@ -45,7 +41,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         // ⚠️ This will not work on `localhost` websites,
         // Use ngrok or similar to get the full upload flow
 
-
         try {
           const { userId } = JSON.parse(tokenPayload || '{}');
           // Run any logic after the file upload completed
@@ -56,8 +51,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         }
       },
     });
-
-    //deleteUnusedFiles();
 
     return NextResponse.json(jsonResponse);
   } catch (error) {

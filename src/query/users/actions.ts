@@ -5,6 +5,13 @@ import { redirect } from 'next/navigation';
 import { sql } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { deleteUnusedFiles } from '@/lib/deleteUnusedFiles';
+import {
+  assertUserInCompany,
+  guard,
+  isAdminRole,
+  resolveRoleForWrite,
+} from '@/lib/authz';
+import { CurrentCompanyId, CurrentUser } from '@/lib/utils';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -13,8 +20,8 @@ const FormSchema = z.object({
   email: z.string().optional(),
   password: z.string(),
   avatarurl: z.string().optional(),
-  role: z.string(),
-  idcompany: z.string(),
+  role: z.string().optional(),
+  idcompany: z.string().optional(),
   bio: z.string().optional(),
   phone: z.string().optional(),
 });
@@ -33,14 +40,12 @@ export type State = {
 };
 
 export async function createData(prevState: State, formData: FormData) {
-  //console.log('FormData:', Object.fromEntries(formData.entries()));
   const validatedFields = CreateData.safeParse({
     name: formData.get('name'),
     lastname: formData.get('lastname'),
     email: formData.get('email'),
     password: formData.get('password'),
     role: formData.get('role'),
-    idcompany: formData.get('idcompany'),
     avatarurl: formData.get('avatarurl'),
   });
 
@@ -50,7 +55,17 @@ export async function createData(prevState: State, formData: FormData) {
       message: 'Missing Fields. Failed to Create.',
     };
   }
-  const { name, lastname, email, password, role, idcompany, avatarurl } = validatedFields.data;
+  const {
+    name,
+    lastname,
+    email,
+    password,
+    role: submittedRole,
+    avatarurl,
+  } = validatedFields.data;
+  // The company comes from the session; the role only changes when an admin submits it.
+  const idcompany = await CurrentCompanyId();
+  const role = await resolveRoleForWrite(submittedRole, 'user');
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
@@ -75,7 +90,6 @@ export async function updateData(
   prevState: State,
   formData: FormData
 ) {
-  //console.log('FormData:', Object.fromEntries(formData.entries()));
   const validatedFields = UpdateData.safeParse({
     name: formData.get('name'),
     lastname: formData.get('lastname'),
@@ -86,37 +100,51 @@ export async function updateData(
     phone: formData.get('phone'),
   });
 
-
   if (!validatedFields.success) {
-    console.log(validatedFields.error);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update.',
     };
   }
 
+  const {
+    name,
+    password,
+    role: submittedRole,
+    avatarurl,
+    bio,
+    phone,
+  } = validatedFields.data;
+  const idcompany = await CurrentCompanyId();
+  await guard('/users', assertUserInCompany(id, idcompany));
 
-  const { name, password, role, avatarurl, bio, phone } = validatedFields.data;
-  //const hashedPassword = await bcrypt.hash(password, 10);
+  const current = await sql`
+    SELECT role FROM public.users WHERE id = ${id} AND idcompany = ${idcompany}
+  `;
+  const role = await resolveRoleForWrite(
+    submittedRole,
+    (current[0]?.role as string) ?? 'user'
+  );
+  // A senha só pode ser trocada pelo próprio usuário ou por um administrador.
+  const caller = await CurrentUser();
+  const canChangePassword = caller?.id === id || isAdminRole(caller?.role);
+  const newPassword = canChangePassword ? password : '';
 
   try {
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      //console.log('Senha' + password);
-      //console.log('Senha Criptografada' + hashedPassword);
+    if (newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
 
       await sql`
         UPDATE public.users
         SET name = ${name}, lastname = ${validatedFields.data.lastname}, password = ${hashedPassword}, role = ${role}, avatarurl = ${avatarurl}, bio = ${bio}, phone = ${phone}
-        WHERE id = ${id}
+        WHERE id = ${id} AND idcompany = ${idcompany}
       `;
     } else {
-      //console.log(password);
 
       await sql`
         UPDATE public.users
         SET name = ${name}, lastname = ${validatedFields.data.lastname}, role = ${role}, avatarurl = ${avatarurl}, bio = ${bio}, phone = ${phone}
-        WHERE id = ${id}
+        WHERE id = ${id} AND idcompany = ${idcompany}
       `;
     }
   } catch (error) {
@@ -129,24 +157,11 @@ export async function updateData(
   );
 }
 
-export async function updateUserPassword(id: string, password: string) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  try {
-    await sql`
-    UPDATE public.users 
-    SET password = ${hashedPassword} 
-    WHERE id = ${id}
-  `;
-  } catch (error) {
-    return { message: 'Database Error: Failed to Update User.' };
-  }
-}
-
 export async function deleteData(id: string) {
-  //throw new Error('Failed to Delete Invoice');
+  const idcompany = await CurrentCompanyId();
+  await guard('/users', assertUserInCompany(id, idcompany));
 
-  await sql`DELETE FROM public.users WHERE id = ${id}`;
+  await sql`DELETE FROM public.users WHERE id = ${id} AND idcompany = ${idcompany}`;
   revalidatePath('/settings/users');
   redirect(
     '/users?title=Sucesso&message=A exclusão foi um sucesso!&type=success'

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { sql } from '@/lib/db';
+import { assertDeviceInCompany, assertLabelInCompany, guard } from '@/lib/authz';
+import { CurrentCompanyId } from '@/lib/utils';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -43,7 +45,6 @@ export async function updateData(
   prevState: State,
   formData: FormData
 ) {
-  //console.log('Received form data:', Object.fromEntries(formData.entries()));
   const validatedFields = UpdateData.safeParse({
     id: formData.get('id'),
     device_id: formData.get('device_id'),
@@ -60,7 +61,6 @@ export async function updateData(
   });
 
   if (!validatedFields.success) {
-    console.log(validatedFields.error);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update.',
@@ -68,6 +68,9 @@ export async function updateData(
   }
 
   const { id, device_id, count, event1, event2, event3, event1_on, event1_off, event2_on, event2_off, event3_on, event3_off } = validatedFields.data;
+  const idcompany = await CurrentCompanyId();
+  await guard('/plants', assertLabelInCompany(id, idcompany));
+  await guard('/plants', assertDeviceInCompany(device_id, idcompany));
 
   try {
 
@@ -86,41 +89,3 @@ export async function updateData(
   );
 }
 
-export async function deleteLabel(id: string) {
-
-  await sql`DELETE FROM public.labels WHERE id = ${id}`;
-
-  revalidatePath('/plants');
-  redirect(
-    '/plants?title=Sucesso&message=A exclusão foi um sucesso!&type=success'
-  );
-
-}
-
-export async function createLabel(
-  device_id: string,
-) {
-
-  const defaut = {
-    count: "count",
-    event1: "event1",
-    event2: "event2",
-    event3: "event3",
-    event1_on: "ON",
-    event1_off: "OFF",
-    event2_on: "ON",
-    event2_off: "OFF",
-    event3_on: "ON",
-    event3_off: "OFF"
-  };
-
-  try {
-    await sql`
-        INSERT INTO public.labels (device_id, count, event1, event2, event3, event1_on, event1_off, event2_on, event2_off, event3_on, event3_off)
-        VALUES (${device_id}, ${defaut.count}, ${defaut.event1}, ${defaut.event2}, ${defaut.event3}, ${defaut.event1_on}, ${defaut.event1_off}, ${defaut.event2_on}, ${defaut.event2_off}, ${defaut.event3_on}, ${defaut.event3_off})
-      `;
-  } catch (error) {
-    console.error('Database error:', error);
-    return { message: 'Database Error: Failed to Create Label.' };
-  }
-}

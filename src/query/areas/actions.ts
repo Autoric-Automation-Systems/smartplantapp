@@ -4,7 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { sql } from '@/lib/db';
 import { fetchDataMachines } from '../machines/data';
-import { deleteMachine } from '../machines/actions';
+
+import { assertAreaInCompany, assertPlantInCompany, guard } from '@/lib/authz';
+import { CurrentCompanyId } from '@/lib/utils';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -35,6 +37,8 @@ export async function createData(prevState: State, formData: FormData) {
     };
   }
   const { name, idplant } = validatedFields.data;
+  const idcompany = await CurrentCompanyId();
+  await guard('/plants', assertPlantInCompany(idplant, idcompany));
 
   try {
     await sql`
@@ -62,17 +66,16 @@ export async function updateData(
     name: formData.get('name'),
   });
 
-
   if (!validatedFields.success) {
-    //console.log(validatedFields.error);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update.',
     };
   }
 
-
   const { name } = validatedFields.data;
+  const idcompany = await CurrentCompanyId();
+  await guard('/plants', assertAreaInCompany(id, idcompany));
 
   try {
 
@@ -91,6 +94,9 @@ export async function updateData(
 }
 
 export async function deleteArea(id: string) {
+  const idcompany = await CurrentCompanyId();
+  await guard('/plants', assertAreaInCompany(id, idcompany));
+
   const machinesNumber = (await fetchDataMachines(id)).length;
 
   if (machinesNumber === 0) {

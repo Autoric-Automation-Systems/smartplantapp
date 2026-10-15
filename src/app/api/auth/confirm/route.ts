@@ -5,8 +5,12 @@ import bcrypt from "bcryptjs";
 export async function POST(req: Request) {
   const { token, password } = await req.json();
 
-  if (!token || password.length < 6) {
-    return NextResponse.json({ error: "Token inválido ou senha muito curta." }, { status: 400 });
+  if (typeof token !== "string" || !token) {
+    return NextResponse.json({ error: "Token inválido." }, { status: 400 });
+  }
+
+  if (typeof password !== "string" || password.length < 6 || password.length > 200) {
+    return NextResponse.json({ error: "Senha inválida." }, { status: 400 });
   }
 
   const tokenResult = await sql`

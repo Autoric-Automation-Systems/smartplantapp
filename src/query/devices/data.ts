@@ -1,6 +1,6 @@
 import { sql } from '@/lib/db';
 import { Device } from '@/query/devices/definitions';
-import { CurrentCompanyId } from '@/lib/optimized-utils';
+import { CurrentCompanyId } from '@/lib/utils';
 
 export async function fetchDataDevices(idmachine: string) {
   try {
@@ -43,26 +43,6 @@ export async function fetchDataAllDevices(page = 1, limit = 100) {
   }
 }
 
-export async function fetchDevicesCount() {
-  try {
-    // Obter o companyId ANTES de usar na query
-    const companyId = await CurrentCompanyId();
-
-    const count = await sql`
-      SELECT COUNT(*) as total
-      FROM public.devices d
-      JOIN public.machines m ON d.idmachine = m.id
-      JOIN public.areas a ON m.idarea = a.id
-      JOIN public.plants p ON a.idplant = p.id
-      WHERE p.idcompany = ${companyId}
-    `;
-    return parseInt(count[0]?.total || '0');
-  } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch devices count.');
-  }
-}
-
 export async function fetchDataDevicesNoMachine() {
   try {
     const data = await sql`
@@ -79,18 +59,3 @@ export async function fetchDataDevicesNoMachine() {
   }
 }
 
-export async function fetchById(id: string) {
-  try {
-    const data = await sql`
-      SELECT id, name, idmachine, created_at
-        FROM public.devices
-        WHERE devices.id = ${id} `;
-
-    const device = data[0];
-    //console.log('Fetched Device:', device);
-    return device as Device;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch device.');
-  }
-}

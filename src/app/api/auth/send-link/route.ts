@@ -29,6 +29,9 @@ export async function POST(req: Request) {
       const insertedUser = await sql`INSERT INTO public.users (email) VALUES (${email}) RETURNING id, email`;
       user = insertedUser[0];
     }
+    // Invalida links anteriores para não acumular tokens válidos
+    await sql`DELETE FROM public.auth_tokens WHERE user_id = ${user.id}`;
+
     // Gerar um token temporário
     const token = generateToken();
     const expiresAt = new Date(Date.now() + 1000 * 60 * 30).toISOString(); // Converte para string

@@ -1,11 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@/lib/db';
-import { CurrentCompanyId } from '@/lib/utils';
+import { NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
 import { fetchRecentAlarms } from '@/query/alarms/data';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
-        const currentCompanyId = await CurrentCompanyId();
+        const session = await auth();
+        if (!session?.user?.email) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const recentAlarms = await fetchRecentAlarms()
 
         return NextResponse.json(recentAlarms);

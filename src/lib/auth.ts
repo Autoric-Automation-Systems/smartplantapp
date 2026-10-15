@@ -1,15 +1,14 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
-import { DefaultSession, User } from "next-auth";
+import { DefaultSession, User } from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
-import { JWT } from "next-auth/jwt";
-import { AdapterUser } from "next-auth/adapters";
-import bcrypt from "bcryptjs";
-import { z } from "zod";
-import { fetchByEmail } from "@/query/users/data";
-import Google from "next-auth/providers/google"
-import { Company } from "@/query/companies/definitions";
-import { sql } from '@/lib/db';
+import { JWT } from 'next-auth/jwt';
 
+import bcrypt from "bcryptjs";
+import { z } from 'zod';
+import { fetchByEmail } from '@/query/users/data';
+import Google from "next-auth/providers/google"
+import { Company } from '@/query/companies/definitions';
+import { sql } from '@/lib/db';
 
 declare module "next-auth" {
   interface Session {
@@ -33,7 +32,7 @@ declare module "next-auth/jwt" {
 
 export const authOptions: NextAuthConfig = {
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
   },
   providers: [
     CredentialsProvider({
@@ -49,23 +48,34 @@ export const authOptions: NextAuthConfig = {
           .safeParse(credentials);
 
         if (!parsedCredentials.success) {
-          console.log("Credenciais inválidas");
           return null;
         }
 
         const { email, password } = parsedCredentials.data;
         const user = await fetchByEmail(email);
-        //console.log("Usuário encontrado:", user);
         if (!user) {
-          //console.log("Usuário não encontrado.");
           return null;
         }
 
         const passwordsMatch = await bcrypt.compare(password, user?.password);
         if (!passwordsMatch) {
-          //console.log("Senha incorreta.");
           return null;
         }
+
+        // Contas criadas pelo fluxo de convite não têm empresa até o primeiro acesso
+        if (!user.idcompany) {
+          const company = await sql`
+            INSERT INTO public.companies (name)
+            VALUES ('New Company')
+            RETURNING id
+          `;
+          await sql`
+            UPDATE public.users
+            SET idcompany = ${company[0].id}
+            WHERE id = ${user.id}
+          `;
+        }
+
         return {
           id: user.id,
           name: user.name,
@@ -83,14 +93,13 @@ export const authOptions: NextAuthConfig = {
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 24 * 7, // 7 dias
-    updateAge: 60 * 60 * 2 // Atualiza o token a cada 1 hora
+    updateAge: 60 * 60 * 2 // Atualiza o token a cada 2 horas
   },
   jwt: {
     maxAge: 60 * 60 * 24 * 7 // Expiração do token JWT
   },
   callbacks: {
     async jwt({ token, user }) {
-      //console.log("Dados do usuário no JWT antes:", token); // Debug
       if (user) {
         return {
           ...token,
@@ -100,7 +109,6 @@ export const authOptions: NextAuthConfig = {
           role: (user as User).role
         } as JWT;
       }
-      //console.log("Token final com role:", token); // Debug
       return token;
     },
     async session({ session, token }) {
@@ -133,6 +141,20 @@ export const authOptions: NextAuthConfig = {
             VALUES (${user.name}, ${user.email}, 'admin', ${idcompany}, ${user.image})
           `;
 
+        } else if (!existingUser.idcompany) {
+          // Completes onboarding for accounts created by the invite flow,
+          // which exist without a company until the first sign in.
+          const result = await sql`
+            INSERT INTO public.companies (name)
+            VALUES ('New Company')
+            RETURNING id
+          `;
+
+          await sql`
+            UPDATE public.users
+            SET idcompany = ${result[0].id}, avatarurl = ${user.image}
+            WHERE email = ${user.email}
+          `;
         } else {
           await sql`
             UPDATE public.users

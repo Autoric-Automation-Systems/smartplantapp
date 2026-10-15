@@ -4,6 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { sql } from '@/lib/db';
 import { fetchDataAreas } from '../areas/data';
+import { assertPlantInCompany, guard } from '@/lib/authz';
+import { CurrentCompanyId } from '@/lib/utils';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -11,7 +13,7 @@ const FormSchema = z.object({
   idcompany: z.string()
 });
 
-const CreateData = FormSchema.omit({ id: true });
+const CreateData = FormSchema.omit({ id: true, idcompany: true });
 const UpdateData = FormSchema.omit({ id: true, idcompany: true });
 
 export type State = {
@@ -24,7 +26,6 @@ export type State = {
 export async function createData(prevState: State, formData: FormData) {
   const validatedFields = CreateData.safeParse({
     name: formData.get('name'),
-    idcompany: formData.get('idcompany'),
   });
 
   if (!validatedFields.success) {
@@ -33,7 +34,9 @@ export async function createData(prevState: State, formData: FormData) {
       message: 'Missing Fields. Failed to Create.',
     };
   }
-  const { name, idcompany } = validatedFields.data;
+  const { name } = validatedFields.data;
+  // The owning company always comes from the session, never from the form.
+  const idcompany = await CurrentCompanyId();
 
   try {
     await sql`
@@ -61,24 +64,23 @@ export async function updateData(
     name: formData.get('name'),
   });
 
-
   if (!validatedFields.success) {
-    console.log(validatedFields.error);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update.',
     };
   }
 
-
   const { name } = validatedFields.data;
+  const idcompany = await CurrentCompanyId();
+  await guard('/plants', assertPlantInCompany(id, idcompany));
 
   try {
 
     await sql`
         UPDATE public.plants
         SET name = ${name}
-        WHERE id = ${id}
+        WHERE id = ${id} AND idcompany = ${idcompany}
       `;
   } catch (error) {
     return { message: 'Database Error: Failed to Update Plant.' };
@@ -90,9 +92,12 @@ export async function updateData(
 }
 
 export async function deleteData(id: string) {
+  const idcompany = await CurrentCompanyId();
+  await guard('/plants', assertPlantInCompany(id, idcompany));
+
   const areasNumber = (await fetchDataAreas(id)).length;
   if (areasNumber === 0) {
-    await sql`DELETE FROM public.plants WHERE id = ${id}`;
+    await sql`DELETE FROM public.plants WHERE id = ${id} AND idcompany = ${idcompany}`;
     revalidatePath('/plants');
     redirect(
       '/plants?title=Sucesso&message=A exclusão foi um sucesso!&type=success'

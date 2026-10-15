@@ -10,5 +10,13 @@ export async function GET() {
     }
 
     const user = await fetchByEmail(session.user.email);
-    return NextResponse.json(user);
+
+    if (!user) {
+        return NextResponse.json(null, { status: 404 });
+    }
+
+    // Nunca expor o hash da senha para o cliente
+    const { password, ...publicUser } = user;
+
+    return NextResponse.json(publicUser);
 }

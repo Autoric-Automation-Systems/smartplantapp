@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
+import { isDeviceRequestAuthorized } from "@/lib/authz";
 import { fetchDataConfigs } from "@/query/configs/data";
-import { createConfig } from "@/query/configs/actions";
+import { insertConfig } from "@/query/configs/internal";
 import { fetchDataLabel } from "@/query/labels/data";
-import { createLabel } from "@/query/labels/actions";
+import { insertLabel } from "@/query/labels/internal";
 
 export async function POST(request: Request) {
-  //console.log("Chegou Eventos");
+  // Hardware endpoints: gated by DEVICE_API_KEY when it is configured.
+  if (!isDeviceRequestAuthorized(request)) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
 
   try {
     const body = await request.json();
@@ -54,13 +58,13 @@ export async function POST(request: Request) {
       );
 
       if (configs.length === 0) {
-        await createConfig(deviceId, ev.name);
+        await insertConfig(deviceId, ev.name);
       }
 
       if (ev.name === "count" || ev.name === "event1" || ev.name === "event2" || ev.name === "event3") {
         const label = await fetchDataLabel(deviceId);
         if (!label) {
-          await createLabel(deviceId);
+          await insertLabel(deviceId);
         }
       }
     }

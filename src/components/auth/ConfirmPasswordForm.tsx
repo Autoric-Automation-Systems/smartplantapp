@@ -42,7 +42,7 @@ export default function ConfirmPasswordForm() {
     }
 
     alert("Senha cadastrada com sucesso!");
-    router.push("/login");
+    router.push("/signin");
   };
 
   return (

@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
+import { isDeviceRequestAuthorized } from "@/lib/authz";
 
 export async function POST(request: Request) {
-  console.log("Chegou Heartbeat");
+  // Hardware endpoints: gated by DEVICE_API_KEY when it is configured.
+  if (!isDeviceRequestAuthorized(request)) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
   try {
 
     const body = await request.json();
@@ -24,7 +29,7 @@ export async function POST(request: Request) {
     `;
 
     if (device.length === 0) {
-      console.log("Device not found, creating new device");
+
       try {
         await sql`
         INSERT INTO public.devices
@@ -35,16 +40,14 @@ export async function POST(request: Request) {
 
       } catch (error) {
         console.error(error);
-        console.log("Error inserting device:", error);
+        console.error("Error inserting device:", error);
         return NextResponse.json(
           { error: "server error" },
           { status: 500 }
         );
       }
 
-
     } else {
-      console.log("Device found, updating heartbeat");
       try {
         await sql`
         UPDATE public.devices
@@ -55,7 +58,7 @@ export async function POST(request: Request) {
       `;
       } catch (error) {
         console.error(error);
-        console.log("Error updating device:", error);
+        console.error("Error updating device:", error);
         return NextResponse.json(
           { error: "server error" },
           { status: 500 }
