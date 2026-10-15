@@ -11,7 +11,6 @@ export default function InfoCard({ company }: { company: Company }) {
   const { isOpen, openModal, closeModal } = useModal();
   const handleSave = () => {
     // Handle save logic here
-    //console.log("Saving changes...");
     closeModal();
   };
   return (

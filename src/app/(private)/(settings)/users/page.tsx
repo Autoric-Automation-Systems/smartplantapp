@@ -1,11 +1,11 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
-import MsgPage from "@/components/common/msgPage";
+import MsgPage from "@/components/common/MsgPage";
 import ComponentCard from "@/components/common/ComponentCard";
 import { fetchData } from "@/query/users/data";
 import UserCard from "./components/UserCard";
-import Skeleton from "@/components/common/skeleton";
+import Skeleton from "@/components/common/Skeleton";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {

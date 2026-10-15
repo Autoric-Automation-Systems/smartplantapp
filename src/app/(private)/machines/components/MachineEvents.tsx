@@ -8,7 +8,6 @@ export default function MachineEvents({ idmachine }: { idmachine: string }) {
 
     const [events, setEvents] = useState<any[]>([]);
 
-
     useEffect(() => {
         async function loadEvents() {
             const res = await fetch(`/api/machines/${idmachine}/events`, {

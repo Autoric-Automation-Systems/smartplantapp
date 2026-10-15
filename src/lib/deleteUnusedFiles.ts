@@ -23,8 +23,6 @@ export async function deleteUnusedFiles() {
 
     // 2. Busca todos os arquivos do storage
     const allFiles = await listAllBlobFiles();
-    //console.log("All files in storage:", allFiles.length);
-
 
     // 3. Filtra arquivos não usados
     interface BlobFile {
@@ -44,7 +42,6 @@ export async function deleteUnusedFiles() {
     for (const file of unusedFiles) {
         await del(file.url);
     }
-    //console.log("Deleted unused files:", unusedFiles.length);
 
     return { deleted: unusedFiles.length };
 }

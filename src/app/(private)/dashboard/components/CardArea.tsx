@@ -1,5 +1,5 @@
 import { fetchDataMachines } from "@/query/machines/data";
-import CardMachine from "./cardMachine";
+import CardMachine from "./CardMachine";
 import ComponentCard from "@/components/common/ComponentCard";
 import Link from "next/link";
 

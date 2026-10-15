@@ -1,15 +1,15 @@
 "use client";
-import { useModal } from "@/hooks/useModal";
-import { Modal } from "@/components/ui/modal";
+import { useModal } from '@/hooks/useModal';
+import { Modal } from '@/components/ui/modal';
 import Button from "@/components/ui/button/Button";
 import EditForm from "./DeviceEditForm";
-import { Device } from "@/query/devices/definitions";
-import { PencilIcon } from "@/icons";
+import { Device } from '@/query/devices/definitions';
+import { PencilIcon } from '@/icons';
 import DeviceDelete from "./DeviceDelete";
-import { formatDateTimeDb, formatDateToLocal, formatDateToTimeDb, formatTime, FullDateToDateTime } from "@/lib/formatTime";
-import { Config } from "@/query/configs/definitions";
+import { formatDateTimeDb} from '@/lib/formatTime';
+import { Config } from '@/query/configs/definitions';
 import ConfigEditForm from "./ConfigEditForm";
-import { Label } from "@/query/labels/definitions";
+import { Label } from '@/query/labels/definitions';
 import LabelEditForm from "./LabelEditForm";
 
 export default function DeviceCard({ device, configs, label }: { device: Device; configs: Config[]; label: Label }) {

@@ -2,8 +2,8 @@ import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
 import { propsPage } from "@/lib/types";
-import MsgPage from "@/components/common/msgPage";
-import TableAlarms from "./tableAlarms";
+import MsgPage from "@/components/common/MsgPage";
+import TableAlarms from "./TableAlarms";
 import { fetchDataAllAlarms } from "@/query/alarms/data";
 import { fetchDataAllDevices } from "@/query/devices/data";
 

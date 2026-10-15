@@ -3,7 +3,7 @@ import ProfileCard from "./components/ProfileCard";
 import { CurrentUser } from "@/lib/utils";
 import { Metadata } from "next";
 import { Suspense } from 'react'
-import Skeleton from "@/components/common/skeleton";
+import Skeleton from "@/components/common/Skeleton";
 import ComponentCard from "@/components/common/ComponentCard";
 
 export const metadata: Metadata = {

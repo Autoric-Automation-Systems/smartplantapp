@@ -1,7 +1,6 @@
 import ComponentCard from "@/components/common/ComponentCard";
 import Image from "next/image";
 
-
 export default function Skeleton() {
     return (
         <ComponentCard title="Loading..." className="mb-4">

@@ -2,7 +2,7 @@ import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
 import { propsPage } from "@/lib/types";
-import MsgPage from "@/components/common/msgPage";
+import MsgPage from "@/components/common/MsgPage";
 import ComponentCard from "@/components/common/ComponentCard";
 import { fetchData } from "@/query/users/data";
 import UserInfoCard from "../../components/UserCard";
@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 
 export default async function Page({ props }: { props: propsPage }) {
   const users = fetchData();
-  //console.log(props);
   return (
     <div>
       <PageBreadcrumb pageTitle="Users" backUrl="/home" backUrlName="Home" />

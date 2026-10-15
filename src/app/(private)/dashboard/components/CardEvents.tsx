@@ -4,18 +4,18 @@ import { Event } from "@/query/events/definitions";
 import TemperatureCard from "./events/TemperatureCard";
 import HumidityCard from "./events/HumidityCard";
 import StatusCard from "./events/StatusCard";
-import StatusTrend from "./trends/statusTrend";
+import StatusTrend from "./trends/StatusTrend";
 import CounterCard from "./events/CounterCard";
-import CounterTrend from "./trends/counterTrend";
-import TemperatureTrend from "./trends/temperatueTrend";
-import HumidityTrend from "./trends/humidityTrend";
+import CounterTrend from "./trends/CounterTrend";
+import TemperatureTrend from "./trends/TemperatureTrend";
+import HumidityTrend from "./trends/HumidityTrend";
 import LevelCard from "./events/LevelCard";
 import { useState } from "react";
 import { Modal } from "../Modal";
 import FlowCard from "./events/FlowCard";
-import FlowTrend from "./trends/flowTrend";
+import FlowTrend from "./trends/FlowTrend";
 import { Config } from "@/query/configs/definitions";
-import LevelTrend from "./trends/levelTrend";
+import LevelTrend from "./trends/LevelTrend";
 import { Label as LabelDefinition } from "@/query/labels/definitions";
 
 export default function CardEvents({
@@ -37,8 +37,6 @@ export default function CardEvents({
   const [openStatus, setOpenStatus] = useState(false);
 
   const value = Number(events[0]?.value ?? 0);
-  //console.log('Events for type:  ', events.length);
-  //console.log('Type: ', type);
   const max = config?.max ? Number(config.max) : 100;
   const min = config?.min ? Number(config.min) : 0;
 

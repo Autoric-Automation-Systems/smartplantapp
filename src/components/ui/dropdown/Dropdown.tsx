@@ -36,7 +36,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
     };
   }, [onClose]);
 
-
   if (!isOpen) return null;
 
   const positionClass = position === "fixed" ? "fixed" : "absolute";

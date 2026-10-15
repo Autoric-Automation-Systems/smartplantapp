@@ -20,10 +20,8 @@ export default function EditForm({ closeModal, plant }: { closeModal: () => void
         });
     }
 
-
     const handleSave = () => {
         // Handle save logic here
-        //console.log("Saving changes...");
 
         closeModal();
     };

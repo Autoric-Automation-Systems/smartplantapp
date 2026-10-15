@@ -48,27 +48,25 @@ O **Smart Plant App** é uma plataforma moderna e modular para monitoramento e c
 - **TypeScript** - Tipagem estática para maior segurança
 - **Tailwind CSS 4** - Framework CSS utility-first
 - **Headless UI** - Componentes UI acessíveis e sem estilos
-- **React Hook Form** - Gerenciamento de formulários
 - **Zod** - Validação de esquemas TypeScript-first
 
 ### Visualização de Dados
 - **ApexCharts** - Gráficos interativos e modernos
 - **Recharts** - Biblioteca de gráficos baseada em React
-- **FullCalendar** - Calendário interativo para agendamentos
-- **React Vector Maps** - Mapas geográficos interativos
 
 ### Backend & Autenticação
-- **NextAuth.js** - Autenticação completa para Next.js
-- **Vercel Postgres** - Banco de dados PostgreSQL
+- **NextAuth.js v5** - Autenticação completa para Next.js (Credentials + Google)
+- **Neon Postgres** - Banco de dados PostgreSQL serverless (`@neondatabase/serverless`)
 - **bcryptjs** - Hash de senhas seguro
-- **Stripe** - Processamento de pagamentos
 - **Nodemailer** - Envio de emails
+- **Vercel Blob** - Armazenamento de arquivos/avatares
 
 ### UI/UX
 - **Heroicons** - Conjunto de ícones SVG
 - **React Icons** - Biblioteca de ícones populares
-- **Flatpickr** - Selecionador de datas/tempo
-- **Swiper** - Slider/carrossel responsivo
+
+### Gerenciador de pacotes
+- **pnpm** - O repositório mantém apenas `pnpm-lock.yaml`; use `pnpm` para instalar e rodar scripts.
 
 ## 📁 Estrutura do Projeto
 
@@ -79,84 +77,85 @@ smartplantapp/
 │   └── fonts/          # Fontes customizadas
 ├── src/
 │   ├── app/            # Rotas da aplicação (App Router)
-│   │   ├── (public)/   # Rotas públicas (landing page, login)
+│   │   ├── (public)/   # Rotas públicas (landing page, login, termos)
 │   │   ├── (private)/  # Rotas privadas (dashboard, configurações)
 │   │   └── api/        # Rotas da API
 │   ├── components/     # Componentes reutilizáveis
-│   │   ├── ui/         # Componentes de UI base
+│   │   ├── auth/       # Formulários de autenticação
+│   │   ├── common/     # Componentes compartilhados (breadcrumb, cards, skeleton)
 │   │   ├── form/       # Componentes de formulário
-│   │   └── layout/     # Componentes de layout
+│   │   ├── header/     # Header e dropdowns
+│   │   └── ui/         # Componentes de UI base
 │   ├── context/        # Contextos React (Theme, Sidebar)
 │   ├── hooks/          # Hooks customizados
 │   ├── icons/          # Ícones SVG customizados
 │   ├── layout/         # Componentes de layout principal
-│   ├── lib/            # Utilitários e configurações
-│   └── query/          # Queries e definições de tipos
+│   ├── lib/            # Utilitários, sessão, autorização e configs
+│   └── query/          # Acesso a dados (definitions/data/actions por entidade)
 ├── package.json        # Dependências e scripts
 ├── next.config.ts      # Configuração do Next.js
-├── tailwind.config.js  # Configuração do Tailwind CSS
+├── src/app/globals.css # Tema e estilos (Tailwind CSS 4 é CSS-first)
 └── tsconfig.json       # Configuração do TypeScript
 ```
+
+### Convenções de código
+
+- **Server Actions** (`src/query/*/actions.ts`): nunca confiam em ids de tenant vindos do formulário.
+  A empresa do usuário vem sempre da sessão (`CurrentCompanyId()`) e o alvo é verificado com os
+  helpers de `src/lib/authz.ts` (`assertPlantInCompany`, `assertAreaInCompany`, ...).
+- **Rotas de API** de usuário exigem sessão (`auth()`); rotas de dispositivos usam `DEVICE_API_KEY`.
+- **Componentes**: arquivos em PascalCase (`CardPlant.tsx`); módulos de `src/lib` e `src/query` em camelCase.
+- **Acesso a dados**: SQL apenas em `src/query/*` (tagged template do Neon, sempre parametrizado).
 
 ## 🛠️ Instalação e Configuração
 
 ### Pré-requisitos
 
-- Node.js 18+ ou 20+
-- npm, yarn ou pnpm
-- PostgreSQL (para produção)
+- Node.js 20+
+- pnpm
+- PostgreSQL (Neon)
 
 ### Passos de Instalação
 
 1. **Clone o repositório**
    ```bash
-   git clone https://github.com/seu-usuario/smartplantapp.git
+   git clone https://github.com/Autoric-Automation-Systems/smartplantapp.git
    cd smartplantapp
    ```
 
 2. **Instale as dependências**
    ```bash
-   npm install
-   # ou
-   yarn install
-   # ou
    pnpm install
    ```
 
-3. **Configure as variáveis de ambiente**
-   ```bash
-   cp .env.example .env.local
-   ```
-   Edite o arquivo `.env.local` com suas configurações:
+3. **Configure as variáveis de ambiente** (arquivo `.env.local`, nunca versionado)
    ```env
-   DATABASE_URL="postgresql://user:password@localhost:5432/smartplant"
-   NEXTAUTH_SECRET="sua-chave-secreta-aqui"
-   NEXTAUTH_URL="http://localhost:3000"
+   DATABASE_URL="postgresql://usuario:senha@host/banco"   # Neon (pooled)
+   NEXTAUTH_SECRET="chave-aleatoria"
+   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+   AUTH_GOOGLE_ID="..."                                   # login com Google
+   AUTH_GOOGLE_SECRET="..."
+   EMAIL_USER="conta@gmail.com"                           # reset de senha (Nodemailer)
+   EMAIL_PASS="senha-de-app"
+   BLOB_READ_WRITE_TOKEN="..."                            # uploads (@vercel/blob)
+   DEVICE_API_KEY="chave-dos-dispositivos"                # opcional, ver seção Segurança
    ```
 
-4. **Execute as migrações do banco de dados**
+4. **Inicie o servidor de desenvolvimento**
    ```bash
-   npx prisma db push
-   ```
-
-5. **Inicie o servidor de desenvolvimento**
-   ```bash
-   npm run dev
-   # ou
-   yarn dev
-   # ou
    pnpm dev
    ```
 
-6. **Acesse a aplicação**
+5. **Acesse a aplicação**
    Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 ## 📦 Scripts Disponíveis
 
-- `npm run dev` - Inicia o servidor de desenvolvimento
-- `npm run build` - Cria uma build de produção
-- `npm start` - Inicia o servidor de produção
-- `npm run lint` - Executa o ESLint para verificação de código
+- `pnpm dev` - Inicia o servidor de desenvolvimento
+- `pnpm build` - Cria uma build de produção
+- `pnpm start` - Inicia o servidor de produção
+- `pnpm lint` - Executa o ESLint para verificação de código
+- `npx tsc --noEmit` - Verificação de tipos
 
 ## 🎨 Design System
 
@@ -179,12 +178,21 @@ smartplantapp/
 
 ## 🔒 Segurança
 
-- Autenticação com JWT (JSON Web Tokens)
-- Hash de senhas com bcrypt
-- Proteção contra CSRF e XSS
-- CORS configurado
-- Rate limiting em endpoints críticos
-- Validação de entrada em todos os formulários
+- Autenticação com JWT (`next-auth` v5) — sessão de 7 dias, renovada a cada 2 horas
+- Hash de senhas com bcrypt (custo 10)
+- Tokens de redefinição de senha gerados com `crypto.randomBytes(32)`, válidos por 30 minutos e invalidados após o uso
+- Autorização multiempresa: toda leitura/escrita é restrita à empresa do usuário (`src/lib/authz.ts`)
+- Todas as queries usam parâmetros vinculados (tagged template do Neon) — sem concatenação de SQL
+- Rotas de API de usuário exigem sessão; respostas 401 quando ausente
+- Uploads limitados por tipo de conteúdo e usuário autenticado (`@vercel/blob`)
+- Rotas de dispositivos (`/api/devices/heartbeat`, `/api/devices/events`, `/api/test`):
+  protegidas por chave compartilhada quando `DEVICE_API_KEY` está definida
+  (header `x-api-key` ou `Authorization: Bearer`). **Recomendado configurar em produção.**
+
+Limitações conhecidas: não há rate limiting nem bloqueio por tentativas de login;
+o cadastro pelo Google cria automaticamente uma empresa para novos usuários.
+
+Consulte [SECURITY-REVIEW.md](./SECURITY-REVIEW.md) para o histórico de achados e correções.
 
 ## 📱 Responsividade
 
@@ -221,6 +229,7 @@ Para suporte, entre em contato:
 - [Next.js](https://nextjs.org/) pela incrível framework
 - [Vercel](https://vercel.com/) pelo hosting e ferramentas
 - [Tailwind CSS](https://tailwindcss.com/) pelo sistema de design
+- [TailAdmin](https://tailadmin.com/) — o layout inicial deste projeto é derivado do template TailAdmin (MIT)
 - Todos os contribuidores e mantenedores das bibliotecas utilizadas
 
 ---

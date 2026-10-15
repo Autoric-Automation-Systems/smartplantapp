@@ -7,9 +7,7 @@ import { updateData, State } from "@/query/users/actions";
 import { useActionState, useState, useTransition } from "react";
 import FileInputExample from "@/components/form/form-elements/FileInputExample";
 import { upload } from '@vercel/blob/client';
-import { deleteUnusedFiles } from "@/lib/deleteUnusedFiles";
 import Image from "next/image";
-
 
 export default function EditForm({ closeModal, user }: { closeModal: () => void, user: User }) {
 

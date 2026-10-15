@@ -2,9 +2,8 @@
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "@/components/ui/modal";
 import Button from "@/components/ui/button/Button";
-import CreatForm from "./PlantCreatForm";
+import CreatForm from "./PlantCreateForm";
 import { PlusIcon } from '@heroicons/react/24/outline';
-
 
 export default function PlantAdd({ idcompany }: { idcompany: string }) {
   const { isOpen, openModal, closeModal } = useModal();

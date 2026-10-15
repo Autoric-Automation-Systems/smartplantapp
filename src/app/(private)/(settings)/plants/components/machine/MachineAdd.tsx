@@ -2,7 +2,7 @@
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "@/components/ui/modal";
 import Button from "@/components/ui/button/Button";
-import CreatForm from "./MachineCreatForm";
+import CreatForm from "./MachineCreateForm";
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 export default function MachineAdd({ idarea }: { idarea: string }) {

@@ -173,7 +173,7 @@ export default function CookiePolicyPage() {
                             <li>Menu (⋮) → Configurações</li>
                             <li>Privacidade e segurança → Cookies</li>
                             <li>Gerenciar todos os cookies</li>
-                            <li>Pesquise "smartplant" e delete conforme desejado</li>
+                            <li>Pesquise &quot;smartplant&quot; e delete conforme desejado</li>
                         </ol>
                     </div>
 
@@ -229,7 +229,7 @@ export default function CookiePolicyPage() {
                                 <p className="font-semibold">Revogação</p>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
                                     Você pode revogar consentimento a qualquer tempo através de
-                                    "Preferências de Cookie" no footer ou configurações de privacidade.
+                                    &quot;Preferências de Cookie&quot; no footer ou configurações de privacidade.
                                 </p>
                             </div>
                         </div>
@@ -316,7 +316,7 @@ export default function CookiePolicyPage() {
                         <p>🌐 <strong>Website:</strong> <a href="https://smartplant.app.br" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">smartplant.app.br</a></p>
                     </div>
                     <p className="text-sm mt-4">
-                        Acesse "Preferências de Cookie" no footer para gerenciar suas escolhas a qualquer momento.
+                        Acesse &quot;Preferências de Cookie&quot; no footer para gerenciar suas escolhas a qualquer momento.
                     </p>
                 </section>
             </article>

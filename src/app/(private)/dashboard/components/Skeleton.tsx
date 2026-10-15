@@ -1,7 +1,6 @@
 import ComponentCard from "@/components/common/ComponentCard";
-import CardPlant from "./cardPlant";
+import CardPlant from "./CardPlant";
 import Image from "next/image";
-
 
 export default function DashboardSkeleton() {
     return (
@@ -24,7 +23,6 @@ export default function DashboardSkeleton() {
         </ComponentCard>
     );
 }
-
 
 export function MachineSkeleton() {
     return (

@@ -4,7 +4,6 @@ import logoSPTL from "../../public/images/logo/logo_SP-TL.png";
 import logoSPFF from "../../public/images/logo/logo_SP-FF.png";
 import logoSPIS from "../../public/images/logo/logo_SP-IS.png";
 
-
 export const InfoModules = [
     {
         name: "SP-PS",

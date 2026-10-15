@@ -1,5 +1,5 @@
-import { WiHumidity } from "react-icons/wi"
-import { LuGlassWater } from "react-icons/lu";
+
+import { LuGlassWater } from 'react-icons/lu';
 export default function LevelCard({
   value,
   min = 50,

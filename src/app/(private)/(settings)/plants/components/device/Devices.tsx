@@ -1,12 +1,12 @@
-import { fetchDataDevices } from "@/query/devices/data";
-import { Plant } from "@/query/plants/definitions";
+import { fetchDataDevices } from '@/query/devices/data';
+
 import DeviceCard from "./DeviceCard";
 import ComponentCard from "@/components/common/ComponentCard";
 import Machines from "../machine/Machines";
 import MachineAdd from "../machine/MachineAdd";
-import { Machine } from "@/query/machines/definitions";
-import { fetchDataConfigs } from "@/query/configs/data";
-import { fetchDataLabel } from "@/query/labels/data";
+import { Machine } from '@/query/machines/definitions';
+import { fetchDataConfigs } from '@/query/configs/data';
+import { fetchDataLabel } from '@/query/labels/data';
 
 export default async function Devices({ machine }: { machine: Machine }) {
   const devices = await fetchDataDevices(machine.id);

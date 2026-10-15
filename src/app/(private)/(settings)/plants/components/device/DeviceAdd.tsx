@@ -5,7 +5,7 @@ import Button from "@/components/ui/button/Button";
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import DeviceCreatForm from "./DeviceCreatForm";
+import DeviceCreatForm from "./DeviceCreateForm";
 
 export default function DeviceAdd({ idmachine }: { idmachine: string }) {
   const { data: session, status } = useSession();

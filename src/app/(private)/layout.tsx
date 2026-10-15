@@ -1,10 +1,9 @@
 "use client";
 
-import { useSidebar } from "@/context/SidebarContext";
+import { useSidebar } from '@/context/SidebarContext';
 import AppHeader from "@/layout/AppHeader";
 import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
-import { SessionProvider } from "next-auth/react";
 
 export default function PrivateLayout({
   children,

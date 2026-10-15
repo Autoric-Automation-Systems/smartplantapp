@@ -1,6 +1,5 @@
 import { Outfit } from 'next/font/google';
 import './globals.css';
-import "flatpickr/dist/flatpickr.css";
 import Providers from "./providers";
 import infoAPP from "@/lib/infoapp";
 import { Metadata } from "next";
@@ -38,7 +37,6 @@ export const metadata: Metadata = {
     },
   },
 };
-
 
 export default function RootLayout({
   children,

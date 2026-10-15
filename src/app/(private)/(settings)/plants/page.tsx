@@ -1,12 +1,12 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
-import MsgPage from "@/components/common/msgPage";
+import MsgPage from "@/components/common/MsgPage";
 import ComponentCard from "@/components/common/ComponentCard";
 import { fetchDataPlants } from "@/query/plants/data";
 import Plants from "./components/plant/Plants";
 import { Suspense } from 'react'
-import Skeleton from "@/components/common/skeleton";
+import Skeleton from "@/components/common/Skeleton";
 import PlantAdd from "./components/plant/PlantAdd";
 import { CurrentCompanyId } from "@/lib/utils";
 

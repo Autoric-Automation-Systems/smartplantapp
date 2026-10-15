@@ -146,7 +146,7 @@ export default function TermsOfServicePage() {
                         </div>
                         <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded">
                             <h3 className="text-xl font-semibold mb-2">6.2 Sem Garantias</h3>
-                            <p className="font-bold mb-2">O Serviço é fornecido "CONFORME ESTÁ DISPONIVEL" e "CONFORME DISPONÍVEL"</p>
+                            <p className="font-bold mb-2">O Serviço é fornecido &quot;CONFORME ESTÁ DISPONÍVEL&quot; e &quot;CONFORME DISPONÍVEL&quot;</p>
                             <ul className="list-disc list-inside space-y-1 text-sm">
                                 <li>Sem garantia de atender seus requisitos específicos</li>
                                 <li>Sem garantia de acesso ininterrupto ou sem erros</li>

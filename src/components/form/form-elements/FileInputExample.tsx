@@ -7,8 +7,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-
-
 export default function FileInputExample() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState<any>(null);
@@ -38,7 +36,6 @@ export default function FileInputExample() {
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    //console.log("Selected file:", file.name);
     setUploading(true);
     try {
       const newBlob = await upload('avatar/ ' + file.name, file, {

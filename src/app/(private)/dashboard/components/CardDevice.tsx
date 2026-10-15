@@ -1,6 +1,6 @@
 import { Device } from "@/query/devices/definitions";
 import { fetchEventsDevice } from "@/query/events/data";
-import CardEvents from "./cardEvents";
+import CardEvents from "./CardEvents";
 import { StatusBadge } from "./StatusBadge";
 import { BatteryIndicator } from "./BatteryIndicator";
 import { WifiIndicator } from "./WifiIndicator";
@@ -39,7 +39,6 @@ export default async function CardDevice({ device }: { device: Device; }) {
     const wifi = Number(wifiEvents[0]?.value ?? 0);
 
     const eventsTypes = [...new Set(eventsWithoutBattery.map((e) => e.name))].sort();
-    //console.log('Unique event types: ', eventsTypes);
 
     return (
         <div

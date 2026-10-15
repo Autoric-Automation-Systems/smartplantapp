@@ -1,16 +1,15 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import { Metadata } from "next";
+import { Metadata } from 'next';
 import infoAPP from "@/lib/infoapp";
-import { propsPage } from "@/lib/types";
-import MsgPage from "@/components/common/msgPage";
+import { propsPage } from '@/lib/types';
+import MsgPage from "@/components/common/MsgPage";
 import ComponentCard from "@/components/common/ComponentCard";
-import { fetchDataPlants } from "@/query/plants/data";
-import CardPlant from "./components/cardPlant";
-import Revalidate from "@/components/common/revalidate";
-import { Suspense } from 'react'
-import DashboardSkeleton from "./components/skeleton";
-import { CurrentCompany } from "@/lib/utils";
-import { formatDateTimeDb } from "@/lib/formatTime";
+import { fetchDataPlants } from '@/query/plants/data';
+import CardPlant from "./components/CardPlant";
+import Revalidate from "@/components/common/Revalidate";
+import { Suspense } from 'react';
+import DashboardSkeleton from "./components/Skeleton";
+import { CurrentCompany } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: `Dashboard`,

@@ -3,9 +3,9 @@ import { Metadata } from "next";
 import infoAPP from "@/lib/infoapp";
 import { fetchById } from "@/query/machines/data";
 import MachineEvents from "../components/MachineEvents";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import MachineSkeleton from "../components/skeleton";
-import DashboardSkeleton from "../../dashboard/components/skeleton";
+import MachineSkeleton from "../components/Skeleton";
 
 export const metadata: Metadata = {
   title: "Machine View",
@@ -16,6 +16,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const id = params.id;
   const machine = await fetchById(id);
+
+  if (!machine) {
+    notFound();
+  }
+
   return (
     <div>
       <PageBreadcrumb

@@ -1,14 +1,20 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 const ThemeChanger = () => {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    getClientSnapshot,
+    getServerSnapshot
+  );
   const { theme, setTheme } = useTheme();
 
-  // When mounted on client, now we can show the UI
-  useEffect(() => setMounted(true), []);
-
+  // Evita divergência de hidratação: só renderiza depois do mount no cliente
   if (!mounted) return null;
 
   return (

@@ -2,7 +2,7 @@
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "@/components/ui/modal";
 import Button from "@/components/ui/button/Button";
-import CreatForm from "./AreaCreatForm";
+import CreatForm from "./AreaCreateForm";
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 export default function AreaAdd({ idplant }: { idplant: string }) {

@@ -4,10 +4,10 @@ import InfoCard from "./components/InfoCard";
 import infoAPP from "@/lib/infoapp";
 import { CurrentCompany } from "@/lib/utils";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import MsgPage from "@/components/common/msgPage";
+import MsgPage from "@/components/common/MsgPage";
 import ComponentCard from "@/components/common/ComponentCard";
 import { Suspense } from 'react'
-import Skeleton from "@/components/common/skeleton";
+import Skeleton from "@/components/common/Skeleton";
 
 export const metadata: Metadata = {
   title: "Company",

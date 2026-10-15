@@ -1,6 +1,6 @@
 "use client"
 import { Event } from "@/query/events/definitions"
-import BatteryTrend from "./trends/batteryTrend"
+import BatteryTrend from "./trends/BatteryTrend"
 import { useState } from "react"
 import { Modal } from "../Modal"
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline"

@@ -29,7 +29,6 @@ export default function SignInForm() {
     });
 
     if (res?.error) {
-      console.log(res);
       setError("Email ou senha inválidos");
       return;
     }

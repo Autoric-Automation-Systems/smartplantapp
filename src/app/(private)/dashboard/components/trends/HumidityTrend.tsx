@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState } from 'react';
 
 import {
     LineChart,
@@ -8,11 +8,9 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
-    CartesianGrid,
-} from "recharts"
+    CartesianGrid} from 'recharts';
 
-import { Event } from "@/query/events/definitions"
-import { formatDateTimeDb, formatDateToLocal, formatDateToTimeDb, formatTime, timeToDecimal } from "@/lib/formatTime"
+import { Event } from '@/query/events/definitions';
 
 export default function HumidityTrend({ events }: { events: Event[] }) {
     const [selectedDate, setSelectedDate] = useState(new Date())
@@ -31,7 +29,6 @@ export default function HumidityTrend({ events }: { events: Event[] }) {
         const d = new Date(e.created_at)
         return d.toDateString() === selectedDate.toDateString()
     })
-
 
     // ordena do mais antigo → mais recente
     const data = [...filtered]

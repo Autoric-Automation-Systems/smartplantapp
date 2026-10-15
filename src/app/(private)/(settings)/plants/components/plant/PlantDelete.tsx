@@ -1,5 +1,5 @@
 "use client";
-import { Delete } from '@/components/ui/button/buttons';
+import { Delete } from '@/components/ui/button/Delete';
 import { deleteData } from '@/query/plants/actions';
 
 export default function PlantDelete({ idplant }: { idplant: string }) {

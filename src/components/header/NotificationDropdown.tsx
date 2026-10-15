@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Dropdown } from "../ui/dropdown/Dropdown";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { useRouter } from "next/navigation";
-import { Alarm } from "@/query/alarms/definitions";
-import { de } from "zod/v4/locales";
-import { Device } from "@/query/devices/definitions";
+import { Dropdown } from '../ui/dropdown/Dropdown';
+
+import { useRouter } from 'next/navigation';
+import { Alarm } from '@/query/alarms/definitions';
+
+import { Device } from '@/query/devices/definitions';
 
 export default function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);

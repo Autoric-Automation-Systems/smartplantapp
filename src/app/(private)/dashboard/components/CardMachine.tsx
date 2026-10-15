@@ -1,6 +1,6 @@
 import ComponentCard from "@/components/common/ComponentCard";
 import { fetchDataDevices } from "@/query/devices/data";
-import CardDevice from "./cardDevice";
+import CardDevice from "./CardDevice";
 
 export default async function CardMachine({ idmachine }: { idmachine: string }) {
     const devices = await fetchDataDevices(idmachine);

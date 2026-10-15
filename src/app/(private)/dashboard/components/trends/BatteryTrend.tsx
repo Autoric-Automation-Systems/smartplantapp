@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState } from 'react';
 import {
     LineChart,
     Line,
@@ -8,11 +8,9 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
-    CartesianGrid,
-} from "recharts"
+    CartesianGrid} from 'recharts';
 
-import { Event } from "@/query/events/definitions"
-import { formatDateTimeDb, formatDateToLocal, formatDateToTimeDb, formatTime, timeToDecimal } from "@/lib/formatTime"
+import { Event } from '@/query/events/definitions';
 
 export default function BatteryTrend({ events }: { events: Event[] }) {
 
