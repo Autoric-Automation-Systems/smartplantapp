@@ -17,7 +17,7 @@ export default function UserInfoCard({ user }: { user: User }) {
   };
   return (
     <div className="p-4 border border-gray-200 rounded-2xl dark:border-gray-800 mb-4">
-      <div className="flex items-center gap-6 justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
         <div className="flex items-center gap-4 flex-1">
           <div className="w-10 h-10 flex-shrink-0 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
             <Image

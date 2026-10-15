@@ -29,7 +29,7 @@ export default function CreatForm({ closeModal, idcompany }: { closeModal: () =>
                 </p>
             </div>
             <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
+                <div className="custom-scrollbar h-[45vh] overflow-y-auto sm:h-[450px] px-2 pb-3">
                     <input type="hidden" name="idcompany" value={idcompany} />
 
                     <div className="mt-7">

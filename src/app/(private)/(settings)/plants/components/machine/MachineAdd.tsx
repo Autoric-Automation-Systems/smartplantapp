@@ -9,7 +9,7 @@ export default function MachineAdd({ idarea }: { idarea: string }) {
   const { isOpen, openModal, closeModal } = useModal();
   return (
     <div className="p-4 border border-gray-200 rounded-2xl dark:border-gray-800 mb-4">
-      <div className="flex items-center gap-6 justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
         <Button
           onClick={openModal}
           title="Add a Machine for this Area"

@@ -11,7 +11,7 @@ export default function AreaCard({ area }: { area: Area }) {
   const { isOpen, openModal, closeModal } = useModal();
   return (
     <div className="p-4 border border-gray-200 rounded-2xl dark:border-gray-800 mb-4">
-      <div className="flex items-center gap-6 justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
         <div className="flex items-center gap-4 flex-1">
           <div className="flex gap-8 flex-wrap">
             <div>

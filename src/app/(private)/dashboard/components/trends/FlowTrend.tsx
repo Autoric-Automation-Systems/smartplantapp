@@ -99,7 +99,7 @@ export default function FlowTrend({
       </div>
 
       {/* 📊 STATS */}
-      <div className="grid grid-cols-4 gap-2 text-center">
+      <div className="grid grid-cols-2 gap-2 text-center sm:grid-cols-4">
         <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
           <div className="text-xs text-gray-500">TOTAL</div>
           <div className="font-bold">{total}L</div>
@@ -134,11 +134,11 @@ export default function FlowTrend({
               formatter={(value: any) => `${Number(value)} L`}
               labelFormatter={(label) => `Hora: ${label}`}
               contentStyle={{
-                backgroundColor: "#111",
+                background: "var(--chart-tooltip-bg)",
                 border: "none",
                 borderRadius: "8px",
               }}
-              labelStyle={{ color: "#aaa" }}
+              labelStyle={{ color: "var(--chart-tooltip-fg)" }}
             />
 
             <Line

@@ -78,7 +78,7 @@ export const Mobile = () => {
                     {/* Lado direito: celulares sobrepostos */}
                     <div className="relative h-[520px] md:h-[600px] flex items-center justify-center">
                         {/* Celular 2 — atrás, deslocado pra direita e abaixo */}
-                        <div className="absolute right-2 sm:right-8 lg:right-0 bottom-0 w-[200px] sm:w-[240px] md:w-[280px] aspect-[9/19] transform rotate-6 transition-transform duration-500 hover:rotate-3">
+                        <div className="absolute right-2 bottom-0 w-[168px] 2xsm:w-[200px] sm:right-8 sm:w-[240px] md:w-[280px] lg:right-0 aspect-[9/19] transform rotate-6 transition-transform duration-500 hover:rotate-3">
                             <div className="absolute inset-0 rounded-[2.5rem] bg-blue-500/20 blur-2xl" />
                             <Image
                                 src={mobile2}
@@ -89,7 +89,7 @@ export const Mobile = () => {
                         </div>
 
                         {/* Celular 1 — na frente, deslocado pra esquerda e acima */}
-                        <div className="absolute left-2 sm:left-8 lg:left-0 top-0 w-[220px] sm:w-[260px] md:w-[300px] aspect-[9/19] transform -rotate-6 transition-transform duration-500 hover:-rotate-3">
+                        <div className="absolute left-2 top-0 w-[184px] 2xsm:w-[220px] sm:left-8 sm:w-[260px] md:w-[300px] lg:left-0 aspect-[9/19] transform -rotate-6 transition-transform duration-500 hover:-rotate-3">
                             <div className="absolute inset-0 rounded-[2.5rem] bg-cyan-500/20 blur-2xl" />
                             <Image
                                 src={mobile1}

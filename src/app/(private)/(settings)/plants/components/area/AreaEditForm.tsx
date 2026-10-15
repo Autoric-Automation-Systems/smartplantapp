@@ -31,7 +31,7 @@ export default function AreaEditForm({ closeModal, area }: { closeModal: () => v
                 </p>
             </div>
             <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
+                <div className="custom-scrollbar h-[45vh] overflow-y-auto sm:h-[450px] px-2 pb-3">
                     <div className="mt-7">
                         <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                             Area Information

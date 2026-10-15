@@ -7,7 +7,7 @@ export const Hero = () => {
   return (
     <>
       {/* Seção Hero com imagem industrial */}
-      <section className="relative w-full h-screen md:h-[85vh] overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+      <section className="relative w-full h-dvh md:h-[85vh] overflow-hidden bg-gradient-to-br from-gray-900 to-black">
         <div className="absolute inset-0 opacity-40 md:hidden">
           <Image
             src={heroMobile}

@@ -106,6 +106,10 @@ smartplantapp/
 - **Rotas de API** de usuário exigem sessão (`auth()`); rotas de dispositivos usam `DEVICE_API_KEY`.
 - **Componentes**: arquivos em PascalCase (`CardPlant.tsx`); módulos de `src/lib` e `src/query` em camelCase.
 - **Acesso a dados**: SQL apenas em `src/query/*` (tagged template do Neon, sempre parametrizado).
+- **Navegação**: o menu lateral é de nível único (`src/layout/AppSidebar.tsx`), sem submenus.
+- **Tema**: `next-themes` via `src/context/ThemeContext.tsx` — o tema é aplicado como classe
+  `dark` no `<html>` antes da primeira pintura (sem flash) e persistido em `localStorage["theme"]`.
+  Use sempre variantes `dark:` nos componentes novos.
 
 ## 🛠️ Instalação e Configuração
 

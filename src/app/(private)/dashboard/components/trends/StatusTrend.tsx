@@ -129,7 +129,7 @@ export default function StatusTrend({
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-4 gap-2 text-center">
+      <div className="grid grid-cols-2 gap-2 text-center sm:grid-cols-4">
         <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
           <div className="text-xs text-gray-500">ATIVAÇÕES</div>
           <div className="font-bold">{activations}</div>

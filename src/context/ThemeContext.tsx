@@ -1,54 +1,38 @@
 "use client";
 
 import type React from "react";
-import { createContext, useState, useContext, useEffect } from "react";
+import {
+  ThemeProvider as NextThemesProvider,
+  useTheme as useNextThemes,
+} from "next-themes";
 
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
 
-type ThemeContextType = {
-  theme: Theme;
-  toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
-};
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
+/**
+ * Fonte única de verdade do tema: aplica a classe `dark` no <html> antes da
+ * primeira pintura (sem flash), persiste a escolha em localStorage e funciona
+ * igual na área privada e no site público.
+ */
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
-}) => {
-  // ✅ Inicialização correta (sem useEffect)
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "light";
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    return savedTheme ?? "light";
-  });
-
-  // ✅ useEffect só para sincronizar efeitos colaterais
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
-
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
+}) => (
+  <NextThemesProvider
+    attribute="class"
+    defaultTheme="light"
+    enableSystem={false}
+    disableTransitionOnChange
+  >
+    {children}
+  </NextThemesProvider>
+);
 
 export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
+  const { theme, resolvedTheme, setTheme } = useNextThemes();
+  const current = (resolvedTheme ?? theme ?? "light") as Theme;
+
+  return {
+    theme: current,
+    setTheme: (value: Theme) => setTheme(value),
+    toggleTheme: () => setTheme(current === "dark" ? "light" : "dark"),
+  };
 };

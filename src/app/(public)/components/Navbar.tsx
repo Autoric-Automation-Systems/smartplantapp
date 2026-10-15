@@ -30,8 +30,8 @@ export const Navbar = () => {
         </Link>
 
         {/* Menu para desktop */}
-        <div className="gap-3 nav__item mr-2 lg:flex ml-auto lg:ml-0 lg:order-2">
-          {/* <ThemeChanger /> */}
+        <div className="order-2 flex items-center gap-3 mr-2 ml-auto lg:ml-0">
+          <ThemeChanger />
           <div className="hidden mr-3 lg:flex nav__item">
             <Link href="/signin" className="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5">
               Signin
