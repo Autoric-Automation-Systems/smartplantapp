@@ -29,7 +29,7 @@ export default function CreatForm({ closeModal, idarea }: { closeModal: () => vo
                 </p>
             </div>
             <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar h-[45vh] overflow-y-auto sm:h-[450px] px-2 pb-3">
+                <div className="custom-scrollbar max-h-[45vh] overflow-y-auto sm:max-h-[450px] px-2 pb-3">
                     <input type="hidden" name="idarea" value={idarea} />
 
                     <div className="mt-7">
@@ -37,8 +37,8 @@ export default function CreatForm({ closeModal, idarea }: { closeModal: () => vo
                             Machine Information
                         </h5>
                         <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div className="col-span-2 lg:col-span-1">
-                                <Label>Name</Label>
+                            <div className="col-span-2">
+                                <Label htmlFor="name">Name</Label>
                                 <Input id="name" name="name" type="text" defaultValue="New Machine Name" />
                             </div>
                         </div>

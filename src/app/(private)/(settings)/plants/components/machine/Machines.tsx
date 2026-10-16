@@ -11,7 +11,7 @@ export default async function Machines({ area }: { area: Area }) {
     <div>
       {machines.map((machine) => (
         <div key={area.id}>
-          <div className="mb-4 flex flex-col items-center gap-4">
+          <div className="mb-4 flex flex-col gap-4">
             <MachineCard key={machine.id} machine={machine} />
             <DeviceAdd idmachine={machine.id} />
           </div>

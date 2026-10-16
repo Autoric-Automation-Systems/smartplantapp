@@ -37,14 +37,14 @@ export default function EditForm({ closeModal, company }: { closeModal: () => vo
                 </p>
             </div>
             <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar h-[45vh] overflow-y-auto sm:h-[450px] px-2 pb-3">
+                <div className="custom-scrollbar max-h-[45vh] overflow-y-auto sm:max-h-[450px] px-2 pb-3">
                     <div className="mt-7">
                         <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                             Company Information
                         </h5>
                         <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div className="col-span-2 lg:col-span-1">
-                                <Label>Company Name</Label>
+                            <div className="col-span-2">
+                                <Label htmlFor="companyname">Company Name</Label>
                                 <Input id="name" name="name" type="text" defaultValue={company.name} />
                             </div>
 

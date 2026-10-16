@@ -24,21 +24,21 @@ export default function AreaEditForm({ closeModal, area }: { closeModal: () => v
         <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
             <div className="px-2 pr-14">
                 <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-                    Edit Information
+                    Edit Area Information
                 </h4>
                 <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-                    Update details...
+                    Update the area name.
                 </p>
             </div>
             <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar h-[45vh] overflow-y-auto sm:h-[450px] px-2 pb-3">
+                <div className="custom-scrollbar max-h-[45vh] overflow-y-auto sm:max-h-[450px] px-2 pb-3">
                     <div className="mt-7">
                         <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                             Area Information
                         </h5>
                         <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div className="col-span-2 lg:col-span-1">
-                                <Label>Name</Label>
+                            <div className="col-span-2">
+                                <Label htmlFor="name">Name</Label>
                                 <Input id="name" name="name" type="text" defaultValue={area.name} />
                             </div>
                         </div>

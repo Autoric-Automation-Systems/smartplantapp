@@ -8,17 +8,15 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 export default function MachineAdd({ idarea }: { idarea: string }) {
   const { isOpen, openModal, closeModal } = useModal();
   return (
-    <div className="p-4 border border-gray-200 rounded-2xl dark:border-gray-800 mb-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
-        <Button
-          onClick={openModal}
-          title="Add a Machine for this Area"
-          className="flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 flex-shrink-0"
-        >
-          <PlusIcon className="w-6 h-6" />
-          Add Machine
-        </Button>
-      </div>
+    <div className="mb-4 w-fit">
+      <Button
+        onClick={openModal}
+        title="Add a Machine for this Area"
+        className="flex items-center justify-center gap-2 rounded-full border border-dashed border-gray-400 px-4 py-2 text-sm font-medium text-gray-600 hover:border-brand-500 hover:text-brand-600 dark:border-gray-600 dark:text-gray-400 dark:hover:border-brand-400 dark:hover:text-brand-400 flex-shrink-0"
+      >
+        <PlusIcon className="w-5 h-5" />
+        Add Machine
+      </Button>
 
       <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
         <CreatForm closeModal={closeModal} idarea={idarea} />

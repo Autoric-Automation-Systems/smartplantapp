@@ -16,7 +16,7 @@ export default async function Devices({ machine }: { machine: Machine }) {
       const label = await fetchDataLabel(device.id);
 
       return (
-        <div key={device.id} className="mb-4 flex flex-col items-center gap-4 ">
+        <div key={device.id} className="mb-4 flex flex-col gap-4">
           <DeviceCard key={device.id} device={device} configs={configs} label={label} />
         </div>
       );

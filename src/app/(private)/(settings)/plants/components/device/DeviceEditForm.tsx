@@ -62,7 +62,7 @@ export default function DeviceEditForm({
                         <div className="mt-2">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                                 <div className="col-span-2">
-                                    <Label>Name</Label>
+                                    <Label htmlFor="name">Name</Label>
                                     <Input name="name" defaultValue={device.name} />
                                 </div>
                             </div>
