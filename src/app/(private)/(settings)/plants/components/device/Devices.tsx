@@ -1,25 +1,36 @@
-import { fetchDataDevices } from '@/query/devices/data';
+import { fetchDataConfigs } from "@/query/configs/data";
+import { fetchDataLabel } from "@/query/labels/data";
+import { Device } from "@/query/devices/definitions";
+import { formatDateTimeDb } from "@/lib/formatTime";
+import TreeSection from "@/components/common/TreeSection";
+import DeviceActions from "./DeviceActions";
 
-import DeviceCard from "./DeviceCard";
-import ComponentCard from "@/components/common/ComponentCard";
-import Machines from "../machine/Machines";
-import MachineAdd from "../machine/MachineAdd";
-import { Machine } from '@/query/machines/definitions';
-import { fetchDataConfigs } from '@/query/configs/data';
-import { fetchDataLabel } from '@/query/labels/data';
-
-export default async function Devices({ machine }: { machine: Machine }) {
-  const devices = await fetchDataDevices(machine.id);
-  return (
-    devices.map(async (device) => {
-      const configs = await fetchDataConfigs(device.id);
-      const label = await fetchDataLabel(device.id);
-
-      return (
-        <div key={device.id} className="mb-4 flex flex-col gap-4">
-          <DeviceCard key={device.id} device={device} configs={configs} label={label} />
-        </div>
-      );
-    })
+export default async function Devices({ devices }: { devices: Device[] }) {
+  const details = await Promise.all(
+    devices.map(async (device) => ({
+      configs: await fetchDataConfigs(device.id),
+      label: await fetchDataLabel(device.id),
+    }))
   );
-}        
+
+  return (
+    <div className="space-y-3">
+      {devices.map((device, index) => (
+        <TreeSection
+          key={device.id}
+          depth={3}
+          eyebrow="Device"
+          title={device.name ?? device.mac}
+          subtitle={`${device.mac} · ${device.type} · last heartbeat ${formatDateTimeDb(device.lastheartbeat) || "—"}`}
+          actions={
+            <DeviceActions
+              device={device}
+              configs={details[index].configs}
+              label={details[index].label}
+            />
+          }
+        />
+      ))}
+    </div>
+  );
+}

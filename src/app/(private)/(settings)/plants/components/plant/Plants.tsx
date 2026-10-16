@@ -1,32 +1,41 @@
 import { fetchDataPlants } from "@/query/plants/data";
-import PlantCard from "./PlantCard";
-import Areas from "../area/Areas";
-import ComponentCard from "@/components/common/ComponentCard";
+import { fetchDataAreas } from "@/query/areas/data";
+import TreeSection from "@/components/common/TreeSection";
+import PlantActions from "./PlantActions";
 import AreaAdd from "../area/AreaAdd";
-import PlantDelete from "./PlantDelete";
+import Areas from "../area/Areas";
 
+/**
+ * Nível 1 da árvore de ativos. Cada planta é um card; áreas, máquinas e
+ * dispositivos descem indentados dentro dele.
+ */
 export default async function Plants() {
   const plants = await fetchDataPlants();
-  return (
-    plants.map((plant) => (
-      <div key={plant.id}>
-        <ComponentCard
-          title={"Plant"}
-          className="w-full mt-4"
-        >
-          <div className="mb-4 flex flex-col gap-4">
-            <PlantCard plant={plant} />
-            <AreaAdd idplant={plant.id} />
-          </div>
-          <ComponentCard
-            title={"Areas"}
-            className="w-full mt-4"
-          >
-            <Areas plant={plant} />
+  const areasByPlant = await Promise.all(
+    plants.map((plant) => fetchDataAreas(plant.id))
+  );
 
-          </ComponentCard>
-        </ComponentCard>
-      </div>
-    ))
+  return (
+    <>
+      {plants.map((plant, index) => (
+        <TreeSection
+          key={plant.id}
+          depth={0}
+          eyebrow="Plant"
+          title={plant.name}
+          count={areasByPlant[index].length}
+          action={<AreaAdd idplant={plant.id} />}
+          actions={<PlantActions plant={plant} />}
+        >
+          {areasByPlant[index].length === 0 ? (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              No areas yet.
+            </p>
+          ) : (
+            <Areas plantId={plant.id} areas={areasByPlant[index]} />
+          )}
+        </TreeSection>
+      ))}
+    </>
   );
 }

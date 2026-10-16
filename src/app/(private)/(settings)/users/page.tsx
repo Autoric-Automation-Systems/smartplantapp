@@ -1,11 +1,10 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
-import infoAPP from "@/lib/infoapp";
 import MsgPage from "@/components/common/MsgPage";
-import ComponentCard from "@/components/common/ComponentCard";
 import { fetchData } from "@/query/users/data";
-import UserCard from "./components/UserCard";
+import UserRow from "./components/UserRow";
 import Skeleton from "@/components/common/Skeleton";
+import TreeSection from "@/components/common/TreeSection";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -13,23 +12,20 @@ export const metadata: Metadata = {
   description: "View and manage user information.",
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const params = await searchParams;
+export default async function Page() {
   const users = await fetchData();
   return (
     <div>
       <PageBreadcrumb pageTitle="Users" backUrl="/home" backUrlName="Home" />
       <MsgPage />
-      <Suspense fallback={<Skeleton />}>
-        <ComponentCard title="" className="mb-1">
-          {users.map((user) => (
-            <UserCard user={user} key={user.id} />
-          ))}
-        </ComponentCard>
+      <Suspense fallback={<Skeleton rows={3} />}>
+        <TreeSection depth={0} title="Users" count={users.length}>
+          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+            {users.map((user) => (
+              <UserRow user={user} key={user.id} />
+            ))}
+          </div>
+        </TreeSection>
       </Suspense>
     </div>
   );

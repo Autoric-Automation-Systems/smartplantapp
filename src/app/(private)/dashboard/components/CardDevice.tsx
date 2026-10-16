@@ -7,7 +7,7 @@ import { WifiIndicator } from "./WifiIndicator";
 import { fetchDataConfigs } from "@/query/configs/data";
 import { fetchDataLabel } from "@/query/labels/data";
 
-export default async function CardDevice({ device }: { device: Device; }) {
+export default async function CardDevice({ device }: { device: Device }) {
     const timeRange = Number(device.heartbeatInterval) + 60000;
     const currentTime = Number(new Date());
     const lastHeartbeat = Number(device.lastheartbeat);
@@ -41,58 +41,60 @@ export default async function CardDevice({ device }: { device: Device; }) {
     const eventsTypes = [...new Set(eventsWithoutBattery.map((e) => e.name))].sort();
 
     return (
-        <div
-            title=" "
-            className="p-3 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
-
-            {/* HEADER */}
-            <div className={`flex items-center justify-between gap-4 flex-wrap`}>
-
-                {/* ESQUERDA */}
-                <div className="flex flex-col leading-tight">
-                    <h2 className="text-base font-semibold text-gray-900 dark:text-white">
-                        {device.name}
-                    </h2>
+        <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-3 transition-shadow hover:shadow-theme-sm dark:border-gray-800 dark:bg-white/[0.03]">
+            <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                <div className="flex min-w-0 flex-col leading-tight">
+                    <h4 className="truncate text-sm font-semibold text-gray-800 dark:text-white">
+                        {device.name ?? device.mac}
+                    </h4>
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                         {device.type}
                     </span>
                 </div>
 
-                {/* DIREITA */}
-                <div className="flex items-center gap-4 flex-wrap">
-
-                    {/* Last update */}
-                    <span className="text-xs text-gray-400 whitespace-nowrap">
+                <div className="flex flex-wrap items-center gap-3">
+                    <span className="whitespace-nowrap text-xs text-gray-400">
                         {Intl.DateTimeFormat("pt-BR", {
                             hour: "2-digit",
                             minute: "2-digit",
                         }).format(lastHeartbeat)}
                     </span>
 
-                    {/* Status */}
                     <StatusBadge online={online} />
 
-                    {online && <WifiIndicator rssi={wifi} min={configWifi?.min} max={configWifi?.max} />}
-                    <BatteryIndicator batteryEvents={batteryEvents} charging={charging} min={configBattery?.min} max={configBattery?.max} />
+                    {online && (
+                        <WifiIndicator rssi={wifi} min={configWifi?.min} max={configWifi?.max} />
+                    )}
+                    <BatteryIndicator
+                        batteryEvents={batteryEvents}
+                        charging={charging}
+                        min={configBattery?.min}
+                        max={configBattery?.max}
+                    />
                 </div>
             </div>
 
-            {/* EVENTS */}
-            <div className={"grid grid-cols-2 gap-2 mt-4 transition-opacity sm:gap-3 md:grid-cols-3"}>
-                {eventsTypes.map((type) => {
-                    const eventsOfType = events.filter((event) => event.name === type);
-                    const config = configs.find((config) => config.event_name === type);
-                    return (
-                        <CardEvents
-                            key={type}
-                            events={eventsOfType}
-                            type={type}
-                            config={config}
-                            label={label}
-                        />
-                    );
-                })}
-            </div>
-        </div >
+            {eventsTypes.length === 0 ? (
+                <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                    No events received yet.
+                </p>
+            ) : (
+                <div className="mt-3 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3">
+                    {eventsTypes.map((type) => {
+                        const eventsOfType = events.filter((event) => event.name === type);
+                        const config = configs.find((config) => config.event_name === type);
+                        return (
+                            <CardEvents
+                                key={type}
+                                events={eventsOfType}
+                                type={type}
+                                config={config}
+                                label={label}
+                            />
+                        );
+                    })}
+                </div>
+            )}
+        </div>
     );
 }

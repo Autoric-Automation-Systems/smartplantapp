@@ -1,13 +1,11 @@
 import { Metadata } from "next";
-import React from "react";
 import InfoCard from "./components/InfoCard";
-import infoAPP from "@/lib/infoapp";
 import { CurrentCompany } from "@/lib/utils";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import MsgPage from "@/components/common/MsgPage";
-import ComponentCard from "@/components/common/ComponentCard";
-import { Suspense } from 'react'
 import Skeleton from "@/components/common/Skeleton";
+import TreeSection from "@/components/common/TreeSection";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Company",
@@ -20,10 +18,10 @@ export default async function Company() {
     <div>
       <PageBreadcrumb pageTitle="Company" backUrl="/home" backUrlName="Home" />
       <MsgPage />
-      <Suspense fallback={<Skeleton />}>
-        <ComponentCard title="Company Information" className="mb-1">
+      <Suspense fallback={<Skeleton rows={1} />}>
+        <TreeSection depth={0} title="Company information">
           <InfoCard company={company} />
-        </ComponentCard>
+        </TreeSection>
       </Suspense>
     </div>
   );

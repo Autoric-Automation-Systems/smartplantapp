@@ -1,58 +1,41 @@
-'use client';
-import Button from "@/components/ui/button/Button";
+"use client";
+import FormShell from "@/components/common/FormShell";
+import FormField from "@/components/common/FormField";
 import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
 import { createData, State } from "@/query/machines/actions";
 import { useActionState, useTransition } from "react";
 
-export default function CreatForm({ closeModal, idarea }: { closeModal: () => void, idarea: string }) {
+export default function MachineCreateForm({
+  closeModal,
+  idarea,
+}: {
+  closeModal: () => void;
+  idarea: string;
+}) {
+  const initialState: State = { message: null, errors: {} };
+  const [state, formAction] = useActionState(createData, initialState);
+  const [isPending, startTransition] = useTransition();
 
-    const initialState: State = { message: null, errors: {} };
-    const [state, formAction] = useActionState(createData, initialState);
-    const [isPending, startTransition] = useTransition();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    startTransition(() => formAction(formData));
+  };
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        startTransition(() => {
-            formAction(new FormData(e.currentTarget));
-        });
-    }
-
-    return (
-        <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
-            <div className="px-2 pr-14">
-                <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-                    Add New Machine
-                </h4>
-                <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-                    Add a new machine to your collection.
-                </p>
-            </div>
-            <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar max-h-[45vh] overflow-y-auto sm:max-h-[450px] px-2 pb-3">
-                    <input type="hidden" name="idarea" value={idarea} />
-
-                    <div className="mt-7">
-                        <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                            Machine Information
-                        </h5>
-                        <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div className="col-span-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input id="name" name="name" type="text" defaultValue="New Machine Name" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-                    <Button size="sm" variant="outline" onClick={closeModal}>
-                        Close
-                    </Button>
-                    <Button type={"submit"} disabled={isPending}>
-                        Save New
-                    </Button>
-                </div>
-            </form>
-        </div>
-    );
+  return (
+    <FormShell
+      title="Add machine"
+      description="Machines group the devices of an area."
+      onClose={closeModal}
+      onSubmit={handleSubmit}
+      pending={isPending}
+      error={state?.message}
+      submitLabel="Create machine"
+    >
+      <input type="hidden" name="idarea" value={idarea} />
+      <FormField label="Name" htmlFor="name" errors={state?.errors?.name}>
+        <Input id="name" name="name" type="text" placeholder="Ex.: Line 1" />
+      </FormField>
+    </FormShell>
+  );
 }

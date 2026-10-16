@@ -1,11 +1,9 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from 'next';
 import infoAPP from "@/lib/infoapp";
-import { propsPage } from '@/lib/types';
 import MsgPage from "@/components/common/MsgPage";
-import ComponentCard from "@/components/common/ComponentCard";
 import { fetchDataPlants } from '@/query/plants/data';
-import CardPlant from "./components/CardPlant";
+import PlantSection from "./components/PlantSection";
 import Revalidate from "@/components/common/Revalidate";
 import { Suspense } from 'react';
 import DashboardSkeleton from "./components/Skeleton";
@@ -16,22 +14,26 @@ export const metadata: Metadata = {
   description: "Dashboard do Smart Plant - Acompanhe o desempenho das suas plantas, visualize dados em tempo real e tome decisões informadas para otimizar o crescimento e a saúde das suas plantas. Acesse insights valiosos e monitore o progresso do seu jardim inteligente com facilidade.",
 };
 
-export default async function Page({ props }: { props: propsPage }) {
+export default async function Page() {
   const company = await CurrentCompany();
-  const plants = fetchDataPlants();
-  const pageTitle = `Dashboard | ${company.name} `;
+  const plants = await fetchDataPlants();
   return (
     <div>
       <Revalidate>
-        <PageBreadcrumb pageTitle={pageTitle} backUrl="/home" backUrlName="Home" />
+        <PageBreadcrumb
+          pageTitle={`Dashboard | ${company.name}`}
+          backUrl="/home"
+          backUrlName="Home"
+        />
         <MsgPage />
         <Suspense fallback={<DashboardSkeleton />}>
-          {(await plants).map((plant) => (
-            <ComponentCard key={plant.id} title={plant.name}
-              className="p-0 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-500 dark:border-gray-800 mb-4">
-              <CardPlant plant={plant} />
-            </ComponentCard>
-          ))}
+          {plants.length === 0 ? (
+            <p className="rounded-2xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
+              No plants yet. Add one in Settings → Plants.
+            </p>
+          ) : (
+            plants.map((plant) => <PlantSection key={plant.id} plant={plant} />)
+          )}
         </Suspense>
       </Revalidate>
     </div>

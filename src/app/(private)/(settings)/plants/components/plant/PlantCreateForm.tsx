@@ -1,58 +1,41 @@
-'use client';
-import Button from "@/components/ui/button/Button";
+"use client";
+import FormShell from "@/components/common/FormShell";
+import FormField from "@/components/common/FormField";
 import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
 import { createData, State } from "@/query/plants/actions";
 import { useActionState, useTransition } from "react";
 
-export default function CreatForm({ closeModal, idcompany }: { closeModal: () => void, idcompany: string }) {
+export default function PlantCreateForm({
+  closeModal,
+  idcompany,
+}: {
+  closeModal: () => void;
+  idcompany: string;
+}) {
+  const initialState: State = { message: null, errors: {} };
+  const [state, formAction] = useActionState(createData, initialState);
+  const [isPending, startTransition] = useTransition();
 
-    const initialState: State = { message: null, errors: {} };
-    const [state, formAction] = useActionState(createData, initialState);
-    const [isPending, startTransition] = useTransition();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    startTransition(() => formAction(formData));
+  };
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        startTransition(() => {
-            formAction(new FormData(e.currentTarget));
-        });
-    }
-
-    return (
-        <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
-            <div className="px-2 pr-14">
-                <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-                    Add New Plant
-                </h4>
-                <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-                    Add a new plant to your collection.
-                </p>
-            </div>
-            <form action={formAction} onSubmit={handleSubmit} className="flex flex-col">
-                <div className="custom-scrollbar max-h-[45vh] overflow-y-auto sm:max-h-[450px] px-2 pb-3">
-                    <input type="hidden" name="idcompany" value={idcompany} />
-
-                    <div className="mt-7">
-                        <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                            Plant Information
-                        </h5>
-                        <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div className="col-span-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input id="name" name="name" type="text" defaultValue="New Plant Name" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-                    <Button size="sm" variant="outline" onClick={closeModal}>
-                        Close
-                    </Button>
-                    <Button type={"submit"} disabled={isPending}>
-                        Save New
-                    </Button>
-                </div>
-            </form>
-        </div>
-    );
+  return (
+    <FormShell
+      title="Add plant"
+      description="Plants group the areas, machines and devices of a site."
+      onClose={closeModal}
+      onSubmit={handleSubmit}
+      pending={isPending}
+      error={state?.message}
+      submitLabel="Create plant"
+    >
+      <input type="hidden" name="idcompany" value={idcompany} />
+      <FormField label="Name" htmlFor="name" errors={state?.errors?.name}>
+        <Input id="name" name="name" type="text" placeholder="Ex.: Factory Alpha" />
+      </FormField>
+    </FormShell>
+  );
 }

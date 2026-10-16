@@ -2,32 +2,29 @@ type StatusBadgeProps = {
   online: boolean
 }
 
+/**
+ * Estado da conexão. Antes, quando o dispositivo estava online, era exibido
+ * apenas um ponto colorido sem texto (e sem rótulo acessível); agora o estado
+ * é sempre legível e anunciado.
+ */
 export function StatusBadge({ online }: StatusBadgeProps) {
   return (
-    <div className="flex items-center gap-2">
-
-      {/* Label */}
-      {!online ? (
-        <span
-          className={`px-3 py-1 text-sm rounded-full font-medium transition-all
-        ${online
-              ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-              : "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
-            }
-      `}
-        >
-          {online ? "ONLINE" : "OFFLINE"}
-        </span>
-      ) : (
-
-        <span
-          className={`w-2.5 h-2.5 rounded-full
-        ${online ? "bg-green-500 animate-pulse" : "bg-red-500"}
-      `}
-        />
-
-      )}
-
-    </div>
-  )
+    <span
+      role="status"
+      aria-label={online ? "Device online" : "Device offline"}
+      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ${
+        online
+          ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
+          : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+      }`}
+    >
+      <span
+        aria-hidden="true"
+        className={`h-2 w-2 rounded-full ${
+          online ? "animate-pulse bg-green-500" : "bg-red-500"
+        }`}
+      />
+      {online ? "ONLINE" : "OFFLINE"}
+    </span>
+  );
 }

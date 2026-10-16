@@ -1,10 +1,10 @@
-import infoAPP from "@/lib/infoapp";
 import ProfileCard from "./components/ProfileCard";
 import { CurrentUser } from "@/lib/utils";
 import { Metadata } from "next";
-import { Suspense } from 'react'
+import { Suspense } from "react";
 import Skeleton from "@/components/common/Skeleton";
-import ComponentCard from "@/components/common/ComponentCard";
+import TreeSection from "@/components/common/TreeSection";
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -15,11 +15,12 @@ export default async function Profile() {
   const user = await CurrentUser();
   return (
     <div>
-      <ComponentCard title="Profile" className="mb-1">
-        <Suspense fallback={<Skeleton />}>
+      <PageBreadcrumb pageTitle="Profile" backUrl="/home" backUrlName="Home" />
+      <Suspense fallback={<Skeleton rows={1} />}>
+        <TreeSection depth={0} title="Personal information">
           <ProfileCard user={user} />
-        </Suspense>
-      </ComponentCard>
+        </TreeSection>
+      </Suspense>
     </div>
   );
 }

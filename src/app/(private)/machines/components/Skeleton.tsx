@@ -1,20 +1,10 @@
-import ComponentCard from "@/components/common/ComponentCard";
-import Image from "next/image";
-
 export default function MachineSkeleton() {
     return (
-        <ComponentCard title="Loading Machine..." className="mb-4">
-            <>
-                <h1>Loading Machines...</h1>
-                <Image
-                    className="w-100 h-100 object-contain"
-                    src="/images/logo/logo.png"
-                    alt="Loading"
-                    width={50}
-                    height={50}
-                >
-                </Image>
-            </>
-        </ComponentCard>
+        <div className="animate-pulse space-y-4" role="status" aria-label="Loading machine">
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+                <div className="h-4 w-40 rounded-full bg-gray-200 dark:bg-gray-700" />
+                <div className="mt-4 h-52 rounded-xl bg-gray-100 dark:bg-gray-800/60" />
+            </div>
+        </div>
     );
 }
