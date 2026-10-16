@@ -27,7 +27,7 @@ export default function FlowCard({
     : "from-gray-100 to-blue-100 dark:from-gray-800 dark:to-blue-900"
 
   return (
-    <div className={`p-4 rounded-xl bg-gradient-to-br ${bgColor}`}>
+    <div className={`min-w-0 p-3 rounded-xl bg-gradient-to-br sm:p-4 ${bgColor}`}>
 
       {/* HEADER */}
       <div className="flex items-center justify-between">
@@ -38,8 +38,8 @@ export default function FlowCard({
       </div>
 
       {/* VALUE */}
-      <div className={`text-2xl font-bold ${textColor}`}>
-        {value} L
+      <div className={`break-words text-lg font-bold leading-tight tabular-nums sm:text-2xl ${textColor}`}>
+        {Number(value).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} L
       </div>
 
       {/* BAR */}

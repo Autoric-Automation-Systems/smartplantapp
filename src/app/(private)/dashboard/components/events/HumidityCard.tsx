@@ -27,7 +27,7 @@ export default function HumidityCard({
   const percent = Math.min(100, Math.max(0, value))
 
   return (
-    <div className={`p-4 rounded-xl bg-gradient-to-br ${bgColor}`}>
+    <div className={`min-w-0 p-3 rounded-xl bg-gradient-to-br sm:p-4 ${bgColor}`}>
 
       {/* HEADER */}
       <div className="flex items-center justify-between">
@@ -38,7 +38,7 @@ export default function HumidityCard({
       </div>
 
       {/* VALUE */}
-      <div className={`text-2xl font-bold ${textColor}`}>
+      <div className={`break-words text-lg font-bold leading-tight tabular-nums sm:text-2xl ${textColor}`}>
         {value}%
       </div>
 

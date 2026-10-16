@@ -78,7 +78,7 @@ export default async function CardDevice({ device }: { device: Device; }) {
             </div>
 
             {/* EVENTS */}
-            <div className={"grid grid-cols-2 md:grid-cols-3 gap-3 mt-4 transition-opacity"}>
+            <div className={"grid grid-cols-2 gap-2 mt-4 transition-opacity sm:gap-3 md:grid-cols-3"}>
                 {eventsTypes.map((type) => {
                     const eventsOfType = events.filter((event) => event.name === type);
                     const config = configs.find((config) => config.event_name === type);

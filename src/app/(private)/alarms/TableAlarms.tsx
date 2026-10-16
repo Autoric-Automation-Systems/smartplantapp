@@ -82,7 +82,7 @@ export default function TableAlarms({ initialAlarms, devices }: {
                             </span>
                             <button
                                 onClick={markAllAsRead}
-                                className="text-xs px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800"
+                                className="inline-flex min-h-9 items-center rounded border border-gray-300 px-3 py-1.5 text-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800"
                             >
                                 Mark all read
                             </button>
@@ -99,13 +99,13 @@ export default function TableAlarms({ initialAlarms, devices }: {
                             <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Status
                             </th>
-                            <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                            <th scope="col" className="hidden px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 md:table-cell">
                                 Device
                             </th>
                             <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Message
                             </th>
-                            <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                            <th scope="col" className="hidden px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 sm:table-cell">
                                 Time
                             </th>
                             <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
@@ -129,19 +129,19 @@ export default function TableAlarms({ initialAlarms, devices }: {
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="px-4 py-3">
+                                    <td className="hidden px-4 py-3 md:table-cell">
                                         <div className="text-sm text-gray-800 dark:text-white/90">
                                             {device?.name || `Device ${alarm.device_id}`}
                                         </div>
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="max-w-md">
+                                        <div className="max-w-md min-w-0">
                                             <p className="text-sm text-gray-800 dark:text-white/90">
                                                 {alarm.message}
                                             </p>
                                         </div>
                                     </td>
-                                    <td className="px-4 py-3 whitespace-nowrap">
+                                    <td className="hidden px-4 py-3 whitespace-nowrap sm:table-cell">
                                         <div className="text-sm text-gray-600 dark:text-gray-400">
                                             {new Date(alarm.created_at).toLocaleString([], {
                                                 hour: '2-digit',
@@ -155,7 +155,7 @@ export default function TableAlarms({ initialAlarms, devices }: {
                                         {!alarm.readed && (
                                             <button
                                                 onClick={() => markAsRead(alarm.id)}
-                                                className="text-xs px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+                                                className="inline-flex min-h-9 items-center rounded bg-gray-100 px-3 py-1.5 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
                                             >
                                                 Mark read
                                             </button>

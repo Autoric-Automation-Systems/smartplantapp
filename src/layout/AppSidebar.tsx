@@ -24,7 +24,8 @@ const navItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered, toggleMobileSidebar } =
+    useSidebar();
   const pathname = usePathname();
 
   const isActive = useCallback(
@@ -80,6 +81,8 @@ const AppSidebar: React.FC = () => {
                   href={nav.path}
                   aria-current={active ? "page" : undefined}
                   title={nav.name}
+                  // no mobile a gaveta fecha ao navegar, para não cobrir a página nova
+                  onClick={() => isMobileOpen && toggleMobileSidebar()}
                   className={`menu-item group ${active ? "menu-item-active" : "menu-item-inactive"} ${
                     showLabels ? "lg:justify-start" : "lg:justify-center"
                   }`}

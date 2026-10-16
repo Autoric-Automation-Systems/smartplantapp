@@ -88,24 +88,28 @@ export default function SignInForm() {
             <form onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div>
-                  <Label>
+                  <Label htmlFor="email">
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
                   <Input
-                    placeholder="info@gmail.com"
+                    id="email"
+                    name="email"
+                    placeholder="nome@empresa.com"
                     type="email"
                     defaultValue={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div>
-                  <Label>
+                  <Label htmlFor="password">
                     Password <span className="text-error-500">*</span>{" "}
                   </Label>
                   <div className="relative">
                     <Input
+                      id="password"
+                      name="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder="Digite sua senha"
                       defaultValue={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
