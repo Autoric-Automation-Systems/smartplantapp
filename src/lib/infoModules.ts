@@ -3,6 +3,7 @@ import logoSPTH from "../../public/images/logo/logo_SP-TH.png";
 import logoSPTL from "../../public/images/logo/logo_SP-TL.png";
 import logoSPFF from "../../public/images/logo/logo_SP-FF.png";
 import logoSPIS from "../../public/images/logo/logo_SP-IS.png";
+import logoSPCLP from "../../public/images/logo/logo_SP-CLP.png";
 
 export const InfoModules = [
     {
@@ -34,5 +35,11 @@ export const InfoModules = [
         fullName: "Smart Plant Inspection System",
         description: "Sistema de inspeção por imagem",
         logo: logoSPIS,
+    },
+    {
+        name: "SP-CLP",
+        fullName: "Smart Plant CLP Monitor",
+        description: "Supervisão de CLPs e status do sistema em tempo real",
+        logo: logoSPCLP,
     }
 ];

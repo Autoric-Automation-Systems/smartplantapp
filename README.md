@@ -39,6 +39,7 @@ O **Smart Plant App** é uma plataforma moderna e modular para monitoramento e c
 | **Smart Plant Tank Level** | SP-TL | Monitoramento de nível de tanques e reservatórios |
 | **Smart Plant Fluid Flow** | SP-FF | Medição e controle de fluxo de fluidos |
 | **Smart Plant Inspection System** | SP-IS | Sistema de inspeção por imagem |
+| **Smart Plant CLP Monitor** | SP-CLP | Supervisão de CLPs e status do sistema em tempo real |
 
 ## 🚀 Tecnologias Utilizadas
 
