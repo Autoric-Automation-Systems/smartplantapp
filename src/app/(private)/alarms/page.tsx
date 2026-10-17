@@ -1,38 +1,61 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
-import infoAPP from "@/lib/infoapp";
-import { propsPage } from "@/lib/types";
 import MsgPage from "@/components/common/MsgPage";
-import TableAlarms from "./TableAlarms";
-import { fetchDataAllAlarms } from "@/query/alarms/data";
-import { fetchDataAllDevices } from "@/query/devices/data";
+import AlarmStats from "./components/AlarmStats";
+import AlarmsView from "./components/AlarmsView";
+import {
+  fetchAlarmsPage,
+  fetchAlarmsSummary,
+  fetchAlarmFilterOptions,
+} from "@/query/alarms/data";
+import type { AlarmFilters } from "@/query/alarms/definitions";
 
 export const metadata: Metadata = {
   title: "Alarms",
-  description: "View all active alarms and their details.",
+  description: "Acompanhe e trate os alarmes das suas plantas.",
 };
 
-export default async function Page({ props }: { props: propsPage }) {
-  const [alarms, devices] = await Promise.all([
-    fetchDataAllAlarms(),
-    fetchDataAllDevices()
-  ]);
+const first = (value: string | string[] | undefined) =>
+  Array.isArray(value) ? value[0] : value;
 
-  if (alarms.length === 0) {
-    return (
-      <div>
-        <PageBreadcrumb pageTitle="Alarms" backUrl="/dashboard" backUrlName="Dashboard" />
-        <MsgPage />
-      </div>
-    );
-  }
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+
+  const filters: AlarmFilters = {
+    status: (first(params.status) as AlarmFilters["status"]) || "all",
+    event: first(params.event) ?? null,
+    device: first(params.device) ?? null,
+    period: (first(params.period) as AlarmFilters["period"]) || "all",
+    search: first(params.q) ?? null,
+  };
+  const page = Number(first(params.page) ?? 1) || 1;
+
+  const [summary, options, list] = await Promise.all([
+    fetchAlarmsSummary(),
+    fetchAlarmFilterOptions(),
+    fetchAlarmsPage(filters, page),
+  ]);
 
   return (
     <div>
-      <PageBreadcrumb pageTitle="Alarms" backUrl="/dashboard" backUrlName="Dashboard" />
-      <div className="min-h-dvh rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
-        <TableAlarms initialAlarms={alarms} devices={devices} />
-      </div>
+      <PageBreadcrumb
+        pageTitle="Alarms"
+        backUrl="/dashboard"
+        backUrlName="Dashboard"
+      />
+      <MsgPage />
+      <AlarmStats summary={summary} />
+      <AlarmsView
+        alarms={list.rows}
+        total={list.total}
+        page={page}
+        filters={filters}
+        options={options}
+      />
     </div>
   );
 }

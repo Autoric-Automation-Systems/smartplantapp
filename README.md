@@ -144,7 +144,12 @@ smartplantapp/
    EMAIL_PASS="senha-de-app"
    BLOB_READ_WRITE_TOKEN="..."                            # uploads (@vercel/blob)
    DEVICE_API_KEY="chave-dos-dispositivos"                # opcional, ver seção Segurança
+   EMAIL_FROM="Smart Plant <conta@gmail.com>"             # remetente dos alarmes
+   ALARM_EMAIL_ENABLED="1"                                # "0" desliga os e-mails de alarme
+   ALARM_EMAIL_MIN_INTERVAL_MINUTES="15"                  # intervalo mínimo por dispositivo/evento
+   ALARM_NOTIFY_EMAILS=""                                 # destinatários extras, separados por vírgula
    ```
+
 
 4. **Inicie o servidor de desenvolvimento**
    ```bash
@@ -180,6 +185,39 @@ smartplantapp/
 - **Formulários**: Validação em tempo real com feedback visual
 - **Cards**: Containers com sombras e bordas arredondadas
 - **Modais**: Overlays acessíveis com transições suaves
+
+## 🔔 Alarmes
+
+Cada evento monitorado por um dispositivo tem limites (mín/máx) e um interruptor de alarme em
+**Plants → Device → Configurations**. A avaliação dos limites acontece na rota de ingestão
+(`/api/devices/events`), então funciona sem intervenção do usuário.
+
+**Quando um alarme é registrado**
+
+- Somente na **transição para fora da faixa**. Enquanto a leitura continuar fora, nenhum alarme
+  novo é criado (evita uma linha por leitura).
+- O valor anterior é lido **do banco**, nunca do timestamp enviado pelo dispositivo — caso
+  contrário um dispositivo poderia forjar a "leitura anterior" e furar o anti-spam.
+- Eventos com o alarme desligado ou sem limites configurados são ignorados.
+
+**E-mail**
+
+- Enviado para todos os usuários da empresa do dispositivo (mais `ALARM_NOTIFY_EMAILS`, se houver).
+- O tempo entre e-mails do mesmo dispositivo+evento é controlado por
+  `ALARM_EMAIL_MIN_INTERVAL_MINUTES` (padrão 15), medido com o relógio do servidor.
+- Sem `EMAIL_USER`/`EMAIL_PASS` o envio fica em **dry run**: o e-mail é registrado no log do
+  servidor e nada sai para a internet (útil em desenvolvimento).
+- `ALARM_EMAIL_ENABLED=0` desliga os e-mails mantendo o registro dos alarmes.
+- `ALARM_NOTIFY_EMAILS` é uma lista separada por vírgula de destinatários extra (útil para
+  redirecionar alarmes de cliente para uma caixa interna, ou para um "cliente" de teste).
+
+**Tela de alarmes** (`/alarms`)
+
+- Indicadores de volume, não lidos e últimas 24h, com distribuição por evento.
+- Filtros de status, evento, dispositivo, período e busca (a busca também entende o rótulo do
+  evento, ex.: "Temperatura") — a filtragem acontece no banco.
+- Detalhe expansível por alarme (localização, MAC, faixa configurada, data) e ações de marcar
+  como lido (individual e em lote).
 
 ## 🔒 Segurança
 
